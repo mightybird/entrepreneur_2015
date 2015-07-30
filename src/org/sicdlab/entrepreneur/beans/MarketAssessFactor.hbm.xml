@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2015-7-27 16:33:46 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="org.sicdlab.entrepreneur.beans.MarketAssessFactor" table="market_assess_factor" catalog="entrepreneur_2015" optimistic-lock="version">
+        <id name="marketAssessFactorId" type="string">
+            <column name="MARKET_ASSESS_FACTOR_ID" length="32" />
+            <generator class="assigned" />
+        </id>
+        <property name="marketScale" type="float">
+            <column name="MARKET_SCALE" precision="10" not-null="true" />
+        </property>
+        <property name="valueChainTransferEfficiency" type="float">
+            <column name="VALUE_CHAIN_TRANSFER_EFFICIENCY" precision="10" not-null="true" />
+        </property>
+        <property name="riseContinuity" type="float">
+            <column name="RISE_CONTINUITY" precision="10" not-null="true" />
+        </property>
+        <property name="entryBarrier" type="float">
+            <column name="ENTRY_BARRIER" precision="10" not-null="true" />
+        </property>
+        <property name="clientValue" type="float">
+            <column name="CLIENT_VALUE" precision="10" not-null="true" />
+        </property>
+        <property name="totalScore" type="float">
+            <column name="TOTAL_SCORE" precision="10" not-null="true" />
+        </property>
+        <property name="comment" type="string">
+            <column name="COMMENT" length="65535" />
+        </property>
+        <set name="projectIndexes" table="project_index" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="MARKET_ASSESS_FACTOR_ID" length="32" not-null="true" />
+            </key>
+            <one-to-many class="org.sicdlab.entrepreneur.beans.ProjectIndex" />
+        </set>
+    </class>
+</hibernate-mapping>

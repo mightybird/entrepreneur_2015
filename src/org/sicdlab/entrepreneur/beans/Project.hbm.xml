@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2015-7-27 16:33:46 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="org.sicdlab.entrepreneur.beans.Project" table="project" catalog="entrepreneur_2015" optimistic-lock="version">
+        <id name="id" type="string">
+            <column name="id" length="32" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="industry" class="org.sicdlab.entrepreneur.beans.Industry" fetch="select">
+            <column name="industry_id" length="32" />
+        </many-to-one>
+        <property name="name" type="string">
+            <column name="name" length="50" />
+        </property>
+        <property name="startTime" type="timestamp">
+            <column name="start_time" length="19" />
+        </property>
+        <property name="fundType" type="string">
+            <column name="fund_type" length="50" />
+        </property>
+        <property name="fundAmountUpper" type="big_decimal">
+            <column name="fund_amount_upper" precision="20" />
+        </property>
+        <property name="fundAmountLower" type="big_decimal">
+            <column name="fund_amount_lower" precision="20" />
+        </property>
+        <property name="fundLackLower" type="big_decimal">
+            <column name="fund_lack_lower" precision="20" />
+        </property>
+        <property name="fundLackUpper" type="big_decimal">
+            <column name="fund_lack_upper" precision="20" />
+        </property>
+        <property name="contact" type="string">
+            <column name="contact" length="32" />
+        </property>
+        <property name="introduce" type="string">
+            <column name="introduce" length="65535" />
+        </property>
+        <property name="area" type="string">
+            <column name="area" length="50" />
+        </property>
+        <property name="managementStatus" type="string">
+            <column name="management_status" length="50" />
+        </property>
+        <property name="projectStage" type="string">
+            <column name="project_stage" length="50" />
+        </property>
+        <property name="memberNumber" type="java.lang.Integer">
+            <column name="member_number" />
+        </property>
+        <property name="visitorNumber" type="java.lang.Integer">
+            <column name="Visitor_number" />
+        </property>
+        <property name="projectStatus" type="string">
+            <column name="project_status" length="50" />
+        </property>
+        <set name="projectIndexes" table="project_index" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="PROJECT_ID" length="32" not-null="true" />
+            </key>
+            <one-to-many class="org.sicdlab.entrepreneur.beans.ProjectIndex" />
+        </set>
+        <set name="projectLabels" table="project_label" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="project_id" length="32" not-null="true" />
+            </key>
+            <one-to-many class="org.sicdlab.entrepreneur.beans.ProjectLabel" />
+        </set>
+        <set name="projectInstitutions" table="project_institution" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="project_id" length="32" not-null="true" unique="true" />
+            </key>
+            <one-to-many class="org.sicdlab.entrepreneur.beans.ProjectInstitution" />
+        </set>
+        <set name="projectEntrepreneurs" table="project_entrepreneur" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="project_id" length="32" not-null="true" unique="true" />
+            </key>
+            <one-to-many class="org.sicdlab.entrepreneur.beans.ProjectEntrepreneur" />
+        </set>
+        <set name="projectTutors" table="project_tutor" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="project_id" length="32" not-null="true" />
+            </key>
+            <one-to-many class="org.sicdlab.entrepreneur.beans.ProjectTutor" />
+        </set>
+    </class>
+</hibernate-mapping>

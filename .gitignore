@@ -1,0 +1,6 @@
+.classpath
+.settings
+.project
+.svn
+WebRoot/WEB-INF/lib
+WebRoot/WEB-INF/classes

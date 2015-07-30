@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+    "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	<package name="default" namespace="/" extends="struts-default">
+		<action name="*-*" class="org.sicdlab.entrepreneur.action.tutor.{1}Action" method="{2}">
+			<result>/jsp/tutor/{1}-{2}.jsp</result>
+		</action>
+		<action name="index" class="org.sicdlab.entrepreneur.action.tutor.PageAction">
+			<result>/jsp/tutor/index.jsp</result>
+		</action>
+	</package>
+</struts> 

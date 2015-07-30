@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2015-7-27 16:33:46 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="org.sicdlab.entrepreneur.beans.ManagementTeam" table="management_team" catalog="entrepreneur_2015" optimistic-lock="version">
+        <id name="managementTeamId" type="string">
+            <column name="MANAGEMENT_TEAM_ID" length="32" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="managementRisk" class="org.sicdlab.entrepreneur.beans.ManagementRisk" fetch="select">
+            <column name="MANAGEMENT_RISK_ID" length="32" not-null="true" />
+        </many-to-one>
+        <many-to-one name="teamCoreCompetence" class="org.sicdlab.entrepreneur.beans.TeamCoreCompetence" fetch="select">
+            <column name="CORE_COMPETENCE_ID" length="32" not-null="true" />
+        </many-to-one>
+        <property name="comment" type="string">
+            <column name="COMMENT" length="65535" />
+        </property>
+        <property name="leaderQualityScore" type="float">
+            <column name="LEADER_QUALITY_SCORE" precision="10" not-null="true" />
+        </property>
+        <property name="totalScore" type="float">
+            <column name="TOTAL_SCORE" precision="10" not-null="true" />
+        </property>
+        <set name="projectIndexes" table="project_index" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="MANAGEMENT_TEAM_ID" length="32" not-null="true" />
+            </key>
+            <one-to-many class="org.sicdlab.entrepreneur.beans.ProjectIndex" />
+        </set>
+    </class>
+</hibernate-mapping>

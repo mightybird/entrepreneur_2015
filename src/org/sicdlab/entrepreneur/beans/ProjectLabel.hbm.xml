@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2015-7-27 16:33:46 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="org.sicdlab.entrepreneur.beans.ProjectLabel" table="project_label" catalog="entrepreneur_2015" optimistic-lock="version">
+        <id name="id" type="string">
+            <column name="id" length="32" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="label" class="org.sicdlab.entrepreneur.beans.Label" fetch="select">
+            <column name="label_id" length="32" not-null="true" />
+        </many-to-one>
+        <many-to-one name="project" class="org.sicdlab.entrepreneur.beans.Project" fetch="select">
+            <column name="project_id" length="32" not-null="true" />
+        </many-to-one>
+    </class>
+</hibernate-mapping>

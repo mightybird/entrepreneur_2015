@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2015-7-27 16:33:46 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="org.sicdlab.entrepreneur.beans.NewsInfo" table="news_info" catalog="entrepreneur_2015" optimistic-lock="version">
+        <id name="id" type="string">
+            <column name="id" length="32" />
+            <generator class="assigned" />
+        </id>
+        <property name="newsInfoType" type="string">
+            <column name="news_info_type" length="50" />
+        </property>
+        <property name="title" type="string">
+            <column name="title" length="200" />
+        </property>
+        <property name="content" type="string">
+            <column name="content" length="65535" />
+        </property>
+        <property name="publishTime" type="timestamp">
+            <column name="publish_time" length="19" />
+        </property>
+        <property name="readTimes" type="java.lang.Integer">
+            <column name="read_times" />
+        </property>
+    </class>
+</hibernate-mapping>

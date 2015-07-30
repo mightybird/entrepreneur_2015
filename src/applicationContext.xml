@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:tool="http://www.springframework.org/schema/tool" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+		http://www.springframework.org/schema/tool http://www.springframework.org/schema/tool/spring-tool.xsd">
+
+
+	<!-- 扫描包下的所有Bean(@Component,@Controller,@Services,@Repository) -->
+	<context:component-scan base-package="org.sicdlab.entrepreneur" />
+
+	<!-- 读取配置文件 -->
+	<!-- <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"> 
+		<property name="locations" value="classpath:config.properties" /> </bean> -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="driverClass" value="com.mysql.jdbc.Driver" />
+		<property name="jdbcUrl"
+			value="jdbc:mysql://192.168.1.79:3306/entrepreneur_2015" />
+		<property name="user" value="root" />
+		<property name="password" value="1234" />
+		<property name="maxPoolSize" value="40" />
+		<property name="minPoolSize" value="1" />
+		<property name="initialPoolSize" value="1" />
+		<property name="maxIdleTime" value="20" />
+	</bean>
+	<!-- <bean id="dataSource" destroy-method="close" class="org.apache.commons.dbcp.BasicDataSource"> 
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" /> <property 
+		name="url" value="jdbc:mysql://192.168.1.79:3306/entrepreneur_2015" /> <property 
+		name="username" value="root" /> <property name="password" value="1234" /> 
+		<property name="removeAbandoned" value="true"/> <property name="removeAbandonedTimeout" 
+		value="180"/> </bean> -->
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<!-- <property name="configLocations"> <value>classpath:hibernate.cfg.xml</value> 
+			</property> -->
+		<property name="dataSource" ref="dataSource" />
+		<property name="packagesToScan">
+			<list>
+				<value>org.sicdlab.entrepreneur.beans</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<!-- web项目启动时是否更新表结构 -->
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<!-- 系统使用的数据库方言，也就是使用的数据库类型 -->
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</prop>
+				<!-- 是否打印Hibernate生成的SQL到控制台 -->
+				<prop key="hibernate.show_sql">true</prop>
+				<!-- 是否格式化打印出来的SQL -->
+				<prop key="hibernate.format_sql">true</prop>
+				<!-- 让当前线程可以使用getCurrentSession()获取Session -->
+				<prop key="hibernate.current_session_context_class">thread</prop>
+			</props>
+		</property>
+		<property name="mappingDirectoryLocations">
+			<list>
+				<value>classpath:/org/sicdlab/entrepreneur/beans</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- transactionManager -->
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<!--采用注解 -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+</beans>

@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2015-7-27 16:33:46 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="org.sicdlab.entrepreneur.beans.ProjectIndex" table="project_index" catalog="entrepreneur_2015" optimistic-lock="version">
+        <id name="projectIndexId" type="string">
+            <column name="PROJECT_INDEX_ID" length="32" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="environmentFactor" class="org.sicdlab.entrepreneur.beans.EnvironmentFactor" fetch="select">
+            <column name="ENVIRONMENT_FACTOR_ID" length="32" not-null="true" />
+        </many-to-one>
+        <many-to-one name="financeFactor" class="org.sicdlab.entrepreneur.beans.FinanceFactor" fetch="select">
+            <column name="FINANCE_FACTOR_ID" length="32" not-null="true" />
+        </many-to-one>
+        <many-to-one name="managementTeam" class="org.sicdlab.entrepreneur.beans.ManagementTeam" fetch="select">
+            <column name="MANAGEMENT_TEAM_ID" length="32" not-null="true" />
+        </many-to-one>
+        <many-to-one name="marketAssessFactor" class="org.sicdlab.entrepreneur.beans.MarketAssessFactor" fetch="select">
+            <column name="MARKET_ASSESS_FACTOR_ID" length="32" not-null="true" />
+        </many-to-one>
+        <many-to-one name="productTechnologyFactor" class="org.sicdlab.entrepreneur.beans.ProductTechnologyFactor" fetch="select">
+            <column name="PRODUCT_TECHNOLOGY_ID" length="32" not-null="true" />
+        </many-to-one>
+        <many-to-one name="project" class="org.sicdlab.entrepreneur.beans.Project" fetch="select">
+            <column name="PROJECT_ID" length="32" not-null="true" />
+        </many-to-one>
+        <property name="createType" type="string">
+            <column name="CREATE_TYPE" length="50" not-null="true" />
+        </property>
+        <property name="tutorId" type="string">
+            <column name="TUTOR_ID" length="32" />
+        </property>
+        <property name="comment" type="string">
+            <column name="COMMENT" length="65535" />
+        </property>
+        <property name="totalScore" type="float">
+            <column name="TOTAL_SCORE" precision="12" scale="0" not-null="true" />
+        </property>
+        <property name="questionnaireTime" type="timestamp">
+            <column name="QUESTIONNAIRE_TIME" length="19" not-null="true" />
+        </property>
+        <set name="projectTutors" table="project_tutor" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="project_index_id" length="32" />
+            </key>
+            <one-to-many class="org.sicdlab.entrepreneur.beans.ProjectTutor" />
+        </set>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2015-7-27 16:33:46 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="org.sicdlab.entrepreneur.beans.EnvironmentFactor" table="environment_factor" catalog="entrepreneur_2015" optimistic-lock="version">
+        <id name="environmentFactorId" type="string">
+            <column name="ENVIRONMENT_FACTOR_ID" length="32" />
+            <generator class="assigned" />
+        </id>
+        <property name="policySupport" type="float">
+            <column name="POLICY_SUPPORT" precision="10" not-null="true" />
+        </property>
+        <property name="resourceSupportDegree" type="float">
+            <column name="RESOURCE_SUPPORT_DEGREE" precision="10" not-null="true" />
+        </property>
+        <property name="economyBoomDegree" type="float">
+            <column name="ECONOMY_BOOM_DEGREE" precision="10" not-null="true" />
+        </property>
+        <property name="totalScore" type="float">
+            <column name="TOTAL_SCORE" precision="10" not-null="true" />
+        </property>
+        <property name="comment" type="string">
+            <column name="COMMENT" length="65535" />
+        </property>
+        <set name="projectIndexes" table="project_index" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="ENVIRONMENT_FACTOR_ID" length="32" not-null="true" />
+            </key>
+            <one-to-many class="org.sicdlab.entrepreneur.beans.ProjectIndex" />
+        </set>
+    </class>
+</hibernate-mapping>

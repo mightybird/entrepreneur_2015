@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2015-7-27 16:33:46 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="org.sicdlab.entrepreneur.beans.ProjectInstitution" table="project_institution" catalog="entrepreneur_2015" optimistic-lock="version">
+        <id name="id" type="string">
+            <column name="id" length="32" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="institution" class="org.sicdlab.entrepreneur.beans.Institution" fetch="select">
+            <column name="institution_id" length="32" not-null="true" />
+        </many-to-one>
+        <many-to-one name="project" class="org.sicdlab.entrepreneur.beans.Project" fetch="select">
+            <column name="project_id" length="32" not-null="true" unique="true" />
+        </many-to-one>
+        <property name="content" type="string">
+            <column name="content" length="200" />
+        </property>
+        <property name="applyType" type="string">
+            <column name="apply_type" length="32" />
+        </property>
+        <property name="title" type="string">
+            <column name="title" length="32" />
+        </property>
+        <property name="sendTime" type="timestamp">
+            <column name="send_time" length="19" />
+        </property>
+        <property name="applyStatus" type="string">
+            <column name="apply_status" length="32" />
+        </property>
+        <property name="agreeTime" type="timestamp">
+            <column name="agree_time" length="19" />
+        </property>
+    </class>
+</hibernate-mapping>

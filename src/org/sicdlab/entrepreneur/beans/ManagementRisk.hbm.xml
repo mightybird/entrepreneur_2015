@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2015-7-27 16:33:46 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="org.sicdlab.entrepreneur.beans.ManagementRisk" table="management_risk" catalog="entrepreneur_2015" optimistic-lock="version">
+        <id name="managementRiskId" type="string">
+            <column name="MANAGEMENT_RISK_ID" length="32" />
+            <generator class="assigned" />
+        </id>
+        <property name="safetyControlDegree" type="float">
+            <column name="SAFETY_CONTROL_DEGREE" precision="10" not-null="true" />
+        </property>
+        <property name="taxPlanning" type="float">
+            <column name="TAX_PLANNING" precision="10" not-null="true" />
+        </property>
+        <property name="organizationPromiseDegree" type="float">
+            <column name="ORGANIZATION_PROMISE_DEGREE" precision="10" not-null="true" />
+        </property>
+        <property name="totalScore" type="float">
+            <column name="TOTAL_SCORE" precision="10" not-null="true" />
+        </property>
+        <property name="comment" type="string">
+            <column name="COMMENT" length="65535" />
+        </property>
+        <set name="managementTeams" table="management_team" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="MANAGEMENT_RISK_ID" length="32" not-null="true" />
+            </key>
+            <one-to-many class="org.sicdlab.entrepreneur.beans.ManagementTeam" />
+        </set>
+    </class>
+</hibernate-mapping>

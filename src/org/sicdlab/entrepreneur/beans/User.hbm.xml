@@ -1,0 +1,108 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2015-7-27 16:33:46 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="org.sicdlab.entrepreneur.beans.User" table="user" catalog="entrepreneur_2015" optimistic-lock="version">
+        <id name="id" type="string">
+            <column name="id" length="32" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="role" class="org.sicdlab.entrepreneur.beans.Role" fetch="select">
+            <column name="role_id" length="32" not-null="true" />
+        </many-to-one>
+        <property name="name" type="string">
+            <column name="name" length="50" />
+        </property>
+        <property name="contact" type="string">
+            <column name="contact" length="32" />
+        </property>
+        <property name="birth" type="timestamp">
+            <column name="birth" length="19" />
+        </property>
+        <property name="introduce" type="string">
+            <column name="introduce" length="500" />
+        </property>
+        <property name="email" type="string">
+            <column name="email" length="50" not-null="true" />
+        </property>
+        <property name="password" type="string">
+            <column name="password" length="32" not-null="true" />
+        </property>
+        <property name="headImage" type="string">
+            <column name="head_image" length="200" />
+        </property>
+        <property name="gender" type="string">
+            <column name="gender" length="2" />
+        </property>
+        <property name="address" type="string">
+            <column name="address" length="200" />
+        </property>
+        <property name="status" type="string">
+            <column name="status" length="50" />
+        </property>
+        <property name="registerTime" type="timestamp">
+            <column name="register_time" length="19" />
+        </property>
+        <property name="visitedCount" type="java.lang.Integer">
+            <column name="visited_count" />
+        </property>
+        <one-to-one name="institution" class="org.sicdlab.entrepreneur.beans.Institution"></one-to-one>
+        <set name="mailsForSenderId" table="mail" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="sender_id" length="32" not-null="true" />
+            </key>
+            <one-to-many class="org.sicdlab.entrepreneur.beans.Mail" />
+        </set>
+        <set name="supplies" table="supply" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="user_id" length="32" not-null="true" />
+            </key>
+            <one-to-many class="org.sicdlab.entrepreneur.beans.Supply" />
+        </set>
+        <one-to-one name="entrepreneur" class="org.sicdlab.entrepreneur.beans.Entrepreneur"></one-to-one>
+        <one-to-one name="tutor" class="org.sicdlab.entrepreneur.beans.Tutor"></one-to-one>
+        <set name="mailsForReceiverId" table="mail" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="receiver_id" length="32" not-null="true" />
+            </key>
+            <one-to-many class="org.sicdlab.entrepreneur.beans.Mail" />
+        </set>
+        <set name="friendsForFollowerId" table="friend" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="follower_id" length="32" not-null="true" />
+            </key>
+            <one-to-many class="org.sicdlab.entrepreneur.beans.Friend" />
+        </set>
+        <set name="operationLogs" table="operation_log" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="user_id" length="32" not-null="true" />
+            </key>
+            <one-to-many class="org.sicdlab.entrepreneur.beans.OperationLog" />
+        </set>
+        <set name="friendsForFolloweeId" table="friend" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="followee_id" length="32" not-null="true" />
+            </key>
+            <one-to-many class="org.sicdlab.entrepreneur.beans.Friend" />
+        </set>
+        <set name="notices" table="notice" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="user_id" length="32" not-null="true" />
+            </key>
+            <one-to-many class="org.sicdlab.entrepreneur.beans.Notice" />
+        </set>
+        <set name="needs" table="need" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="user_id" length="32" not-null="true" />
+            </key>
+            <one-to-many class="org.sicdlab.entrepreneur.beans.Need" />
+        </set>
+        <set name="userLabels" table="user_label" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="USER_ID" length="32" not-null="true" />
+            </key>
+            <one-to-many class="org.sicdlab.entrepreneur.beans.UserLabel" />
+        </set>
+    </class>
+</hibernate-mapping>

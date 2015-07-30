@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2015-7-27 16:33:46 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="org.sicdlab.entrepreneur.beans.Need" table="need" catalog="entrepreneur_2015" optimistic-lock="version">
+        <id name="id" type="string">
+            <column name="id" length="32" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="industry" class="org.sicdlab.entrepreneur.beans.Industry" fetch="select">
+            <column name="industry_id" length="32" />
+        </many-to-one>
+        <many-to-one name="user" class="org.sicdlab.entrepreneur.beans.User" fetch="select">
+            <column name="user_id" length="32" not-null="true" />
+        </many-to-one>
+        <property name="title" type="string">
+            <column name="title" length="200" not-null="true" />
+        </property>
+        <property name="type" type="string">
+            <column name="type" length="50" not-null="true" />
+        </property>
+        <property name="content" type="string">
+            <column name="content" length="65535" />
+        </property>
+        <property name="publishTime" type="timestamp">
+            <column name="publish_time" length="19" not-null="true" />
+        </property>
+        <property name="contact" type="string">
+            <column name="contact" length="50" />
+        </property>
+        <property name="fundAmount" type="string">
+            <column name="fund_amount" length="50" />
+        </property>
+        <property name="lackFund" type="string">
+            <column name="lack_fund" length="50" />
+        </property>
+        <property name="fundType" type="string">
+            <column name="fund_type" length="50" />
+        </property>
+        <property name="projectName" type="string">
+            <column name="project_name" length="50" not-null="true" />
+        </property>
+        <property name="email" type="string">
+            <column name="email" length="50" />
+        </property>
+        <property name="area" type="string">
+            <column name="area" length="200" />
+        </property>
+        <set name="needLabels" table="need_label" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="need_id" length="32" not-null="true" />
+            </key>
+            <one-to-many class="org.sicdlab.entrepreneur.beans.NeedLabel" />
+        </set>
+    </class>
+</hibernate-mapping>
