@@ -41,11 +41,15 @@
 										<dd>X@X.com</dd>
 										<dt>introduce</dt>
 										<dd>XXXXXXXXXXXXXXXXX</dd>
+										<dt>address</dt>
+										<address>
+											<strong>Twitter, Inc.</strong><br /> 795 Folsom Ave, Suite
+											600<br /> San Francisco, CA 94107<br /> <abbr title="Phone">P:</abbr>
+											(123) 456-7890
+										</address>
 									</dl>
 								</div>
-								<div class="row">
-								
-								</div>
+								<div class="row"></div>
 							</div>
 						</div>
 						<div class="col-md-9">
@@ -64,11 +68,50 @@
 									<div class="col-md-4">
 										<div class="thumbnail">
 											<img alt="Bootstrap Thumbnail First"
-												src="http://lorempixel.com/output/people-q-c-600-200-1.jpg" />
+												src="<c:url value='/images/project_image.jpg'/>" />
+											<div class="caption">
+												<h3>Project name</h3>
+												<dl>
+													<dt>contact</dt>
+													<dd>XXXXX</dd>
+													<dt>email</dt>
+													<dd>X@X.com</dd>
+													<dt>introduce</dt>
+													<dd>XXXXXXXXXXXXXXXXX</dd>
+
+												</dl>
+												<p>
+													<a class="btn btn-primary" href="#">详情</a>
+												</p>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-4">
+										<div class="thumbnail">
+											<img alt="Bootstrap Thumbnail First"
+												src="<c:url value='/images/project_image.jpg'/>" />
 											<div class="caption">
 												<h3>Project name</h3>
 												<p>
-													<small> project introduce </small>
+													<small> projectin, troduceproject, introduceproj,
+														ectintroduce, projectintroduce </small>
+												</p>
+												<p>
+													<a class="btn btn-primary" href="#">详情</a>
+												</p>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-4">
+										<div class="thumbnail">
+											<img alt="Bootstrap Thumbnail First"
+												src="<c:url value='/images/project_image.jpg'/>" />
+											<div class="caption">
+												<h3>Project name</h3>
+												<p>
+													<small> projectin, troduceproject, introduceproj,
+														ectintroduce, projectintroduce projectin, troduceproject,
+														introduceproj, ectintroduce, projectintroduce </small>
 												</p>
 												<p>
 													<a class="btn btn-primary" href="#">详情</a>
