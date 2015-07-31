@@ -147,7 +147,7 @@ public class UserAction extends ActionSupport {
 		} else {
 			List<User> list = userservice.getByStringProperty(User.class, "email", getEmail());
 			User user = list.iterator().next();
-			if (user.getName().isEmpty() || user.getName().equals("")) {
+			if (user.getName() == null || user.getName().equals("")) {
 				user.setName(user.getEmail());
 			}
 			ActionContext.getContext().getSession().put("user", user);
