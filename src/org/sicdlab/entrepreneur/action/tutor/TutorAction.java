@@ -13,8 +13,8 @@ import org.sicdlab.entrepreneur.service.tutor.impl.TutorServiceImpl;
 public class TutorAction {
 	private Tutor tutor;
 	private List<Tutor> tutor1s;
-	private TutorServiceImpl tutorServiceImpl=new TutorServiceImpl();
-	private List<Tutor> tutors=tutorServiceImpl.select();
+	private TutorServiceImpl tutorServiceImpl;
+	private List<Tutor> tutors;
 	//实现的分页的参数
 	private Page page;
 	private int currentPage;
@@ -95,7 +95,7 @@ public class TutorAction {
 	public String list(){
 		//获得分页参数以及对各参数的处理
 		page=new Page(3, currentPage, tutors.size(), tutors);
-		tutor1s=tutorServiceImpl.select(3,currentPage);
+//		tutor1s=tutorServiceImpl.select(3,currentPage);
 		pageCount=page.getPageCount();
 		recordCount=page.getRecordCount();
 		pageSize=page.getPageSize();
