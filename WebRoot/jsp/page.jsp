@@ -16,8 +16,8 @@
 	<%--总分页--%>
 	<div>
 		<div class="panel-body" style="width: 350px;height: 50px;margin-left: 400px;float:left;margin-top:10px;">
-			   <%-- 页次：${currentPage }/${pageCount }页 &nbsp; 
-			   每页显示：${pageSize }条 &nbsp; 总记录数：${recordCount }条 --%>
+			   页次：${currentPage }/${pageCount }页 &nbsp; 
+			   每页显示：${pageSize }条 &nbsp; 总记录数：${recordCount }条 
 	 	</div>
 	
 	<ul class="pagination">
@@ -62,7 +62,7 @@
 		<%--前一页 后一页 --%>
 	<div>
 		<ul class="pager">
-			<s:if test="currentPage == 1">
+			<s:if test="currentPage == 1&&pageCount!=1&&pageCount!=0">
 		  		<%-- <li class="next"><a onclick="gotoPageNum(${currentPage+1 });" style="cursor: hand;">Newer &rarr;</a></li> --%>
 		  		<li class="next"><a onclick="gotoPageNum(${currentPage+1 });" style="cursor: hand;"></a></li>
 			</s:if>

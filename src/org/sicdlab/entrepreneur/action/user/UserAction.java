@@ -12,7 +12,11 @@ import org.apache.struts2.convention.annotation.Result;
 import org.infinispan.configuration.parsing.Namespace;
 import org.sicdlab.entrepreneur.beans.DataDictionary;
 import org.sicdlab.entrepreneur.beans.Entrepreneur;
+import org.sicdlab.entrepreneur.beans.Industry;
 import org.sicdlab.entrepreneur.beans.Institution;
+import org.sicdlab.entrepreneur.beans.Project;
+import org.sicdlab.entrepreneur.beans.ProjectEntrepreneur;
+import org.sicdlab.entrepreneur.beans.Role;
 import org.sicdlab.entrepreneur.beans.Tutor;
 import org.sicdlab.entrepreneur.beans.User;
 import org.sicdlab.entrepreneur.service.user.UserService;
@@ -68,22 +72,25 @@ public class UserAction extends ActionSupport {
 	private String fosterIndustry;
 	private List<DataDictionary> tutortype;
 	private List<DataDictionary> institutiontype;
-	private List<DataDictionary> industry;
+	private List<Industry> industrylist;
+	private List<Project> projectlist;
+	private List<User> userlist;
 
-	@Action(value = "/applyregister", results = { @Result(name = "success", location = "/jsp/user/register.jsp") }, className = "UserAction")
+	@SuppressWarnings("unchecked")
+	@Action(value = "applyregister", results = { @Result(name = "success", location = "/jsp/user/register.jsp") }, className = "UserAction")
 	public String applyRegister() {
 		System.out.println(getRole());
 		if (getRole().equals("tutor")) {
-			tutortype = userservice.getType("tutor_type");
+			setTutortype(userservice.getType("tutor_type"));
 		}
 		if (getRole().equals("institution")) {
 			institutiontype = userservice.getType("institution_type");
-			industry = userservice.getIndustry();
+			setIndustrylist(userservice.getAll(Industry.class));
 		}
 		return SUCCESS;
 	}
 
-	@Action(value = "/register", results = { @Result(name = "success", location = "/jsp/user/login.jsp"),
+	@Action(value = "register", results = { @Result(name = "success", location = "/jsp/user/login.jsp"),
 			@Result(name = "error", type = "chain", location = "applyregister") }, className = "UserAction")
 
 	public String register() throws ServletException, IOException, ParseException {
@@ -132,13 +139,13 @@ public class UserAction extends ActionSupport {
 		}
 	}
 
-	@Action(value = "/applylogin", results = { @Result(name = "success", location = "/jsp/user/login.jsp"), }, className = "UserAction")
+	@Action(value = "applylogin", results = { @Result(name = "success", location = "/jsp/user/login.jsp"), }, className = "UserAction")
 	public String applyLogin() {
 		setErrmsg(null);
 		return SUCCESS;
 	}
 
-	@Action(value = "/login", results = { @Result(name = "success", location = "/jsp/user/personalhome.jsp"),
+	@Action(value = "login", results = { @Result(name = "success", type = "chain", location = "personalhome"),
 			@Result(name = "error", location = "/jsp/user/login.jsp") }, className = "UserAction")
 	public String login() {
 		setErrmsg(userservice.checkLogin(getEmail(), getPassword()));
@@ -151,16 +158,44 @@ public class UserAction extends ActionSupport {
 				user.setName(user.getEmail());
 			}
 			ActionContext.getContext().getSession().put("user", user);
-			ActionContext.getContext().getSession().put("role", user.getRole());
+			List<Role> lrole = userservice.getByStringProperty(Role.class, "id", user.getRole().getId());
+			ActionContext.getContext().getSession().put("role", lrole.iterator().next());
 			return SUCCESS;
 		}
 	}
 
-	@Action(value = "/logout", results = { @Result(name = "success", location = "/jsp/homepage.jsp"), }, className = "UserAction")
+	@Action(value = "logout", results = { @Result(name = "success", location = "/jsp/homepage.jsp") }, className = "UserAction")
 	public String logout() {
 		ActionContext.getContext().getSession().put("user", null);
 		ActionContext.getContext().getSession().put("role", null);
 		return SUCCESS;
+	}
+
+	@Action(value = "personalhome", results = { @Result(name = "success", location = "/jsp/user/personalhome.jsp"),
+			@Result(name = "error", type = "chain", location = "applylogin") }, className = "UserAction")
+	public String personalHome() {
+		User user = (User) ActionContext.getContext().getSession().get("user");
+		if (user == null) {
+			return ERROR;
+		}
+		Role role = (Role) ActionContext.getContext().getSession().get("role");
+		switch (role.getName()) {
+		case "entrepreneur":
+
+			break;
+		case "tutor":
+
+			break;
+		case "institution":
+
+			break;
+
+		default:
+			return ERROR;
+		}
+
+		return SUCCESS;
+
 	}
 
 	public String getRole() {
@@ -323,14 +358,6 @@ public class UserAction extends ActionSupport {
 		this.institutiontype = institutiontype;
 	}
 
-	public List<DataDictionary> getIndustry() {
-		return industry;
-	}
-
-	public void setIndustry(List<DataDictionary> industry) {
-		this.industry = industry;
-	}
-
 	public String getInstype() {
 		return instype;
 	}
@@ -369,5 +396,29 @@ public class UserAction extends ActionSupport {
 
 	public void setFosterIndustry(String fosterIndustry) {
 		this.fosterIndustry = fosterIndustry;
+	}
+
+	public List<Industry> getIndustrylist() {
+		return industrylist;
+	}
+
+	public void setIndustrylist(List<Industry> industrylist) {
+		this.industrylist = industrylist;
+	}
+
+	public List<Project> getProjectlist() {
+		return projectlist;
+	}
+
+	public void setProjectlist(List<Project> projectlist) {
+		this.projectlist = projectlist;
+	}
+
+	public List<User> getUserlist() {
+		return userlist;
+	}
+
+	public void setUserlist(List<User> userlist) {
+		this.userlist = userlist;
 	}
 }

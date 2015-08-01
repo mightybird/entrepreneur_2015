@@ -15,6 +15,7 @@
 </head>
 <body>
 	<jsp:include page="/jsp/header.jsp"></jsp:include>
+	<s:debug></s:debug>
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-1"></div>
@@ -24,14 +25,15 @@
 						<div class="col-md-3">
 							<div class="jumbotron well">
 								<div class="row">
-									<h5>
+									<h3>
 										<s:property value="#session.user.name" />
-									</h5>
+									</h3>
 								</div>
 								<div class="row">
-									<img alt="Bootstrap Image Preview"
-										src="<c:url value='/images/default_head_img.jpg'/>"
-										class="img-rounded" />
+									<a href="#">
+										<img class="img-responsive" alt="Responsive image"
+											src="<c:url value='/images/default_head_img.jpg'/>" />
+									</a>
 								</div>
 								<div class="row">
 									<dl>
@@ -49,7 +51,25 @@
 										</address>
 									</dl>
 								</div>
-								<div class="row"></div>
+								<div class="row">
+									<a class="btn btn-info col-md-4 " href="#">改资料</a>
+									<a class="btn btn-danger col-md-4 col-md-offset-2" href="#">改密码</a>
+								</div>
+							</div>
+							<div class="jumbotron well">
+								<div class="page-header">
+									<h4>
+										我的好友
+										<div class="text-right">
+											<a href="#" class="btn btn-default">查看全部</a>
+										</div>
+									</h4>
+								</div>
+								<a href="#">
+									<img src="<c:url value='/images/default_head_img.jpg'/>"
+										class="img-rounded" />
+								</a>
+								<h5>name</h5>
 							</div>
 						</div>
 						<div class="col-md-9">
@@ -59,7 +79,8 @@
 										<h3>
 											我的项目
 											<div class="text-right">
-												<small><a href="#">查看全部</a></small>
+												<a href="#" class="btn btn-success">发布项目</a>
+												<a href="#" class="btn btn-default">查看全部</a>
 											</div>
 										</h3>
 									</div>
@@ -81,7 +102,7 @@
 
 												</dl>
 												<p>
-													<a class="btn btn-primary" href="#">详情</a>
+													<a class="btn btn-default" href="#">详情</a>
 												</p>
 											</div>
 										</div>
@@ -97,7 +118,7 @@
 														ectintroduce, projectintroduce </small>
 												</p>
 												<p>
-													<a class="btn btn-primary" href="#">详情</a>
+													<a class="btn btn-default" href="#">详情</a>
 												</p>
 											</div>
 										</div>
@@ -114,12 +135,82 @@
 														introduceproj, ectintroduce, projectintroduce </small>
 												</p>
 												<p>
-													<a class="btn btn-primary" href="#">详情</a>
+													<a class="btn btn-default" href="#">详情</a>
 												</p>
 											</div>
 										</div>
 									</div>
 
+								</div>
+							</div>
+							<div class="jumbotron well">
+								<div class="row">
+									<div class="page-header">
+										<h3>我的供需</h3>
+									</div>
+								</div>
+								<div class="row">
+									<div class="panel panel-default">
+
+										<div class="panel-heading">
+											<h4>供应</h4>
+											<div class="text-right">
+												<a href="#" class="btn btn-success">发布供应</a>
+												<a href="#" class="btn btn-default">查看全部</a>
+											</div>
+										</div>
+
+
+
+										<table class="table">
+											<tr>
+												<th>标题</th>
+												<th>类型</th>
+												<th>行业</th>
+												<th>地区</th>
+												<th>发布时间</th>
+											</tr>
+											<tr>
+												<td>1</td>
+												<td>2</td>
+												<td>3</td>
+												<td>4</td>
+												<td>5</td>
+												<td><div class="text-right">
+														<a class="btn btn-default" href="#">详情</a>
+													</div></td>
+											</tr>
+										</table>
+									</div>
+									<div class="panel panel-default">
+										<div class="panel-heading">
+											<h4>需求</h4>
+											<div class="text-right">
+												<a href="#" class="btn btn-success">发布需求</a>
+												<a href="#" class="btn btn-default">查看全部</a>
+											</div>
+										</div>
+
+										<table class="table">
+											<tr>
+												<th>标题</th>
+												<th>类型</th>
+												<th>行业</th>
+												<th>地区</th>
+												<th>发布时间</th>
+											</tr>
+											<tr>
+												<td>1</td>
+												<td>2</td>
+												<td>3</td>
+												<td>4</td>
+												<td>5</td>
+												<td><div class="text-right">
+														<a class="btn btn-default" href="#">详情</a>
+													</div></td>
+											</tr>
+										</table>
+									</div>
 								</div>
 							</div>
 						</div>

@@ -8,6 +8,7 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.sicdlab.entrepreneur.beans.DataDictionary;
 import org.sicdlab.entrepreneur.service.baseservice.BaseService;
@@ -20,7 +21,6 @@ public class BaseServiceImpl implements BaseService {
 
 	@Override
 	public Boolean save(Object object) {
-		// TODO Auto-generated method stub
 		Transaction tx = getCurrentSession().beginTransaction();
 		getCurrentSession().save(object);
 		tx.commit();
@@ -32,7 +32,6 @@ public class BaseServiceImpl implements BaseService {
 
 	@Override
 	public Boolean merge(Object object) {
-		// TODO Auto-generated method stub
 		Transaction tx = getCurrentSession().beginTransaction();
 		getCurrentSession().merge(object);
 		tx.commit();
@@ -44,7 +43,6 @@ public class BaseServiceImpl implements BaseService {
 
 	@Override
 	public Boolean update(Object object) {
-		// TODO Auto-generated method stub
 		Transaction tx = getCurrentSession().beginTransaction();
 		getCurrentSession().update(object);
 		tx.commit();
@@ -56,7 +54,6 @@ public class BaseServiceImpl implements BaseService {
 
 	@Override
 	public Boolean saveOrUpdate(Object object) {
-		// TODO Auto-generated method stub
 		Transaction tx = getCurrentSession().beginTransaction();
 		getCurrentSession().saveOrUpdate(object);
 		tx.commit();
@@ -68,7 +65,6 @@ public class BaseServiceImpl implements BaseService {
 
 	@Override
 	public Boolean delete(Object object) {
-		// TODO Auto-generated method stub
 		Transaction tx = getCurrentSession().beginTransaction();
 		getCurrentSession().delete(object);
 		tx.commit();
@@ -80,11 +76,10 @@ public class BaseServiceImpl implements BaseService {
 
 	@Override
 	public Session getCurrentSession() {
-		// TODO Auto-generated method stub
 		return sessionFactory.getCurrentSession();
 	}
 
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public List<DataDictionary> getType(String ddkey) {
 		// TODO Auto-generated method stub
@@ -92,10 +87,6 @@ public class BaseServiceImpl implements BaseService {
 		Transaction tx = session.beginTransaction();
 		List list = session.createCriteria(DataDictionary.class).add(Restrictions.eq("ddkey", ddkey)).list();
 		tx.commit();
-		// for (Object i : list) {
-		// DataDictionary dd = (DataDictionary) i;
-		// System.out.println(dd.getDdvalue());
-		// }
 		return list;
 	}
 
@@ -113,7 +104,6 @@ public class BaseServiceImpl implements BaseService {
 	@SuppressWarnings("rawtypes")
 	@Override
 	public List getAll(Object object) {
-		// TODO Auto-generated method stub
 		Transaction tx = getCurrentSession().beginTransaction();
 		List list = getCurrentSession().createCriteria(object.getClass()).list();
 		tx.commit();
@@ -124,27 +114,35 @@ public class BaseServiceImpl implements BaseService {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> List<T> getByStringProperty(Class<T> entityClass, String propertyName, String propertyValue) {
-		// TODO Auto-generated method stub
 		Transaction tx = getCurrentSession().beginTransaction();
 		List<T> list = getCurrentSession().createCriteria(entityClass).add(Restrictions.eq(propertyName, propertyValue)).list();
 		tx.commit();
 		return list;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public void uploadfile(File file, String filename)  throws Exception {
-		// TODO Auto-generated method stub
-		
-		FileInputStream fi=new FileInputStream(file);
-		FileOutputStream fo=new FileOutputStream(new File("D:\\附件", filename));
-		byte[] buffer=new byte[4096];
-		int len=0;
-		while((len=fi.read(buffer))>=0){
+	public <T> List<T> getByStringProperty(Class<T> entityClass, String propertyName, String propertyValue, Order order, int maxResult, int firstResult) {
+		Transaction tx = getCurrentSession().beginTransaction();
+		List<T> list = getCurrentSession().createCriteria(entityClass).add(Restrictions.eq(propertyName, propertyValue)).addOrder(order)
+				.setMaxResults(maxResult).setFirstResult(firstResult).list();
+		tx.commit();
+		return list;
+	}
+
+	@Override
+	public void uploadfile(File file, String filename) throws Exception {
+
+		FileInputStream fi = new FileInputStream(file);
+		FileOutputStream fo = new FileOutputStream(new File("D:\\附件", filename));
+		byte[] buffer = new byte[4096];
+		int len = 0;
+		while ((len = fi.read(buffer)) >= 0) {
 			fo.write(buffer, 0, len);
 		}
 		fo.close();
-		fi.close();		
-		
+		fi.close();
+
 	}
 
 }

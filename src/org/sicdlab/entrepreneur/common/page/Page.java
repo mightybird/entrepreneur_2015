@@ -2,6 +2,8 @@ package org.sicdlab.entrepreneur.common.page;
 
 import java.util.List;
 
+import org.sicdlab.entrepreneur.beans.Tutor;
+
 /**
  * 分页功能中一页的信息
  * @author lzc
@@ -13,7 +15,7 @@ public class Page {
 	private int currentPage; // 当前页
 	//查询数据库	
 	private int recordCount; // 总记录数
-	private List recordList; // 本页的数据列表
+	private List<Tutor> recordList; // 本页的数据列表
 	//计算
 	private int pageCount; // 总页数
 	private int beginPageIndex; // 页码列表开始索引
@@ -26,7 +28,7 @@ public class Page {
 	 * @param recordList
 	 */
 	
-	public Page(int pageSize,int currentPage,int recordCount,List recordList){
+	public Page(int pageSize,int currentPage,int recordCount,List<Tutor> recordList){
 		this.pageSize=pageSize;
 		this.currentPage=currentPage;
 		this.recordCount=recordCount;
@@ -83,10 +85,10 @@ public class Page {
 	public void setRecordCount(int recordCount) {
 		this.recordCount = recordCount;
 	}
-	public List getRecordList() {
+	public List<Tutor> getRecordList() {
 		return recordList;
 	}
-	public void setRecordList(List recordList) {
+	public void setRecordList(List<Tutor> recordList) {
 		this.recordList = recordList;
 	}
 	public int getPageCount() {

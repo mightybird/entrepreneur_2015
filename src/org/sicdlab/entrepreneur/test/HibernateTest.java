@@ -5,43 +5,30 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 import org.junit.Test;
-import org.sicdlab.entrepreneur.beans.FriendlyLink;
-import org.sicdlab.entrepreneur.beans.User;
+import org.sicdlab.entrepreneur.beans.Entrepreneur;
+import org.sicdlab.entrepreneur.beans.Project;
 import org.sicdlab.entrepreneur.utils.UUIDGenerator;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class HibernateTest {
+	@SuppressWarnings("rawtypes")
 	@Test
 	public void test() {
 		ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
 		SessionFactory sf = (SessionFactory) ctx.getBean("sessionFactory");
-		Session s = sf.getCurrentSession();
-		Transaction tx = s.beginTransaction();
-		// DataDictionary dd = new DataDictionary("1", "2", "3");
-		// FriendlyLink dd = new FriendlyLink("4", "2", "3", "4");
-		// System.out.println(dd.getId() + dd.getKey() + dd.getValue());
-		// User user = new User();
-		// user.setEmail("1@1.com");
-		// user.setPassword("12345");
-		List list = s.createCriteria(User.class).list();
-		int t = 0;
-		System.out.println(t);
+		Session session = sf.getCurrentSession();
+		Transaction tx = session.beginTransaction();
+		// List list = session.createCriteria(User.class).createAlias("role",
+		// "r").add(Restrictions.eq("r.name", "institution")).list();
+		List ul = session.createCriteria(Entrepreneur.class).add(Restrictions.eq("id", "54454bdc587f4a4e93264afd82cf8769")).list();
+		Entrepreneur entrepreneur = (Entrepreneur) ul.iterator().next();
+		List list = session.createCriteria(Project.class).createAlias("projectEntrepreneurs", "rpt").add(Restrictions.eq("rpt.entrepreneur", entrepreneur)).list();
+		Project p = (Project) list.iterator().next();
 		System.out.println(list.size());
-		for (Object object : list) {
-			System.out.println(object.toString());
-		}
-
-		FriendlyLink friendlyLink = new FriendlyLink(UUIDGenerator.randomUUID(), "xjtu", "http://www.xjtu.edu.cn",
-				"imagepath");
-		// friendlyLink.setId(null);
-		System.out.println(s.save(friendlyLink));
-		// user.setRole((Role) list.iterator().next());
-		// Entrepreneur enterpreneur = new Entrepreneur(user);
-		// s.save(user);
-		// s.save(enterpreneur);
+		System.out.println(p.getName());
 		tx.commit();
-		// s.createCriteria(User.class).add(Restrictions.in)
 
 	}
 

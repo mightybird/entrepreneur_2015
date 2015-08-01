@@ -272,7 +272,7 @@
 									<div class="col-md-5">
 										<select class="form-control" name="fosterIndustry"
 											id="fosterIndustry">
-											<s:iterator value="industry" var="it">
+											<s:iterator value="industrylist" var="it">
 												<option value="<s:property value='#it.name'/>">
 													<s:property value='#it.name' />
 												</option>

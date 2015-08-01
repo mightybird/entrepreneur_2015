@@ -6,10 +6,9 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
-import org.sicdlab.entrepreneur.beans.DataDictionary;
 import org.sicdlab.entrepreneur.beans.Entrepreneur;
-import org.sicdlab.entrepreneur.beans.Industry;
 import org.sicdlab.entrepreneur.beans.Institution;
+import org.sicdlab.entrepreneur.beans.Project;
 import org.sicdlab.entrepreneur.beans.Role;
 import org.sicdlab.entrepreneur.beans.Tutor;
 import org.sicdlab.entrepreneur.beans.User;
@@ -61,6 +60,7 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 		Session session = getCurrentSession();
 		Transaction tx = session.beginTransaction();
 		List list2 = session.createCriteria(Role.class).add(Restrictions.eq("name", "tutor")).list();
+		tx.commit();
 		user.setRole((Role) list2.iterator().next());
 		tutor.setUser(user);
 		if (!save(user)) {
@@ -75,7 +75,6 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 	@SuppressWarnings("rawtypes")
 	@Override
 	public String registerInstitution(User user, Institution institution, String passwordconfirm) {
-		// TODO Auto-generated method stub
 		String errmsg = checkPassword(user, passwordconfirm);
 		if (!errmsg.equals("success")) {
 			return errmsg;
@@ -87,6 +86,7 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 		Session session = getCurrentSession();
 		Transaction tx = session.beginTransaction();
 		List list2 = session.createCriteria(Role.class).add(Restrictions.eq("name", "institution")).list();
+		tx.commit();
 		user.setRole((Role) list2.iterator().next());
 		institution.setUser(user);
 		if (!save(user)) {
@@ -114,20 +114,8 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 		return "success";
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@Override
-	public List<DataDictionary> getIndustry() {
-		// TODO Auto-generated method stub
-		Session session = getCurrentSession();
-		Transaction tx = session.beginTransaction();
-		List list = session.createCriteria(Industry.class).list();
-		tx.commit();
-		return list;
-	}
-
 	@Override
 	public String checkLogin(String email, String password) {
-		// TODO Auto-generated method stub
 		Session session = getCurrentSession();
 		Transaction tx = session.beginTransaction();
 		@SuppressWarnings("rawtypes")
@@ -143,20 +131,40 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 		return "success";
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public List<Project> findProjectByEntrepreneur(User user) {
+		Session session = getCurrentSession();
+		Transaction tx = session.beginTransaction();
+		List ul = session.createCriteria(Entrepreneur.class).add(Restrictions.eq("user", user)).list();
+		Entrepreneur entrepreneur = (Entrepreneur) ul.iterator().next();
+		List list = session.createCriteria(Project.class).createAlias("projectEntrepreneurs", "pe").add(Restrictions.eq("pe.entrepreneur", entrepreneur)).list();
+		tx.commit();
+		return list;
+	}
 
-	/*
-	 * @Override public List<DataDictionary> getTutorType() { // TODO
-	 * Auto-generated method stub List list =
-	 * getCurrentSession().createCriteria(DataDictionary.class).add(Restrictions
-	 * .eq("ddkey", "tutor_type")) .list(); for (Object i : list) {
-	 * DataDictionary dd = (DataDictionary) i;
-	 * System.out.println(dd.getDdvalue()); } return list; }
-	 * 
-	 * @Override public List<DataDictionary> getInstitutionType() { // TODO
-	 * Auto-generated method stub List list =
-	 * getCurrentSession().createCriteria(DataDictionary.class).add(Restrictions
-	 * .eq("ddkey", "institution_type")) .list(); for (Object i : list) {
-	 * DataDictionary dd = (DataDictionary) i;
-	 * System.out.println(dd.getDdvalue()); } return list; }
-	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public List<Project> findProjectByTutor(User user) {
+		Session session = getCurrentSession();
+		Transaction tx = session.beginTransaction();
+		List ul = session.createCriteria(Tutor.class).add(Restrictions.eq("user", user)).list();
+		Tutor tutor = (Tutor) ul.iterator().next();
+		List list = session.createCriteria(Project.class).createAlias("projectTutors", "pt").add(Restrictions.eq("pt.tutor", tutor)).list();
+		tx.commit();
+		return list;
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+	public List<Project> findProjectByInstitution(User user) {
+		Session session = getCurrentSession();
+		Transaction tx = session.beginTransaction();
+		List ul = session.createCriteria(Institution.class).add(Restrictions.eq("user", user)).list();
+		Institution institution = (Institution) ul.iterator().next();
+		List list = session.createCriteria(Project.class).createAlias("projectInstitutions", "pi").add(Restrictions.eq("pi.institution", institution)).list();
+		tx.commit();
+		return list;
+	}
+
 }
