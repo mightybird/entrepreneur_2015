@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.sicdlab.entrepreneur.beans.Entrepreneur;
 import org.sicdlab.entrepreneur.beans.Institution;
@@ -138,7 +139,8 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 		Transaction tx = session.beginTransaction();
 		List ul = session.createCriteria(Entrepreneur.class).add(Restrictions.eq("user", user)).list();
 		Entrepreneur entrepreneur = (Entrepreneur) ul.iterator().next();
-		List list = session.createCriteria(Project.class).createAlias("projectEntrepreneurs", "pe").add(Restrictions.eq("pe.entrepreneur", entrepreneur)).list();
+		List list = session.createCriteria(Project.class).addOrder(Order.desc("start_time")).createAlias("projectEntrepreneurs", "pe")
+				.add(Restrictions.eq("pe.entrepreneur", entrepreneur)).list();
 		tx.commit();
 		return list;
 	}
@@ -150,7 +152,8 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 		Transaction tx = session.beginTransaction();
 		List ul = session.createCriteria(Tutor.class).add(Restrictions.eq("user", user)).list();
 		Tutor tutor = (Tutor) ul.iterator().next();
-		List list = session.createCriteria(Project.class).createAlias("projectTutors", "pt").add(Restrictions.eq("pt.tutor", tutor)).list();
+		List list = session.createCriteria(Project.class).addOrder(Order.desc("start_time")).createAlias("projectTutors", "pt")
+				.add(Restrictions.eq("pt.tutor", tutor)).list();
 		tx.commit();
 		return list;
 	}
@@ -162,9 +165,18 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 		Transaction tx = session.beginTransaction();
 		List ul = session.createCriteria(Institution.class).add(Restrictions.eq("user", user)).list();
 		Institution institution = (Institution) ul.iterator().next();
-		List list = session.createCriteria(Project.class).createAlias("projectInstitutions", "pi").add(Restrictions.eq("pi.institution", institution)).list();
+		List list = session.createCriteria(Project.class).addOrder(Order.desc("start_time")).createAlias("projectInstitutions", "pi")
+				.add(Restrictions.eq("pi.institution", institution)).list();
 		tx.commit();
 		return list;
+	}
+
+	@Override
+	public List<User> findFriends(User user) {
+		Session session = getCurrentSession();
+		Transaction tx = session.beginTransaction();
+		
+		return null;
 	}
 
 }

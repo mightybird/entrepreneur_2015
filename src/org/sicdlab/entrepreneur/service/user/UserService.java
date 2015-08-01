@@ -26,4 +26,6 @@ public interface UserService extends BaseService {
 
 	public List<Project> findProjectByInstitution(User user);
 
+	public List<User> findFriends(User user);
+
 }

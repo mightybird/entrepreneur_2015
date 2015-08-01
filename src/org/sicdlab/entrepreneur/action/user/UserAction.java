@@ -74,7 +74,7 @@ public class UserAction extends ActionSupport {
 	private List<DataDictionary> institutiontype;
 	private List<Industry> industrylist;
 	private List<Project> projectlist;
-	private List<User> userlist;
+	private List<User> friendlist;
 
 	@SuppressWarnings("unchecked")
 	@Action(value = "applyregister", results = { @Result(name = "success", location = "/jsp/user/register.jsp") }, className = "UserAction")
@@ -181,7 +181,7 @@ public class UserAction extends ActionSupport {
 		Role role = (Role) ActionContext.getContext().getSession().get("role");
 		switch (role.getName()) {
 		case "entrepreneur":
-
+			setProjectlist(userservice.findProjectByEntrepreneur(user));
 			break;
 		case "tutor":
 
@@ -414,11 +414,12 @@ public class UserAction extends ActionSupport {
 		this.projectlist = projectlist;
 	}
 
-	public List<User> getUserlist() {
-		return userlist;
+	public List<User> getFriendlist() {
+		return friendlist;
 	}
 
-	public void setUserlist(List<User> userlist) {
-		this.userlist = userlist;
+	public void setFriendlist(List<User> friendlist) {
+		this.friendlist = friendlist;
 	}
+
 }

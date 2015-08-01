@@ -82,7 +82,6 @@ public class BaseServiceImpl implements BaseService {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public List<DataDictionary> getType(String ddkey) {
-		// TODO Auto-generated method stub
 		Session session = getCurrentSession();
 		Transaction tx = session.beginTransaction();
 		List list = session.createCriteria(DataDictionary.class).add(Restrictions.eq("ddkey", ddkey)).list();
@@ -93,7 +92,6 @@ public class BaseServiceImpl implements BaseService {
 	@SuppressWarnings("rawtypes")
 	@Override
 	public List findById(Object object, String id) {
-		// TODO Auto-generated method stub
 		Transaction tx = getCurrentSession().beginTransaction();
 		List list = getCurrentSession().createCriteria(object.getClass()).add(Restrictions.eq("id", id)).list();
 		tx.commit();
