@@ -28,6 +28,10 @@ public interface BaseService {
 
 	public <T> List<T> getByStringProperty(Class<T> entityClass, String propertyName, String propertyValue, Order order, int maxResult, int firstResult);
 
+	public <T> List<T> getByEntity(Class<T> entityClass, String entityPropertyName, Object entity);
+
+	public <T> List<T> getByEntity(Class<T> entityClass, String entityPropertyName, Object entity, Order order, int maxResult, int firstResult);
+
 	public List<DataDictionary> getType(String ddkey);
 
 	public Session getCurrentSession();

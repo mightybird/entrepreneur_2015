@@ -69,11 +69,19 @@
 										</div>
 									</h4>
 								</div>
-								<a href="#"> <img
-									src="<c:url value='/images/default_head_img.jpg'/>"
-									class="img-rounded" />
-								</a>
-								<h5>name</h5>
+								<s:iterator value="friendlist" var="friend">
+									<div class="media">
+										<a href="#" class="pull-left"> <img
+											alt="Bootstrap Media Preview"
+											src="<c:url value='/images/default_head_img.jpg'/>"
+											class="media-object"></a>
+										<div class="media-body">
+											<h4 class="media-heading">
+												<s:property value="#friend.name" />
+											</h4>
+										</div>
+									</div>
+								</s:iterator>
 							</div>
 						</div>
 						<div class="col-md-9">
@@ -90,56 +98,27 @@
 									</div>
 								</div>
 								<div class="row">
-									<div class="col-md-4">
-										<div class="thumbnail">
-											<img alt="Bootstrap Thumbnail First"
-												src="<c:url value='/images/project_image.jpg'/>" />
-											<div class="caption">
-												<h3>Project name</h3>
-												<p>
-													<small> projectin, troduceproject, introduceproj,
-														ectintroduce, projectintroduce projectin, troduceproject,
-														introduceproj, ectintroduce, projectintroduce </small>
-												</p>
-												<p>
-													<a class="btn btn-default" href="#">详情</a>
-												</p>
+									<s:iterator value="projectlist" var="project">
+										<div class="col-md-4">
+											<div class="thumbnail">
+												<img alt="Bootstrap Thumbnail First"
+													src="<c:url value='/images/project_image.jpg'/>" />
+												<div class="caption">
+													<h3>
+														<s:property value="#project.name" />
+													</h3>
+													<p>
+														<small> <s:property value="#project.introduce" />
+														</small>
+													</p>
+													<p>
+														<a class="btn btn-default" href="#"> 详情 </a>
+													</p>
+												</div>
 											</div>
 										</div>
-									</div>
-									<div class="col-md-4">
-										<div class="thumbnail">
-											<img alt="Bootstrap Thumbnail First"
-												src="<c:url value='/images/project_image.jpg'/>" />
-											<div class="caption">
-												<h3>Project name</h3>
-												<p>
-													<small> projectin, troduceproject, introduceproj,
-														ectintroduce, projectintroduce </small>
-												</p>
-												<p>
-													<a class="btn btn-default" href="#">详情</a>
-												</p>
-											</div>
-										</div>
-									</div>
-									<div class="col-md-4">
-										<div class="thumbnail">
-											<img alt="Bootstrap Thumbnail First"
-												src="<c:url value='/images/project_image.jpg'/>" />
-											<div class="caption">
-												<h3>Project name</h3>
-												<p>
-													<small> projectin, troduceproject, introduceproj,
-														ectintroduce, projectintroduce projectin, troduceproject,
-														introduceproj, ectintroduce, projectintroduce </small>
-												</p>
-												<p>
-													<a class="btn btn-default" href="#">详情</a>
-												</p>
-											</div>
-										</div>
-									</div>
+									</s:iterator>
+
 
 								</div>
 							</div>
@@ -159,9 +138,6 @@
 													class="btn btn-default">查看全部</a>
 											</div>
 										</div>
-
-
-
 										<table class="table">
 											<tr>
 												<th>标题</th>
@@ -170,16 +146,20 @@
 												<th>地区</th>
 												<th>发布时间</th>
 											</tr>
-											<tr>
-												<td>1</td>
-												<td>2</td>
-												<td>3</td>
-												<td>4</td>
-												<td>5</td>
-												<td><div class="text-right">
-														<a class="btn btn-default" href="#">详情</a>
-													</div></td>
-											</tr>
+											<s:iterator value="supplylist" var="supply">
+												<tr>
+													<td><s:property value="#supply.title" /></td>
+													<td><s:property value="#supply.type" /></td>
+													<td><s:property value="#supply.industry.name" /></td>
+													<td><s:property value="#supply.area" /></td>
+													<td><s:property value="#supply.publishTime" /></td>
+													<td>
+														<div class="text-right">
+															<a class="btn btn-default" href="#"> 详情 </a>
+														</div>
+													</td>
+												</tr>
+											</s:iterator>
 										</table>
 									</div>
 									<div class="panel panel-default">
@@ -199,16 +179,20 @@
 												<th>地区</th>
 												<th>发布时间</th>
 											</tr>
-											<tr>
-												<td>1</td>
-												<td>2</td>
-												<td>3</td>
-												<td>4</td>
-												<td>5</td>
-												<td><div class="text-right">
-														<a class="btn btn-default" href="#">详情</a>
-													</div></td>
-											</tr>
+											<s:iterator value="needlist" var="need">
+												<tr>
+													<td><s:property value="#need.title" /></td>
+													<td><s:property value="#need.type" /></td>
+													<td><s:property value="#need.industry.name" /></td>
+													<td><s:property value="#need.area" /></td>
+													<td><s:property value="#need.publishTime" /></td>
+													<td>
+														<div class="text-right">
+															<a class="btn btn-default" href="#"> 详情 </a>
+														</div>
+													</td>
+												</tr>
+											</s:iterator>
 										</table>
 									</div>
 								</div>
