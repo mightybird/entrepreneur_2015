@@ -34,7 +34,6 @@ public class TutorServiceImpl extends BaseServiceImpl{
 		Session session = getCurrentSession();
 		session.beginTransaction();
 		Query q=(Query) session.createQuery("from Tutor where type='经营管理导师'");
-		//q.setString("type", "经营管理导师");
 		List<Tutor> tutors=(List<Tutor>)q.list();
 		session.getTransaction().commit();
 		return tutors;
@@ -45,7 +44,6 @@ public class TutorServiceImpl extends BaseServiceImpl{
 		Query q=(Query) session.createQuery("from Tutor where type='经营管理导师'");
 		q.setMaxResults(pageSize);
 		q.setFirstResult((currentPage-1)*pageSize);
-		//q.setString("type", "经营管理导师");
 		List<Tutor> tutors=(List<Tutor>)q.list();
 		session.getTransaction().commit();
 		return tutors;
@@ -54,7 +52,6 @@ public class TutorServiceImpl extends BaseServiceImpl{
 		Session session = getCurrentSession();
 		session.beginTransaction();
 		Query q=(Query) session.createQuery("from Tutor where type='财务导师'");
-		//q.setString("type", "经营管理导师");
 		List<Tutor> tutors=(List<Tutor>)q.list();
 		session.getTransaction().commit();
 		return tutors;
@@ -65,7 +62,6 @@ public class TutorServiceImpl extends BaseServiceImpl{
 		Query q=(Query) session.createQuery("from Tutor where type='财务导师'");
 		q.setMaxResults(pageSize);
 		q.setFirstResult((currentPage-1)*pageSize);
-		//q.setString("type", "经营管理导师");
 		List<Tutor> tutors=(List<Tutor>)q.list();
 		session.getTransaction().commit();
 		System.out.println(tutors.size());
@@ -75,7 +71,6 @@ public class TutorServiceImpl extends BaseServiceImpl{
 		Session session = getCurrentSession();
 		session.beginTransaction();
 		Query q=(Query) session.createQuery("from Tutor where type='技术指导导师'");
-		//q.setString("type", "经营管理导师");
 		List<Tutor> tutors=(List<Tutor>)q.list();
 		session.getTransaction().commit();
 		return tutors;
@@ -86,7 +81,6 @@ public class TutorServiceImpl extends BaseServiceImpl{
 		Query q=(Query) session.createQuery("from Tutor where type='技术指导导师'");
 		q.setMaxResults(pageSize);
 		q.setFirstResult((currentPage-1)*pageSize);
-		//q.setString("type", "经营管理导师");
 		List<Tutor> tutors=(List<Tutor>)q.list();
 		session.getTransaction().commit();
 		System.out.println(tutors.size());
@@ -96,7 +90,6 @@ public class TutorServiceImpl extends BaseServiceImpl{
 		Session session = getCurrentSession();
 		session.beginTransaction();
 		Query q=(Query) session.createQuery("from Tutor where type='市场环境导师'");
-		//q.setString("type", "经营管理导师");
 		List<Tutor> tutors=(List<Tutor>)q.list();
 		session.getTransaction().commit();
 		return tutors;
@@ -107,7 +100,6 @@ public class TutorServiceImpl extends BaseServiceImpl{
 		Query q=(Query) session.createQuery("from Tutor where type='市场环境导师'");
 		q.setMaxResults(pageSize);
 		q.setFirstResult((currentPage-1)*pageSize);
-		//q.setString("type", "经营管理导师");
 		List<Tutor> tutors=(List<Tutor>)q.list();
 		session.getTransaction().commit();
 		System.out.println(tutors.size());
@@ -118,7 +110,6 @@ public class TutorServiceImpl extends BaseServiceImpl{
 		session.beginTransaction();
 		Query q=(Query) session.createQuery("from Tutor where type like:name");
 		q.setParameter("name", parameterType);
-		//q.setString("type", "经营管理导师");
 		List<Tutor> tutors=(List<Tutor>)q.list();
 		session.getTransaction().commit();
 		return tutors;
@@ -130,7 +121,6 @@ public class TutorServiceImpl extends BaseServiceImpl{
 		q.setParameter("name", parameterType);
 		q.setMaxResults(pageSize);
 		q.setFirstResult((currentPage-1)*pageSize);
-		//q.setString("type", "经营管理导师");
 		List<Tutor> tutors=(List<Tutor>)q.list();
 		session.getTransaction().commit();
 		return tutors;
@@ -139,28 +129,9 @@ public class TutorServiceImpl extends BaseServiceImpl{
 		Session session = getCurrentSession();
 		session.beginTransaction();
 		Query q=(Query) session.createQuery("from DataDictionary where ddkey='tutor_type'");
-		//q.setString("type", "经营管理导师");
 		List<DataDictionary> dataDictionaries=(List<DataDictionary>)q.list();
 		session.getTransaction().commit();
 		return dataDictionaries;
 	}
-	/*//每一页显示的条数
-	public List<Tutor> select(int pageSize,int currentPage){
-		ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
-		SessionFactory sf = (SessionFactory) ctx.getBean("sessionFactory");
-		Session session = sf.getCurrentSession();
-		session.beginTransaction();
-		Query q=(Query) session.createQuery("from Tutor");
-		q.setMaxResults(pageSize);
-		q.setFirstResult((currentPage-1)*pageSize+1);
-		List<Tutor> tutors=(List<Tutor>)q.list();
-		for(Object o:q.list()){
-			Tutor1 t=(Tutor1) o;
-			System.out.println(t.getOccupation());
-		}	
-		session.getTransaction().commit();
-		//session.close();
-		return tutors;
-	}*/
 	
 }

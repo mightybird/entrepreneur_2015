@@ -14,14 +14,14 @@ import org.springframework.stereotype.Controller;
  * @author lzc
  *
  */
-@Controller("TutorAction")
+@Controller("TechniqueAction")
 @Scope("prototype")
-public class TutorAction {
+public class TechniqueAction {
 	private Tutor tutor;
-	private List<Tutor> tutor1s;
+	private List<Tutor> technique1s;
 	@Resource(name="TutorServiceImpl")
 	private TutorServiceImpl tutorServiceImpl;
-	private List<Tutor> tutors;
+	private List<Tutor> techniques;
 	//实现的分页的参数
 	private Page page;
 	private int currentPage;
@@ -32,11 +32,19 @@ public class TutorAction {
 	private int endPageIndex; 
 	
 	
-	public List<Tutor> getTutor1s() {
-		return tutor1s;
+
+
+	public List<Tutor> getTechnique1s() {
+		return technique1s;
 	}
-	public void setTutor1s(List<Tutor> tutor1s) {
-		this.tutor1s = tutor1s;
+	public void setTechnique1s(List<Tutor> technique1s) {
+		this.technique1s = technique1s;
+	}
+	public List<Tutor> getTechniques() {
+		return techniques;
+	}
+	public void setTechniques(List<Tutor> techniques) {
+		this.techniques = techniques;
 	}
 	public int getCurrentPage() {
 		return currentPage;
@@ -86,12 +94,6 @@ public class TutorAction {
 	public void setTutor(Tutor tutor) {
 		this.tutor = tutor;
 	}
-	public List<Tutor> getTutors() {
-		return tutors;
-	}
-	public void setTutors(List<Tutor> tutors) {
-		this.tutors = tutors;
-	}
 	public TutorServiceImpl getTutorServiceImpl() {
 		return tutorServiceImpl;
 	}
@@ -99,18 +101,13 @@ public class TutorAction {
 	public void setTutorServiceImpl(TutorServiceImpl tutorServiceImpl) {
 		this.tutorServiceImpl = tutorServiceImpl;
 	}
-	//实现分页并显示所有的导师信息
-	public String list(){
+	//实现分页财务导师信息
+	public String technique(){
 		//获得分页参数以及对各参数的处理
-		
-		setTutors(tutorServiceImpl.selectAll());
-		//tutors=tutorServiceImpl.select();
-		
-		page=new Page(3, currentPage, tutors.size(), tutors);
+		setTechniques(tutorServiceImpl.selectTechnique());
+		page=new Page(3, currentPage, techniques.size(), techniques);
 		//tutor1s=tutorServiceImpl.select(3,currentPage);
-		//通过Spring初始化
-		
-		setTutor1s(tutorServiceImpl.selectAll(3, currentPage));
+		setTechnique1s(tutorServiceImpl.selectTechnique(3, currentPage));
 		pageCount=page.getPageCount();
 		recordCount=page.getRecordCount();
 		pageSize=page.getPageSize();

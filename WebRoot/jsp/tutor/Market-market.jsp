@@ -23,20 +23,20 @@
 		</div>
 		<!-- 侧面导师导航栏 -->
 		<div class="col-md-2" style="border:1px solid #d0d0d0;width: 200px;height:580px;background: #d9fff7">
-			<h3 class="text-center" style="font-family: '微软雅黑';font-size: 28px;padding-top: 3px">
-				全部导师信息
+			<h3 class="text-center" style="padding-top: 3px">
+				<a href="<%=request.getContextPath()%>/Tutor-list" style="font-family: '微软雅黑';font-size: 28px;text-decoration: none;">全部导师信息</a>
 			</h3>
 			<h3 class="text-center">
-				<a href="Tutor-manager" style="font-family: '微软雅黑';font-size: 24px">经营管理导师</a>
+				<a href="<%=request.getContextPath()%>/Manage-manage" style="font-family: '微软雅黑';font-size: 24px;text-decoration: none;">经营管理导师</a>
 			</h3>
 			<h3 class="text-center">
-				<a href="#" style="font-family: '微软雅黑';font-size: 24px">财务导师</a>
+				<a href="<%=request.getContextPath()%>/Finace-finace" style="font-family: '微软雅黑';font-size: 24px;text-decoration: none;">财务导师</a>
 			</h3>
 			<h3 class="text-center">
-				<a href="#" style="font-family: '微软雅黑';font-size: 24px">技术指导导师</a>
+				<a href="<%=request.getContextPath()%>/Technique-technique" style="font-family: '微软雅黑';font-size: 24px;text-decoration: none;">技术指导导师</a>
 			</h3>
 			<h3 class="text-center">
-				<a href="#" style="font-family: '微软雅黑';font-size: 24px">市场环境导师</a>
+				<a href="<%=request.getContextPath()%>/Market-market" style="font-family: '微软雅黑';font-size: 24px;text-decoration: none;">市场环境导师</a>
 			</h3>
 		</div>
 		<!-- 中间导师详细信息 -->
@@ -47,7 +47,7 @@
 				<div class="col-md-5" style="width: 800px;height:580px;margin-left: -265px;float:left;">
 					<ul class="list-unstyled" >						
 						<li style="padding-top: 20px;width: 800px;height:580px;font-family: '微软雅黑';font-size: 20px">
-							<s:iterator value="tutor1s" var="c">
+							<s:iterator value="market1s" var="c">
 								<s:div style="border: 1px solid #d0d0d0;width: 700px;height:180px;float:left;">
 									<s:div style="width: 100px;height:140px;float:left;">
 										<img alt="picture" src="images/4.jpg" style="width:100%;height:100%"  >
@@ -65,7 +65,7 @@
 							<s:debug></s:debug>
 						</li>
 					</ul>
-					<form action="Tutor-list" id="page" method="post">
+					<form action="Market-market" id="page" method="post">
 					</form>
 				</div>
 				

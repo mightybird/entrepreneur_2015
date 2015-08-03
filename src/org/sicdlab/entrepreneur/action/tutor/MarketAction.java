@@ -14,14 +14,14 @@ import org.springframework.stereotype.Controller;
  * @author lzc
  *
  */
-@Controller("TutorAction")
+@Controller("MarketAction")
 @Scope("prototype")
-public class TutorAction {
+public class MarketAction {
 	private Tutor tutor;
-	private List<Tutor> tutor1s;
+	private List<Tutor> market1s;
 	@Resource(name="TutorServiceImpl")
 	private TutorServiceImpl tutorServiceImpl;
-	private List<Tutor> tutors;
+	private List<Tutor> markets;
 	//实现的分页的参数
 	private Page page;
 	private int currentPage;
@@ -31,12 +31,17 @@ public class TutorAction {
 	private int beginPageIndex; 
 	private int endPageIndex; 
 	
-	
-	public List<Tutor> getTutor1s() {
-		return tutor1s;
+	public List<Tutor> getMarket1s() {
+		return market1s;
 	}
-	public void setTutor1s(List<Tutor> tutor1s) {
-		this.tutor1s = tutor1s;
+	public void setMarket1s(List<Tutor> market1s) {
+		this.market1s = market1s;
+	}
+	public List<Tutor> getMarkets() {
+		return markets;
+	}
+	public void setMarkets(List<Tutor> markets) {
+		this.markets = markets;
 	}
 	public int getCurrentPage() {
 		return currentPage;
@@ -86,12 +91,6 @@ public class TutorAction {
 	public void setTutor(Tutor tutor) {
 		this.tutor = tutor;
 	}
-	public List<Tutor> getTutors() {
-		return tutors;
-	}
-	public void setTutors(List<Tutor> tutors) {
-		this.tutors = tutors;
-	}
 	public TutorServiceImpl getTutorServiceImpl() {
 		return tutorServiceImpl;
 	}
@@ -99,18 +98,13 @@ public class TutorAction {
 	public void setTutorServiceImpl(TutorServiceImpl tutorServiceImpl) {
 		this.tutorServiceImpl = tutorServiceImpl;
 	}
-	//实现分页并显示所有的导师信息
-	public String list(){
+	//实现分页财务导师信息
+	public String market(){
 		//获得分页参数以及对各参数的处理
-		
-		setTutors(tutorServiceImpl.selectAll());
-		//tutors=tutorServiceImpl.select();
-		
-		page=new Page(3, currentPage, tutors.size(), tutors);
+		setMarkets(tutorServiceImpl.selectMarket());
+		page=new Page(3, currentPage, markets.size(), markets);
 		//tutor1s=tutorServiceImpl.select(3,currentPage);
-		//通过Spring初始化
-		
-		setTutor1s(tutorServiceImpl.selectAll(3, currentPage));
+		setMarket1s(tutorServiceImpl.selectMarket(3, currentPage));
 		pageCount=page.getPageCount();
 		recordCount=page.getRecordCount();
 		pageSize=page.getPageSize();

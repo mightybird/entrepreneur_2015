@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -15,10 +16,6 @@
 <title></title>
 </head>
 <body>
-	<form action="upload" method="post" enctype="multipart/form-data">
-		选择文件：<input type="file" name="upload" / >
-		       <input   type="submit" value="上传"/>
-		
-	</form>	
-
+	
+ <a href="/entrepreneur_2015/project/ShowProjectCreatePage">快速发布</a>
 </body>

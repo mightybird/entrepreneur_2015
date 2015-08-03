@@ -14,14 +14,14 @@ import org.springframework.stereotype.Controller;
  * @author lzc
  *
  */
-@Controller("TutorAction")
+@Controller("ManageAction")
 @Scope("prototype")
-public class TutorAction {
+public class ManageAction {
 	private Tutor tutor;
-	private List<Tutor> tutor1s;
+	private List<Tutor> manage1s;
 	@Resource(name="TutorServiceImpl")
 	private TutorServiceImpl tutorServiceImpl;
-	private List<Tutor> tutors;
+	private List<Tutor> manages;
 	//实现的分页的参数
 	private Page page;
 	private int currentPage;
@@ -32,11 +32,17 @@ public class TutorAction {
 	private int endPageIndex; 
 	
 	
-	public List<Tutor> getTutor1s() {
-		return tutor1s;
+	public List<Tutor> getManage1s() {
+		return manage1s;
 	}
-	public void setTutor1s(List<Tutor> tutor1s) {
-		this.tutor1s = tutor1s;
+	public void setManage1s(List<Tutor> manage1s) {
+		this.manage1s = manage1s;
+	}
+	public List<Tutor> getManages() {
+		return manages;
+	}
+	public void setManages(List<Tutor> manages) {
+		this.manages = manages;
 	}
 	public int getCurrentPage() {
 		return currentPage;
@@ -86,12 +92,6 @@ public class TutorAction {
 	public void setTutor(Tutor tutor) {
 		this.tutor = tutor;
 	}
-	public List<Tutor> getTutors() {
-		return tutors;
-	}
-	public void setTutors(List<Tutor> tutors) {
-		this.tutors = tutors;
-	}
 	public TutorServiceImpl getTutorServiceImpl() {
 		return tutorServiceImpl;
 	}
@@ -99,18 +99,13 @@ public class TutorAction {
 	public void setTutorServiceImpl(TutorServiceImpl tutorServiceImpl) {
 		this.tutorServiceImpl = tutorServiceImpl;
 	}
-	//实现分页并显示所有的导师信息
-	public String list(){
+	//实现分页经营管理导师信息
+	public String manage(){
 		//获得分页参数以及对各参数的处理
-		
-		setTutors(tutorServiceImpl.selectAll());
-		//tutors=tutorServiceImpl.select();
-		
-		page=new Page(3, currentPage, tutors.size(), tutors);
+		setManages(tutorServiceImpl.selectManage());
+		page=new Page(3, currentPage, manages.size(), manages);
 		//tutor1s=tutorServiceImpl.select(3,currentPage);
-		//通过Spring初始化
-		
-		setTutor1s(tutorServiceImpl.selectAll(3, currentPage));
+		setManage1s(tutorServiceImpl.selectManage(3, currentPage));
 		pageCount=page.getPageCount();
 		recordCount=page.getRecordCount();
 		pageSize=page.getPageSize();

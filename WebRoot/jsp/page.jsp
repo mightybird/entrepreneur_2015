@@ -16,8 +16,8 @@
 	<%--总分页--%>
 	<div>
 		<div class="panel-body" style="width: 350px;height: 50px;margin-left: 400px;float:left;margin-top:10px;">
-			   页次：${currentPage }/${pageCount }页 &nbsp; 
-			   每页显示：${pageSize }条 &nbsp; 总记录数：${recordCount }条 
+			   <%-- 页次：${currentPage }/${pageCount }页 &nbsp; 
+			   每页显示：${pageSize }条 &nbsp; 总记录数：${recordCount }条  --%>
 	 	</div>
 	
 	<ul class="pagination">
@@ -41,11 +41,14 @@
 		<li></li>
 		<li>
 			
-				第<select onchange="gotoPageNum(this.value)" id="_pn" style="padding: 5px 0;margin: 2px 0 0;border:1px solid #d0d0d0;width:80px;height:32px;border-radius:3px;">
+				&nbsp&nbsp&nbsp第&nbsp&nbsp<select onchange="gotoPageNum(this.value)" id="_pn" style="padding: 5px 0;margin: 2px 0 0;border:1px solid #d0d0d0;width:80px;height:32px;border-radius:3px;">
 					<s:iterator begin="1" end="%{pageCount }" var="num">
 						<option value="${num }">${num }</option>
 					</s:iterator>
-				</select>页
+				</select>&nbsp&nbsp页&nbsp&nbsp
+		</li>
+		<li>
+			共 &nbsp ${pageCount } &nbsp 页
 		</li>
 	</ul>
 	</div>
@@ -74,7 +77,7 @@
 			
 			<s:else>
 		  		<%-- <li class="next"><a onclick="gotoPageNum(${currentPage+1 });" style="cursor: hand;">Newer &rarr;</a></li>
-		  		<li class="previous"><a onclick="gotoPageNum(${currentPage-1 });" style="cursor: hand;">&larr; Older</a></li> --%>
+		  		<li class="previous"><a onclick="gotoPageNum(${currentPage-1 });"style="cursor: hand;">&larr; Older</a></li> --%>
 		  		
 		  		<li class="next"><a onclick="gotoPageNum(${currentPage+1 });" style="cursor: hand;"></a></li>
 		  		<li class="previous"><a onclick="gotoPageNum(${currentPage-1 });" style="cursor: hand;"></a></li>

@@ -13,7 +13,9 @@ import org.hibernate.criterion.Restrictions;
 import org.sicdlab.entrepreneur.beans.DataDictionary;
 import org.sicdlab.entrepreneur.service.baseservice.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service("BaseServiceImpl")
 public class BaseServiceImpl implements BaseService {
 
 	@Autowired
@@ -82,7 +84,6 @@ public class BaseServiceImpl implements BaseService {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public List<DataDictionary> getType(String ddkey) {
-		// TODO Auto-generated method stub
 		Session session = getCurrentSession();
 		Transaction tx = session.beginTransaction();
 		List list = session.createCriteria(DataDictionary.class).add(Restrictions.eq("ddkey", ddkey)).list();
@@ -93,7 +94,6 @@ public class BaseServiceImpl implements BaseService {
 	@SuppressWarnings("rawtypes")
 	@Override
 	public List findById(Object object, String id) {
-		// TODO Auto-generated method stub
 		Transaction tx = getCurrentSession().beginTransaction();
 		List list = getCurrentSession().createCriteria(object.getClass()).add(Restrictions.eq("id", id)).list();
 		tx.commit();
@@ -124,8 +124,8 @@ public class BaseServiceImpl implements BaseService {
 	@Override
 	public <T> List<T> getByStringProperty(Class<T> entityClass, String propertyName, String propertyValue, Order order, int maxResult, int firstResult) {
 		Transaction tx = getCurrentSession().beginTransaction();
-		List<T> list = getCurrentSession().createCriteria(entityClass).add(Restrictions.eq(propertyName, propertyValue)).addOrder(order)
-				.setMaxResults(maxResult).setFirstResult(firstResult).list();
+		List<T> list = getCurrentSession().createCriteria(entityClass).add(Restrictions.eq(propertyName, propertyValue)).addOrder(order).setMaxResults(maxResult)
+				.setFirstResult(firstResult).list();
 		tx.commit();
 		return list;
 	}

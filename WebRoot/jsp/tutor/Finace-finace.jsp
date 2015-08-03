@@ -47,7 +47,7 @@
 				<div class="col-md-5" style="width: 800px;height:580px;margin-left: -265px;float:left;">
 					<ul class="list-unstyled" >						
 						<li style="padding-top: 20px;width: 800px;height:580px;font-family: '微软雅黑';font-size: 20px">
-							<s:iterator value="tutor1s" var="c">
+							<s:iterator value="finace1s" var="c">
 								<s:div style="border: 1px solid #d0d0d0;width: 700px;height:180px;float:left;">
 									<s:div style="width: 100px;height:140px;float:left;">
 										<img alt="picture" src="images/4.jpg" style="width:100%;height:100%"  >
@@ -65,7 +65,7 @@
 							<s:debug></s:debug>
 						</li>
 					</ul>
-					<form action="Tutor-list" id="page" method="post">
+					<form action="Finace-finace" id="page" method="post">
 					</form>
 				</div>
 				

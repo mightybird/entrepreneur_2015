@@ -14,14 +14,14 @@ import org.springframework.stereotype.Controller;
  * @author lzc
  *
  */
-@Controller("TutorAction")
+@Controller("FinaceAction")
 @Scope("prototype")
-public class TutorAction {
+public class FinaceAction {
 	private Tutor tutor;
-	private List<Tutor> tutor1s;
+	private List<Tutor> finace1s;
 	@Resource(name="TutorServiceImpl")
 	private TutorServiceImpl tutorServiceImpl;
-	private List<Tutor> tutors;
+	private List<Tutor> finaces;
 	//实现的分页的参数
 	private Page page;
 	private int currentPage;
@@ -32,11 +32,18 @@ public class TutorAction {
 	private int endPageIndex; 
 	
 	
-	public List<Tutor> getTutor1s() {
-		return tutor1s;
+
+	public List<Tutor> getFinace1s() {
+		return finace1s;
 	}
-	public void setTutor1s(List<Tutor> tutor1s) {
-		this.tutor1s = tutor1s;
+	public void setFinace1s(List<Tutor> finace1s) {
+		this.finace1s = finace1s;
+	}
+	public List<Tutor> getFinaces() {
+		return finaces;
+	}
+	public void setFinaces(List<Tutor> finaces) {
+		this.finaces = finaces;
 	}
 	public int getCurrentPage() {
 		return currentPage;
@@ -86,12 +93,6 @@ public class TutorAction {
 	public void setTutor(Tutor tutor) {
 		this.tutor = tutor;
 	}
-	public List<Tutor> getTutors() {
-		return tutors;
-	}
-	public void setTutors(List<Tutor> tutors) {
-		this.tutors = tutors;
-	}
 	public TutorServiceImpl getTutorServiceImpl() {
 		return tutorServiceImpl;
 	}
@@ -99,18 +100,13 @@ public class TutorAction {
 	public void setTutorServiceImpl(TutorServiceImpl tutorServiceImpl) {
 		this.tutorServiceImpl = tutorServiceImpl;
 	}
-	//实现分页并显示所有的导师信息
-	public String list(){
+	//实现分页财务导师信息
+	public String finace(){
 		//获得分页参数以及对各参数的处理
-		
-		setTutors(tutorServiceImpl.selectAll());
-		//tutors=tutorServiceImpl.select();
-		
-		page=new Page(3, currentPage, tutors.size(), tutors);
+		setFinaces(tutorServiceImpl.selectFinace());
+		page=new Page(3, currentPage, finaces.size(), finaces);
 		//tutor1s=tutorServiceImpl.select(3,currentPage);
-		//通过Spring初始化
-		
-		setTutor1s(tutorServiceImpl.selectAll(3, currentPage));
+		setFinace1s(tutorServiceImpl.selectFinace(3, currentPage));
 		pageCount=page.getPageCount();
 		recordCount=page.getRecordCount();
 		pageSize=page.getPageSize();
