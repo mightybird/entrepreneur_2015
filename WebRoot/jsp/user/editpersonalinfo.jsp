@@ -21,7 +21,7 @@
 <script type="text/javascript"
 	src="<c:url value='/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js'/>"
 	charset="UTF-8"></script>
-<title>请注册</title>
+<title><s:property value="#session.user.name" />修改个人信息</title>
 </head>
 <body>
 	<jsp:include page="/jsp/header.jsp"></jsp:include>
@@ -32,7 +32,7 @@
 				<div class="row">
 					<div class="col-md-4"></div>
 					<div class="col-md-6">
-						<s:if test="errmsg!=null">
+						<%-- <s:if test="errmsg!=null">
 							<div class="row">
 								<div
 									class="alert alert-dismissable alert-danger col-md-5 col-md-offset-2">
@@ -47,21 +47,23 @@
 										</a> -->
 								</div>
 							</div>
-						</s:if>
+						</s:if> --%>
 						<div class="row">
 							<div class="page-header col-md-5 col-md-offset-2">
 								<h3 class="text-left">基本信息</h3>
 							</div>
 						</div>
 						<form class="form-horizontal" method="post"
-							action="<c:url value='/user/register'/>">
+							action="<c:url value='/user/editPersonalInfo'/>">
+							<%-- <input type="hidden" name="userid" value="<s:property value='#userid'/>" /> --%>
 							<div class="form-group">
 								<label for="name" class="col-md-2 control-label"> 名字 </label>
 								<div class="col-md-5">
-									<input type="text" class="form-control" id="name" name="name" />
+									<input type="text" class="form-control" id="name" name="name"
+										value="<s:property value='#user.name'/>" />
 								</div>
 							</div>
-							<div class="form-group">
+							<!-- <div class="form-group">
 								<label for="email" class="col-md-2 control-label"> 邮箱 </label>
 								<div class="col-md-5">
 									<input type="email" class="form-control" id="email"
@@ -84,13 +86,13 @@
 										id="passwordconfirm" name="passwordconfirm" required
 										placeholder="必填" />
 								</div>
-							</div>
+							</div> -->
 							<div class="form-group">
 								<label for="contact" class="col-md-2 control-label">
 									联系电话 </label>
 								<div class="col-md-5">
 									<input type="text" class="form-control" id="contact"
-										name="contact" />
+										name="contact" value="<s:property value='#user.contact'/>" />
 								</div>
 							</div>
 							<div class="form-group">
@@ -98,7 +100,7 @@
 									联系地址 </label>
 								<div class="col-md-5">
 									<textarea rows=5 " class="form-control" id="address"
-										name="address"></textarea>
+										name="address" value="<s:property value='#user.address'/>"></textarea>
 								</div>
 							</div>
 							<div class="form-group">
@@ -106,18 +108,30 @@
 									个人简介 </label>
 								<div class="col-md-5">
 									<textarea rows="5" class="form-control" id="introduce"
-										name="introduce"></textarea>
+										name="introduce" value="<s:property value='#user.introduce'/>"></textarea>
 								</div>
 							</div>
 							<div class="form-group">
 								<label for="gender" class="col-md-2 control-label"> 性别 </label>
-								<div id="gender" class="col-md-5">
-									<label class="radio-inline"> <input type="radio"
-										name="gender" value="男"> 男
-									</label> <label class="radio-inline"> <input type="radio"
-										name="gender" value="女"> 女
-									</label>
-								</div>
+								<s:if test="#user.gender=='男'">
+									<div id="gender" class="col-md-5">
+										<label class="radio-inline"> <input type="radio"
+											name="gender" value="男" checked> 男
+										</label> <label class="radio-inline"> <input type="radio"
+											name="gender" value="女"> 女
+										</label>
+									</div>
+								</s:if>
+								<s:else>
+									<div id="gender" class="col-md-5">
+										<label class="radio-inline"> <input type="radio"
+											name="gender" value="男"> 男
+										</label> <label class="radio-inline"> <input type="radio"
+											name="gender" value="女" checked> 女
+										</label>
+									</div>
+
+								</s:else>
 							</div>
 							<div class="form-group">
 								<label for="dtp" class="col-md-2 control-label">生日</label>
@@ -125,10 +139,11 @@
 									data-date-format="yyyy-MM-dd" data-link-field="dtp_input2"
 									data-link-format="yyyy-mm-dd">
 									<input id="dtp" class="form-control" size="16" type="text"
-										name="birth" value="" readonly> <span
-										class="input-group-addon"> <span
-										class="glyphicon glyphicon-remove"></span>
-									</span> <span class="input-group-addon"> <span
+										name="birth" value="" readonly
+										value="<s:property value='#birth'/>"> <span
+										class="input-group-addon"><span
+										class="glyphicon glyphicon-remove"></span></span> <span
+										class="input-group-addon"><span
 										class="glyphicon glyphicon-calendar"></span></span>
 								</div>
 								<!-- <input type="hidden" id="dtp_input2" value="" /> -->
@@ -142,8 +157,8 @@
 								<label> <input type="checkbox" /> Check me out
 								</label>
 							</div> -->
-							<s:if test="role=='entrepreneur'">
-								<input type="hidden" name="role" value="entrepreneur" />
+							<s:if test="#session.role.name=='entrepreneur'">
+								<!-- <input type="hidden" name="role" value="entrepreneur" /> -->
 								<div class="row">
 									<div class="page-header col-md-5 col-md-offset-2">
 										<h3 class="text-left">创业者信息</h3>
@@ -154,12 +169,18 @@
 									</label>
 									<div class="col-md-5">
 										<select class="form-control" name="degree" id="degree"><option
-												value="Elementary">小学</option>
-											<option value="JuniorHigh">初中</option>
-											<option value="SeniorHigh">高中</option>
-											<option value="Bachelor">本科</option>
-											<option value="Master">硕士</option>
-											<option value="Doctor">博士</option>
+												value="Elementary"
+												<s:if test="#user.entrepreneur.degree=='Elementary'">selected</s:if>>小学</option>
+											<option value="JuniorHigh"
+												<s:if test="#user.entrepreneur.degree=='JuniorHigh'">selected</s:if>>初中</option>
+											<option value="SeniorHigh"
+												<s:if test="#user.entrepreneur.degree=='SeniorHigh'">selected</s:if>>高中</option>
+											<option value="Bachelor"
+												<s:if test="#user.entrepreneur.degree=='Bachelor'">selected</s:if>>本科</option>
+											<option value="Master"
+												<s:if test="#user.entrepreneur.degree=='Master'">selected</s:if>>硕士</option>
+											<option value="Doctor"
+												<s:if test="#user.entrepreneur.degree=='Doctor'">selected</s:if>>博士</option>
 										</select>
 									</div>
 								</div>
@@ -167,7 +188,8 @@
 									<label for="major" class="col-md-2 control-label"> 专业 </label>
 									<div class="col-md-5">
 										<input type="text" class="form-control" id="major"
-											name="major" />
+											name="major"
+											value="<s:property value='#user.entrepreneur.major'/>" />
 									</div>
 								</div>
 								<div class="form-group">
@@ -175,13 +197,14 @@
 										职业经历 </label>
 									<div class="col-md-5">
 										<textarea rows="5" class="form-control" id="experience"
-											name="experience"></textarea>
+											name="experience"
+											value="<s:property value='#user.entrepreneur.experience'/>"></textarea>
 									</div>
 								</div>
 							</s:if>
 
-							<s:if test="role=='tutor'">
-								<input type="hidden" name="role" value="tutor" />
+							<s:if test="#session.role.name=='tutor'">
+								<!-- <input type="hidden" name="role" value="tutor" /> -->
 								<div class="row">
 									<div class="page-header col-md-5 col-md-offset-2">
 										<h3 class="text-left">导师信息</h3>
@@ -193,7 +216,8 @@
 									<div class="col-md-5">
 										<select class="form-control" name="ttype" id="ttype">
 											<s:iterator value="tutortype" var="it">
-												<option value="<s:property value='#it.ddvalue'/>">
+												<option value="<s:property value='#it.ddvalue'/>"
+													<s:if test="#user.tutor.type==#it.ddvalue">selected</s:if>>
 													<s:property value='#it.ddvalue' />
 												</option>
 											</s:iterator>
@@ -204,14 +228,16 @@
 									<label for="major" class="col-md-2 control-label">当前职业</label>
 									<div class="col-md-5">
 										<input type="text" class="form-control" id="occupation"
-											name="occupation" />
+											name="occupation"
+											value="<s:property value='#user.tutor.occupation'/>" />
 									</div>
 								</div>
 								<div class="form-group">
 									<label for="major" class="col-md-2 control-label">指导领域</label>
 									<div class="col-md-5">
 										<input type="text" class="form-control" id="tutorship"
-											name="tutorship" />
+											name="tutorship"
+											value="<s:property value='#user.tutor.tutorship'/>" />
 									</div>
 								</div>
 								<div class="form-group">
@@ -219,12 +245,13 @@
 										职业经历 </label>
 									<div class="col-md-5">
 										<textarea rows="5" class="form-control" id="experience"
-											name="experience"></textarea>
+											name="experience"
+											value="<s:property value='#user.tutor.experience'/>"></textarea>
 									</div>
 								</div>
 							</s:if>
 
-							<s:if test="role=='institution'">
+							<s:if test="#session.role.name=='institution'">
 								<input type="hidden" name="role" value="institution" />
 								<div class="row">
 									<div class="page-header col-md-5 col-md-offset-2">
@@ -237,7 +264,8 @@
 									<div class="col-md-5">
 										<select class="form-control" name="instype" id="instype">
 											<s:iterator value="institutiontype" var="it">
-												<option value="<s:property value='#it.ddvalue'/>">
+												<option value="<s:property value='#it.ddvalue'/>"
+													<s:if test="#user.institution.type==#it.ddvalue">selected</s:if>>
 													<s:property value='#it.ddvalue' />
 												</option>
 											</s:iterator>
@@ -248,14 +276,16 @@
 									<label for="principal" class="col-md-2 control-label">责任人/法人</label>
 									<div class="col-md-5">
 										<input type="text" class="form-control" id="principal"
-											name="principal" />
+											name="principal"
+											value="<s:property value='#user.institution.principal'/>" />
 									</div>
 								</div>
 								<div class="form-group">
 									<label for="scale" class="col-md-2 control-label">机构规模</label>
 									<div class="col-md-5">
 										<textarea rows="5" class="form-control" id="scale"
-											name="scale"></textarea>
+											name="scale"
+											value="<s:property value='#user.institution.scale'/>"></textarea>
 									</div>
 								</div>
 								<div class="form-group">
@@ -263,7 +293,8 @@
 										业务范围 </label>
 									<div class="col-md-5">
 										<textarea rows="5" class="form-control" id="service"
-											name="service"></textarea>
+											name="service"
+											value="<s:property value='#user.institution.service'/>"></textarea>
 									</div>
 								</div>
 								<div class="form-group">
@@ -273,7 +304,8 @@
 										<select class="form-control" name="fosterIndustry"
 											id="fosterIndustry">
 											<s:iterator value="industrylist" var="it">
-												<option value="<s:property value='#it.name'/>">
+												<option value="<s:property value='#it.name'/>"
+													<s:if test="#user.institution.fosterIndustry==#it.name">selected</s:if>>
 													<s:property value='#it.name' />
 												</option>
 											</s:iterator>

@@ -147,18 +147,18 @@ public class BaseServiceImpl implements BaseService {
 
 	@SuppressWarnings({ "unused", "unchecked" })
 	@Override
-	public <T> List<T> getByEntity(Class<T> entityClass, String entityPropertyName, Object entity) {
+	public <T> List<T> getByEntity(Class<T> selectedClass, String entityPropertyName, Object entity) {
 		Transaction tx = getCurrentSession().beginTransaction();
-		List<T> list = getCurrentSession().createCriteria(entityClass).add(Restrictions.eq(entityPropertyName, entity)).list();
+		List<T> list = getCurrentSession().createCriteria(selectedClass).add(Restrictions.eq(entityPropertyName, entity)).list();
 		tx.commit();
 		return null;
 	}
 
 	@SuppressWarnings({ "unused", "unchecked" })
 	@Override
-	public <T> List<T> getByEntity(Class<T> entityClass, String entityPropertyName, Object entity, Order order, int maxResult, int firstResult) {
+	public <T> List<T> getByEntity(Class<T> selectedClass, String entityPropertyName, Object entity, Order order, int maxResult, int firstResult) {
 		Transaction tx = getCurrentSession().beginTransaction();
-		List<T> list = getCurrentSession().createCriteria(entityClass).add(Restrictions.eq(entityPropertyName, entity)).addOrder(order).setMaxResults(maxResult)
+		List<T> list = getCurrentSession().createCriteria(selectedClass).add(Restrictions.eq(entityPropertyName, entity)).addOrder(order).setMaxResults(maxResult)
 				.setFirstResult(firstResult).list();
 		tx.commit();
 		return null;

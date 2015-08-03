@@ -7,6 +7,7 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
 
+import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Result;
 import org.infinispan.configuration.parsing.Namespace;
@@ -48,6 +49,7 @@ public class UserAction extends ActionSupport {
 		this.userservice = userservice;
 	}
 
+	private String userid;
 	private String role;
 	private String name;
 	private String email;
@@ -71,6 +73,8 @@ public class UserAction extends ActionSupport {
 	private String scale;
 	private String service;
 	private String fosterIndustry;
+	private User user;
+	private Role crole;
 	private List<DataDictionary> tutortype;
 	private List<DataDictionary> institutiontype;
 	private List<Industry> industrylist;
@@ -98,7 +102,7 @@ public class UserAction extends ActionSupport {
 
 	public String register() throws ServletException, IOException, ParseException {
 
-		System.out.println(getBirth());
+//		System.out.println(getBirth());
 		User user = new User();
 		user.setName(getName());
 		user.setEmail(getEmail());
@@ -163,6 +167,7 @@ public class UserAction extends ActionSupport {
 			ActionContext.getContext().getSession().put("user", user);
 			List<Role> lrole = userservice.getByStringProperty(Role.class, "id", user.getRole().getId());
 			ActionContext.getContext().getSession().put("role", lrole.iterator().next());
+			ActionContext.getContext().getParameters().put("userid", user.getId());
 			return SUCCESS;
 		}
 	}
@@ -177,29 +182,77 @@ public class UserAction extends ActionSupport {
 	@Action(value = "personalhome", results = { @Result(name = "success", location = "/jsp/user/personalhome.jsp"),
 			@Result(name = "error", type = "chain", location = "applylogin") }, className = "UserAction")
 	public String personalHome() {
-		User user = (User) ActionContext.getContext().getSession().get("user");
-		if (user == null) {
+		User sessionuser = (User) ActionContext.getContext().getSession().get("user");
+		if (sessionuser == null) {
 			return ERROR;
 		}
-		Role role = (Role) ActionContext.getContext().getSession().get("role");
-		switch (role.getName()) {
+		String userid = ServletActionContext.getRequest().getParameter("userid");
+		if (userid == null || userid.isEmpty()) {
+			userid = (String) ActionContext.getContext().getParameters().get("userid");
+		}
+		List<User> ul = userservice.getByStringProperty(User.class, "id", userid);
+		User currentuser = ul.iterator().next();
+		if (currentuser.getName() == null || currentuser.getName().isEmpty()) {
+			currentuser.setName(currentuser.getEmail());
+		}
+		setUser(currentuser);
+		// Role role = (Role)
+		// ActionContext.getContext().getSession().get("role");
+		Role currentrole = userservice.getByStringProperty(Role.class, "id", currentuser.getRole().getId()).iterator().next();
+		setCrole(currentrole);
+		switch (currentrole.getName()) {
 		case "entrepreneur":
-			setProjectlist(userservice.findProjectByEntrepreneur(user));
+			setProjectlist(userservice.findProjectByEntrepreneur(currentuser));
 			break;
 		case "tutor":
-			setProjectlist(userservice.findProjectByTutor(user));
+			setProjectlist(userservice.findProjectByTutor(currentuser));
 			break;
 		case "institution":
-			setProjectlist(userservice.findProjectByInstitution(user));
+			setProjectlist(userservice.findProjectByInstitution(currentuser));
 			break;
 		default:
 			return ERROR;
 		}
-		setFriendlist(userservice.findFriends(user));
-		setSupplylist(userservice.findSupplyByUser(user));
-		setNeedlist(userservice.findNeedByUser(user));
+		setFriendlist(userservice.findFriends(currentuser));
+		setSupplylist(userservice.findSupplyByUser(currentuser));
+		setNeedlist(userservice.findNeedByUser(currentuser));
 		return SUCCESS;
 
+	}
+
+	@SuppressWarnings("unchecked")
+	@Action(value = "applyEditPersonalInfo", results = { @Result(name = "success", location = "/jsp/user/editpersonalinfo.jsp"),
+			@Result(name = "error", type = "chain", location = "applylogin") }, className = "UserAction")
+	public String applyEditPersonalInfo() {
+		User sessionuser = (User) ActionContext.getContext().getSession().get("user");
+		if (sessionuser == null) {
+			return ERROR;
+		}
+		String rolename = ((Role) ActionContext.getContext().getSession().get("role")).getName();
+		if (rolename.equals("entrepreneur")) {
+			Entrepreneur entrepreneur = userservice.getByStringProperty(Entrepreneur.class, "id", sessionuser.getId()).iterator().next();
+			sessionuser.setEntrepreneur(entrepreneur);
+		}
+		if (rolename.equals("tutor")) {
+			setTutortype(userservice.getType("tutor_type"));
+			Tutor tutor = userservice.getByStringProperty(Tutor.class, "id", sessionuser.getId()).iterator().next();
+			sessionuser.setTutor(tutor);
+		}
+		if (rolename.equals("institution")) {
+			institutiontype = userservice.getType("institution_type");
+			setIndustrylist(userservice.getAll(Industry.class));
+			Institution institution = userservice.getByStringProperty(Institution.class, "id", sessionuser.getId()).iterator().next();
+			sessionuser.setInstitution(institution);
+		}
+		setUser(sessionuser);
+		return SUCCESS;
+	}
+
+	@Action(value = "editPersonalInfo", results = { @Result(name = "success", type = "chain", location = "personalhome"),
+			@Result(name = "error", type = "chain", location = "applylogin") }, className = "UserAction")
+	public String editPersonalInfo() {
+		// TODO
+		return SUCCESS;
 	}
 
 	public String getRole() {
@@ -440,6 +493,30 @@ public class UserAction extends ActionSupport {
 
 	public void setNeedlist(List<Need> needlist) {
 		this.needlist = needlist;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public Role getCrole() {
+		return crole;
+	}
+
+	public void setCrole(Role crole) {
+		this.crole = crole;
+	}
+
+	public String getUserid() {
+		return userid;
+	}
+
+	public void setUserid(String userid) {
+		this.userid = userid;
 	}
 
 }

@@ -11,7 +11,7 @@
 <script src="<c:url value='/js/jquery.min.js'/>"></script>
 <script src="<c:url value='/js/bootstrap.min.js'/>"></script>
 <script src="<c:url value='/js/scripts.js'/>"></script>
-<title></title>
+<title>请登录</title>
 </head>
 <body>
 	<jsp:include page="/jsp/header.jsp"></jsp:include>

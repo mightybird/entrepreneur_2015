@@ -86,7 +86,7 @@
 							data-toggle="dropdown"><s:property value="#session.user.name" /><strong
 								class="caret"></strong></a>
 							<ul class="dropdown-menu">
-								<li><a href="<c:url value='/user/personalhome'/>">个人主页</a></li>
+								<li><a href="<c:url value='/user/personalhome?userid=${sessionScope.user.id }'/>">个人主页</a></li>
 								<li><a href="<c:url value='#'/>">好友</a></li>
 
 								<li class="divider"></li>

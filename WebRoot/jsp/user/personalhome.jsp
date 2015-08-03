@@ -11,11 +11,11 @@
 <script src="<c:url value='/js/jquery.min.js'/>"></script>
 <script src="<c:url value='/js/bootstrap.min.js'/>"></script>
 <script src="<c:url value='/js/scripts.js'/>"></script>
-<title></title>
+<title><s:property value="user.name" />的个人主页</title>
 </head>
 <body>
 	<jsp:include page="/jsp/header.jsp"></jsp:include>
-	<s:debug></s:debug>
+	<%-- <s:debug></s:debug> --%>
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-1"></div>
@@ -26,44 +26,54 @@
 							<div class="jumbotron well">
 								<div class="row">
 									<h3>
-										<s:property value="#session.user.name" />
+										<s:property value="user.name" />
 									</h3>
 								</div>
 								<div class="row">
-									<a href="#"> <img class="img-responsive"
-										alt="Responsive image"
-										src="<c:url value='/images/default_head_img.jpg'/>" />
+									<a href="#">
+										<img class="img-responsive" alt="Responsive image"
+											src="<c:url value='/images/default_head_img.jpg'/>" />
 									</a>
 								</div>
 								<div class="row">
 									<dl>
 										<dt>contact</dt>
 										<dd>
-											<s:property value="#session.user.contact" />
+											<s:property value="user.contact" />
 										</dd>
 										<dt>email</dt>
 										<dd>
-											<s:property value="#session.user.email" />
+											<s:property value="user.email" />
 										</dd>
 										<dt>introduce</dt>
 										<dd>
-											<s:property value="#session.user.introduce" />
+											<s:property value="user.introduce" />
 										</dd>
 										<dt>address</dt>
 										<address>
-											<s:property value="#session.user.address" />
+											<s:property value="user.address" />
 										</address>
 									</dl>
 								</div>
 								<div class="row">
-									<a class="btn btn-info col-md-4 " href="#">改资料</a> <a
-										class="btn btn-danger col-md-4 col-md-offset-2" href="#">改密码</a>
+									<a class="btn btn-info col-md-4 " href="#">
+										<small>个人资料</small>
+									</a>
+									<s:if test="#session.user.id==user.id">
+										<a class="btn btn-warning col-md-4" href="<c:url value='/user/applyEditPersonalInfo'/>">
+											<small>修改资料</small>
+										</a>
+										<a class="btn btn-danger col-md-4" href="#">
+											<small>更改密码</small>
+										</a>
+									</s:if>
 								</div>
 							</div>
 							<div class="jumbotron well">
 								<div class="page-header">
 									<h4>
-										我的好友
+										<s:property value="user.name" />
+										的好友
 										<div class="text-right">
 											<a href="#" class="btn btn-default">查看全部</a>
 										</div>
@@ -71,10 +81,11 @@
 								</div>
 								<s:iterator value="friendlist" var="friend">
 									<div class="media">
-										<a href="#" class="pull-left"> <img
-											alt="Bootstrap Media Preview"
-											src="<c:url value='/images/default_head_img.jpg'/>"
-											class="media-object"></a>
+										<a href="#" class="pull-left">
+											<img alt="Bootstrap Media Preview"
+												src="<c:url value='/images/default_head_img.jpg'/>"
+												class="media-object">
+										</a>
 										<div class="media-body">
 											<h4 class="media-heading">
 												<s:property value="#friend.name" />
@@ -85,47 +96,197 @@
 							</div>
 						</div>
 						<div class="col-md-9">
+							<s:if test="crole.name=='entrepreneur'">
+								<div class="jumbotron well">
+									<div class="row">
+										<div class="page-header">
+											<h3>
+												<s:property value="user.name" />
+												发布的项目
+												<div class="text-right">
+													<a href="/entrepreneur_2015/project/ShowProjectCreatePage"
+														class="btn btn-success"> 发布新项目 </a>
+													<a href="#" class="btn btn-default">查看全部</a>
+												</div>
+											</h3>
+										</div>
+									</div>
+									<div class="row">
+										<s:iterator value="projectlist" var="project">
+											<div class="col-md-4">
+												<div class="thumbnail">
+													<img alt="Bootstrap Thumbnail First"
+														src="<c:url value='/images/project_image.jpg'/>" />
+													<div class="caption">
+														<h3>
+															<s:property value="#project.name" />
+														</h3>
+														<p>
+															<small> <s:property value="#project.introduce" />
+															</small>
+														</p>
+														<p>
+															<a class="btn btn-default" href="#"> 详情 </a>
+														</p>
+													</div>
+												</div>
+											</div>
+										</s:iterator>
+									</div>
+								</div>
+							</s:if>
+							<s:if test="crole.name=='tutor'">
+								<div class="jumbotron well">
+									<div class="row">
+										<div class="page-header">
+											<h3>
+												<s:property value="user.name" />
+												未评估的项目
+												<div class="text-right">
+													<a href="#" class="btn btn-default">查看全部</a>
+												</div>
+											</h3>
+										</div>
+									</div>
+									<div class="row">
+										<s:iterator value="projectlist" var="project">
+											<div class="col-md-4">
+												<div class="thumbnail">
+													<img alt="Bootstrap Thumbnail First"
+														src="<c:url value='/images/project_image.jpg'/>" />
+													<div class="caption">
+														<h3>
+															<s:property value="#project.name" />
+														</h3>
+														<p>
+															<small> <s:property value="#project.introduce" />
+															</small>
+														</p>
+														<p>
+															<a class="btn btn-default" href="#"> 详情 </a>
+														</p>
+													</div>
+												</div>
+											</div>
+										</s:iterator>
+									</div>
+								</div>
+								<div class="jumbotron well">
+									<div class="row">
+										<div class="page-header">
+											<h3>
+												<s:property value="user.name" />
+												已评估的项目
+												<div class="text-right">
+													<a href="#" class="btn btn-default">查看全部</a>
+												</div>
+											</h3>
+										</div>
+									</div>
+									<div class="row">
+										<s:iterator value="projectlist" var="project">
+											<div class="col-md-4">
+												<div class="thumbnail">
+													<img alt="Bootstrap Thumbnail First"
+														src="<c:url value='/images/project_image.jpg'/>" />
+													<div class="caption">
+														<h3>
+															<s:property value="#project.name" />
+														</h3>
+														<p>
+															<small> <s:property value="#project.introduce" />
+															</small>
+														</p>
+														<p>
+															<a class="btn btn-default" href="#"> 详情 </a>
+														</p>
+													</div>
+												</div>
+											</div>
+										</s:iterator>
+									</div>
+								</div>
+							</s:if>
+							<s:if test="crole.name=='institution'">
+								<div class="jumbotron well">
+									<div class="row">
+										<div class="page-header">
+											<h3>
+												<s:property value="user.name" />
+												合作的项目
+												<div class="text-right">
+													<a href="#" class="btn btn-default">查看全部</a>
+												</div>
+											</h3>
+										</div>
+									</div>
+									<div class="row">
+										<s:iterator value="projectlist" var="project">
+											<div class="col-md-4">
+												<div class="thumbnail">
+													<img alt="Bootstrap Thumbnail First"
+														src="<c:url value='/images/project_image.jpg'/>" />
+													<div class="caption">
+														<h3>
+															<s:property value="#project.name" />
+														</h3>
+														<p>
+															<small> <s:property value="#project.introduce" />
+															</small>
+														</p>
+														<p>
+															<a class="btn btn-default" href="#"> 详情 </a>
+														</p>
+													</div>
+												</div>
+											</div>
+										</s:iterator>
+									</div>
+								</div>
+								<div class="jumbotron well">
+									<div class="row">
+										<div class="page-header">
+											<h3>
+												<s:property value="user.name" />
+												申请合作的项目
+												<div class="text-right">
+													<a href="#" class="btn btn-default">查看全部</a>
+												</div>
+											</h3>
+										</div>
+									</div>
+									<div class="row">
+										<s:iterator value="projectlist" var="project">
+											<div class="col-md-4">
+												<div class="thumbnail">
+													<img alt="Bootstrap Thumbnail First"
+														src="<c:url value='/images/project_image.jpg'/>" />
+													<div class="caption">
+														<h3>
+															<s:property value="#project.name" />
+														</h3>
+														<p>
+															<small> <s:property value="#project.introduce" />
+															</small>
+														</p>
+														<p>
+															<a class="btn btn-default" href="#"> 详情 </a>
+														</p>
+													</div>
+												</div>
+											</div>
+										</s:iterator>
+									</div>
+								</div>
+							</s:if>
+
 							<div class="jumbotron well">
 								<div class="row">
 									<div class="page-header">
 										<h3>
-											我的项目
-											<div class="text-right">
-												<a href="#" class="btn btn-success">发布项目</a> <a href="#"
-													class="btn btn-default">查看全部</a>
-											</div>
+											<s:property value="user.name" />
+											发布的供需
 										</h3>
-									</div>
-								</div>
-								<div class="row">
-									<s:iterator value="projectlist" var="project">
-										<div class="col-md-4">
-											<div class="thumbnail">
-												<img alt="Bootstrap Thumbnail First"
-													src="<c:url value='/images/project_image.jpg'/>" />
-												<div class="caption">
-													<h3>
-														<s:property value="#project.name" />
-													</h3>
-													<p>
-														<small> <s:property value="#project.introduce" />
-														</small>
-													</p>
-													<p>
-														<a class="btn btn-default" href="#"> 详情 </a>
-													</p>
-												</div>
-											</div>
-										</div>
-									</s:iterator>
-
-
-								</div>
-							</div>
-							<div class="jumbotron well">
-								<div class="row">
-									<div class="page-header">
-										<h3>我的供需</h3>
 									</div>
 								</div>
 								<div class="row">
@@ -134,8 +295,8 @@
 										<div class="panel-heading">
 											<h4>供应</h4>
 											<div class="text-right">
-												<a href="#" class="btn btn-success">发布供应</a> <a href="#"
-													class="btn btn-default">查看全部</a>
+												<a href="#" class="btn btn-success">发布供应</a>
+												<a href="#" class="btn btn-default">查看全部</a>
 											</div>
 										</div>
 										<table class="table">
@@ -166,8 +327,8 @@
 										<div class="panel-heading">
 											<h4>需求</h4>
 											<div class="text-right">
-												<a href="#" class="btn btn-success">发布需求</a> <a href="#"
-													class="btn btn-default">查看全部</a>
+												<a href="#" class="btn btn-success">发布需求</a>
+												<a href="#" class="btn btn-default">查看全部</a>
 											</div>
 										</div>
 

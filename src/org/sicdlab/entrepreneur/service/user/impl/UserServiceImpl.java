@@ -1,12 +1,14 @@
 package org.sicdlab.entrepreneur.service.user.impl;
 
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 import org.sicdlab.entrepreneur.beans.Entrepreneur;
+import org.sicdlab.entrepreneur.beans.Industry;
 import org.sicdlab.entrepreneur.beans.Institution;
 import org.sicdlab.entrepreneur.beans.Need;
 import org.sicdlab.entrepreneur.beans.Project;
@@ -190,8 +192,11 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 	public List<Supply> findSupplyByUser(User user) {
 		Session session = getCurrentSession();
 		Transaction tx = session.beginTransaction();
-		// TODO add industry query
 		List list = session.createCriteria(Supply.class).add(Restrictions.eq("user", user)).list();
+		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+			Supply supply = (Supply) iterator.next();
+			supply.setIndustry((Industry) session.createCriteria(Industry.class).add(Restrictions.eq("id", supply.getIndustry().getId())).list().iterator().next());
+		}
 		tx.commit();
 		return list;
 	}
@@ -201,8 +206,11 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 	public List<Need> findNeedByUser(User user) {
 		Session session = getCurrentSession();
 		Transaction tx = session.beginTransaction();
-		// TODO add industry query
 		List list = session.createCriteria(Need.class).add(Restrictions.eq("user", user)).list();
+		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+			Need need = (Need) iterator.next();
+			need.setIndustry((Industry) session.createCriteria(Industry.class).add(Restrictions.eq("id", need.getIndustry().getId())).list().iterator().next());
+		}
 		tx.commit();
 		return list;
 	}
