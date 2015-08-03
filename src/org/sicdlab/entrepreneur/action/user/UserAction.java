@@ -244,6 +244,13 @@ public class UserAction extends ActionSupport {
 			Institution institution = userservice.getByStringProperty(Institution.class, "id", sessionuser.getId()).iterator().next();
 			sessionuser.setInstitution(institution);
 		}
+//		System.out.println(sessionuser.getBirth());
+//		System.out.println(sessionuser.getGender());
+//		System.out.println(sessionuser.getAddress());
+//		System.out.println(sessionuser.getIntroduce());
+//		System.out.println(sessionuser.getEntrepreneur().getExperience());
+		// TODO problems with birth and gender
+		setBirth(DateUtil.dateToStr(sessionuser.getBirth()));
 		setUser(sessionuser);
 		return SUCCESS;
 	}
@@ -251,7 +258,7 @@ public class UserAction extends ActionSupport {
 	@Action(value = "editPersonalInfo", results = { @Result(name = "success", type = "chain", location = "personalhome"),
 			@Result(name = "error", type = "chain", location = "applylogin") }, className = "UserAction")
 	public String editPersonalInfo() {
-		// TODO
+		// TODO finish editPersonalInfo
 		return SUCCESS;
 	}
 

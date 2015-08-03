@@ -4,3 +4,4 @@
 .svn
 WebRoot/WEB-INF/lib
 WebRoot/WEB-INF/classes
+src/applicationContext.xml

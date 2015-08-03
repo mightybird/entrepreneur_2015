@@ -23,7 +23,7 @@
 		destroy-method="close">
 		<property name="driverClass" value="com.mysql.jdbc.Driver" />
 		<property name="jdbcUrl"
-			value="jdbc:mysql://192.168.1.50:3306/entrepreneur_2015" />
+			value="jdbc:mysql://localhost:3306/entrepreneur_2015" />
 		<property name="user" value="root" />
 		<property name="password" value="1234" />
 		<property name="maxPoolSize" value="40" />
