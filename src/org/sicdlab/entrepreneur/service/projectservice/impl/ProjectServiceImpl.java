@@ -41,7 +41,6 @@ public class ProjectServiceImpl extends BaseServiceImpl implements ProjectServic
 
 	@Override
 	public List<DataDictionary> getFundLack() {
-		// TODO Auto-generated method stub
 		Session session = getCurrentSession();
 		Transaction ts = session.beginTransaction();
 		List<DataDictionary> results=getCurrentSession().createCriteria(DataDictionary.class).

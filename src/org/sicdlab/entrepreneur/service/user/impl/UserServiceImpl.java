@@ -8,8 +8,10 @@ import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 import org.sicdlab.entrepreneur.beans.Entrepreneur;
 import org.sicdlab.entrepreneur.beans.Institution;
+import org.sicdlab.entrepreneur.beans.Need;
 import org.sicdlab.entrepreneur.beans.Project;
 import org.sicdlab.entrepreneur.beans.Role;
+import org.sicdlab.entrepreneur.beans.Supply;
 import org.sicdlab.entrepreneur.beans.Tutor;
 import org.sicdlab.entrepreneur.beans.User;
 import org.sicdlab.entrepreneur.service.baseservice.impl.BaseServiceImpl;
@@ -136,7 +138,8 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 	public List<Project> findProjectByEntrepreneur(User user) {
 		Session session = getCurrentSession();
 		Transaction tx = session.beginTransaction();
-		List ul = session.createCriteria(Entrepreneur.class).add(Restrictions.eq("user", user)).list();
+		// TODO filter by status
+		List ul = session.createCriteria(Entrepreneur.class).createAlias("user", "u").add(Restrictions.eq("u.id", user.getId())).list();
 		Entrepreneur entrepreneur = (Entrepreneur) ul.iterator().next();
 		List list = session.createCriteria(Project.class).createAlias("projectEntrepreneurs", "pe").add(Restrictions.eq("pe.entrepreneur", entrepreneur)).list();
 		tx.commit();
@@ -148,7 +151,8 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 	public List<Project> findProjectByTutor(User user) {
 		Session session = getCurrentSession();
 		Transaction tx = session.beginTransaction();
-		List ul = session.createCriteria(Tutor.class).add(Restrictions.eq("user", user)).list();
+		// TODO filter by status
+		List ul = session.createCriteria(Tutor.class).createAlias("user", "u").add(Restrictions.eq("u.id", user.getId())).list();
 		Tutor tutor = (Tutor) ul.iterator().next();
 		List list = session.createCriteria(Project.class).createAlias("projectTutors", "pt").add(Restrictions.eq("pt.tutor", tutor)).list();
 		tx.commit();
@@ -160,9 +164,45 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 	public List<Project> findProjectByInstitution(User user) {
 		Session session = getCurrentSession();
 		Transaction tx = session.beginTransaction();
-		List ul = session.createCriteria(Institution.class).add(Restrictions.eq("user", user)).list();
+		// TODO filter by status
+		List ul = session.createCriteria(Institution.class).createAlias("user", "u").add(Restrictions.eq("u.id", user.getId())).list();
 		Institution institution = (Institution) ul.iterator().next();
 		List list = session.createCriteria(Project.class).createAlias("projectInstitutions", "pi").add(Restrictions.eq("pi.institution", institution)).list();
+		tx.commit();
+		return list;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<User> findFriends(User user) {
+		Session session = getCurrentSession();
+		Transaction tx = session.beginTransaction();
+		// TODO filter by status
+		List<User> ferl = session.createCriteria(User.class).createAlias("friendsForFollowerId", "fer").add(Restrictions.eq("fer.userByFolloweeId", user)).list();
+		List<User> feel = session.createCriteria(User.class).createAlias("friendsForFolloweeId", "fee").add(Restrictions.eq("fee.userByFollowerId", user)).list();
+		tx.commit();
+		ferl.addAll(feel);
+		return ferl;
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public List<Supply> findSupplyByUser(User user) {
+		Session session = getCurrentSession();
+		Transaction tx = session.beginTransaction();
+		// TODO add industry query
+		List list = session.createCriteria(Supply.class).add(Restrictions.eq("user", user)).list();
+		tx.commit();
+		return list;
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public List<Need> findNeedByUser(User user) {
+		Session session = getCurrentSession();
+		Transaction tx = session.beginTransaction();
+		// TODO add industry query
+		List list = session.createCriteria(Need.class).add(Restrictions.eq("user", user)).list();
 		tx.commit();
 		return list;
 	}

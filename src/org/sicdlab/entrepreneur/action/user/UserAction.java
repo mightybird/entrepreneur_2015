@@ -14,9 +14,10 @@ import org.sicdlab.entrepreneur.beans.DataDictionary;
 import org.sicdlab.entrepreneur.beans.Entrepreneur;
 import org.sicdlab.entrepreneur.beans.Industry;
 import org.sicdlab.entrepreneur.beans.Institution;
+import org.sicdlab.entrepreneur.beans.Need;
 import org.sicdlab.entrepreneur.beans.Project;
-import org.sicdlab.entrepreneur.beans.ProjectEntrepreneur;
 import org.sicdlab.entrepreneur.beans.Role;
+import org.sicdlab.entrepreneur.beans.Supply;
 import org.sicdlab.entrepreneur.beans.Tutor;
 import org.sicdlab.entrepreneur.beans.User;
 import org.sicdlab.entrepreneur.service.user.UserService;
@@ -74,7 +75,9 @@ public class UserAction extends ActionSupport {
 	private List<DataDictionary> institutiontype;
 	private List<Industry> industrylist;
 	private List<Project> projectlist;
-	private List<User> userlist;
+	private List<User> friendlist;
+	private List<Supply> supplylist;
+	private List<Need> needlist;
 
 	@SuppressWarnings("unchecked")
 	@Action(value = "applyregister", results = { @Result(name = "success", location = "/jsp/user/register.jsp") }, className = "UserAction")
@@ -181,19 +184,20 @@ public class UserAction extends ActionSupport {
 		Role role = (Role) ActionContext.getContext().getSession().get("role");
 		switch (role.getName()) {
 		case "entrepreneur":
-
+			setProjectlist(userservice.findProjectByEntrepreneur(user));
 			break;
 		case "tutor":
-
+			setProjectlist(userservice.findProjectByTutor(user));
 			break;
 		case "institution":
-
+			setProjectlist(userservice.findProjectByInstitution(user));
 			break;
-
 		default:
 			return ERROR;
 		}
-
+		setFriendlist(userservice.findFriends(user));
+		setSupplylist(userservice.findSupplyByUser(user));
+		setNeedlist(userservice.findNeedByUser(user));
 		return SUCCESS;
 
 	}
@@ -414,11 +418,28 @@ public class UserAction extends ActionSupport {
 		this.projectlist = projectlist;
 	}
 
-	public List<User> getUserlist() {
-		return userlist;
+	public List<User> getFriendlist() {
+		return friendlist;
 	}
 
-	public void setUserlist(List<User> userlist) {
-		this.userlist = userlist;
+	public void setFriendlist(List<User> friendlist) {
+		this.friendlist = friendlist;
 	}
+
+	public List<Supply> getSupplylist() {
+		return supplylist;
+	}
+
+	public void setSupplylist(List<Supply> supplylist) {
+		this.supplylist = supplylist;
+	}
+
+	public List<Need> getNeedlist() {
+		return needlist;
+	}
+
+	public void setNeedlist(List<Need> needlist) {
+		this.needlist = needlist;
+	}
+
 }

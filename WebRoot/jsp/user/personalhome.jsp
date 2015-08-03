@@ -30,30 +30,34 @@
 									</h3>
 								</div>
 								<div class="row">
-									<a href="#">
-										<img class="img-responsive" alt="Responsive image"
-											src="<c:url value='/images/default_head_img.jpg'/>" />
+									<a href="#"> <img class="img-responsive"
+										alt="Responsive image"
+										src="<c:url value='/images/default_head_img.jpg'/>" />
 									</a>
 								</div>
 								<div class="row">
 									<dl>
 										<dt>contact</dt>
-										<dd>XXXXX</dd>
+										<dd>
+											<s:property value="#session.user.contact" />
+										</dd>
 										<dt>email</dt>
-										<dd>X@X.com</dd>
+										<dd>
+											<s:property value="#session.user.email" />
+										</dd>
 										<dt>introduce</dt>
-										<dd>XXXXXXXXXXXXXXXXX</dd>
+										<dd>
+											<s:property value="#session.user.introduce" />
+										</dd>
 										<dt>address</dt>
 										<address>
-											<strong>Twitter, Inc.</strong><br /> 795 Folsom Ave, Suite
-											600<br /> San Francisco, CA 94107<br /> <abbr title="Phone">P:</abbr>
-											(123) 456-7890
+											<s:property value="#session.user.address" />
 										</address>
 									</dl>
 								</div>
 								<div class="row">
-									<a class="btn btn-info col-md-4 " href="#">改资料</a>
-									<a class="btn btn-danger col-md-4 col-md-offset-2" href="#">改密码</a>
+									<a class="btn btn-info col-md-4 " href="#">改资料</a> <a
+										class="btn btn-danger col-md-4 col-md-offset-2" href="#">改密码</a>
 								</div>
 							</div>
 							<div class="jumbotron well">
@@ -65,11 +69,19 @@
 										</div>
 									</h4>
 								</div>
-								<a href="#">
-									<img src="<c:url value='/images/default_head_img.jpg'/>"
-										class="img-rounded" />
-								</a>
-								<h5>name</h5>
+								<s:iterator value="friendlist" var="friend">
+									<div class="media">
+										<a href="#" class="pull-left"> <img
+											alt="Bootstrap Media Preview"
+											src="<c:url value='/images/default_head_img.jpg'/>"
+											class="media-object"></a>
+										<div class="media-body">
+											<h4 class="media-heading">
+												<s:property value="#friend.name" />
+											</h4>
+										</div>
+									</div>
+								</s:iterator>
 							</div>
 						</div>
 						<div class="col-md-9">
@@ -79,67 +91,34 @@
 										<h3>
 											我的项目
 											<div class="text-right">
-												<a href="#" class="btn btn-success">发布项目</a>
-												<a href="#" class="btn btn-default">查看全部</a>
+												<a href="#" class="btn btn-success">发布项目</a> <a href="#"
+													class="btn btn-default">查看全部</a>
 											</div>
 										</h3>
 									</div>
 								</div>
 								<div class="row">
-									<div class="col-md-4">
-										<div class="thumbnail">
-											<img alt="Bootstrap Thumbnail First"
-												src="<c:url value='/images/project_image.jpg'/>" />
-											<div class="caption">
-												<h3>Project name</h3>
-												<dl>
-													<dt>contact</dt>
-													<dd>XXXXX</dd>
-													<dt>email</dt>
-													<dd>X@X.com</dd>
-													<dt>introduce</dt>
-													<dd>XXXXXXXXXXXXXXXXX</dd>
+									<s:iterator value="projectlist" var="project">
+										<div class="col-md-4">
+											<div class="thumbnail">
+												<img alt="Bootstrap Thumbnail First"
+													src="<c:url value='/images/project_image.jpg'/>" />
+												<div class="caption">
+													<h3>
+														<s:property value="#project.name" />
+													</h3>
+													<p>
+														<small> <s:property value="#project.introduce" />
+														</small>
+													</p>
+													<p>
+														<a class="btn btn-default" href="#"> 详情 </a>
+													</p>
+												</div>
+											</div>
+										</div>
+									</s:iterator>
 
-												</dl>
-												<p>
-													<a class="btn btn-default" href="#">详情</a>
-												</p>
-											</div>
-										</div>
-									</div>
-									<div class="col-md-4">
-										<div class="thumbnail">
-											<img alt="Bootstrap Thumbnail First"
-												src="<c:url value='/images/project_image.jpg'/>" />
-											<div class="caption">
-												<h3>Project name</h3>
-												<p>
-													<small> projectin, troduceproject, introduceproj,
-														ectintroduce, projectintroduce </small>
-												</p>
-												<p>
-													<a class="btn btn-default" href="#">详情</a>
-												</p>
-											</div>
-										</div>
-									</div>
-									<div class="col-md-4">
-										<div class="thumbnail">
-											<img alt="Bootstrap Thumbnail First"
-												src="<c:url value='/images/project_image.jpg'/>" />
-											<div class="caption">
-												<h3>Project name</h3>
-												<p>
-													<small> projectin, troduceproject, introduceproj,
-														ectintroduce, projectintroduce projectin, troduceproject,
-														introduceproj, ectintroduce, projectintroduce </small>
-												</p>
-												<p>
-													<a class="btn btn-default" href="#">详情</a>
-												</p>
-											</div>
-										</div>
-									</div>
 
 								</div>
 							</div>
@@ -155,13 +134,10 @@
 										<div class="panel-heading">
 											<h4>供应</h4>
 											<div class="text-right">
-												<a href="#" class="btn btn-success">发布供应</a>
-												<a href="#" class="btn btn-default">查看全部</a>
+												<a href="#" class="btn btn-success">发布供应</a> <a href="#"
+													class="btn btn-default">查看全部</a>
 											</div>
 										</div>
-
-
-
 										<table class="table">
 											<tr>
 												<th>标题</th>
@@ -170,24 +146,28 @@
 												<th>地区</th>
 												<th>发布时间</th>
 											</tr>
-											<tr>
-												<td>1</td>
-												<td>2</td>
-												<td>3</td>
-												<td>4</td>
-												<td>5</td>
-												<td><div class="text-right">
-														<a class="btn btn-default" href="#">详情</a>
-													</div></td>
-											</tr>
+											<s:iterator value="supplylist" var="supply">
+												<tr>
+													<td><s:property value="#supply.title" /></td>
+													<td><s:property value="#supply.type" /></td>
+													<td><s:property value="#supply.industry.name" /></td>
+													<td><s:property value="#supply.area" /></td>
+													<td><s:property value="#supply.publishTime" /></td>
+													<td>
+														<div class="text-right">
+															<a class="btn btn-default" href="#"> 详情 </a>
+														</div>
+													</td>
+												</tr>
+											</s:iterator>
 										</table>
 									</div>
 									<div class="panel panel-default">
 										<div class="panel-heading">
 											<h4>需求</h4>
 											<div class="text-right">
-												<a href="#" class="btn btn-success">发布需求</a>
-												<a href="#" class="btn btn-default">查看全部</a>
+												<a href="#" class="btn btn-success">发布需求</a> <a href="#"
+													class="btn btn-default">查看全部</a>
 											</div>
 										</div>
 
@@ -199,16 +179,20 @@
 												<th>地区</th>
 												<th>发布时间</th>
 											</tr>
-											<tr>
-												<td>1</td>
-												<td>2</td>
-												<td>3</td>
-												<td>4</td>
-												<td>5</td>
-												<td><div class="text-right">
-														<a class="btn btn-default" href="#">详情</a>
-													</div></td>
-											</tr>
+											<s:iterator value="needlist" var="need">
+												<tr>
+													<td><s:property value="#need.title" /></td>
+													<td><s:property value="#need.type" /></td>
+													<td><s:property value="#need.industry.name" /></td>
+													<td><s:property value="#need.area" /></td>
+													<td><s:property value="#need.publishTime" /></td>
+													<td>
+														<div class="text-right">
+															<a class="btn btn-default" href="#"> 详情 </a>
+														</div>
+													</td>
+												</tr>
+											</s:iterator>
 										</table>
 									</div>
 								</div>
