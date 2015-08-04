@@ -18,7 +18,7 @@ public interface UserService extends BaseService {
 
 	public String registerInstitution(User user, Institution institution, String passwordconfirm);
 
-	public String checkPassword(User user, String passwordconfirm);
+	public String checkRegister(User user, String passwordconfirm);
 
 	public String checkLogin(String email, String password);
 
@@ -33,5 +33,7 @@ public interface UserService extends BaseService {
 	public List<Supply> findSupplyByUser(User user);
 
 	public List<Need> findNeedByUser(User user);
+
+	public String checkPassword(User user, String passwordconfirm);
 
 }

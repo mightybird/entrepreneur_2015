@@ -114,7 +114,7 @@
 							<div class="form-group">
 								<label for="gender" class="col-md-2 control-label"> 性别 </label>
 								<div id="gender" class="col-md-5">
-									<s:if test="user.gender=='男'">
+									<s:if test='user.gender=="男"'>
 										<label class="radio-inline"> <input type="radio"
 											name="gender" value="男" checked> 男
 										</label>
@@ -122,12 +122,20 @@
 											name="gender" value="女"> 女
 										</label>
 									</s:if>
-									<s:else>
+									<s:elseif test='user.gender=="女"'>
 										<label class="radio-inline"> <input type="radio"
 											name="gender" value="男"> 男
 										</label>
 										<label class="radio-inline"> <input type="radio"
 											name="gender" value="女" checked> 女
+										</label>
+									</s:elseif>
+									<s:else>
+										<label class="radio-inline"> <input type="radio"
+											name="gender" value="男"> 男
+										</label>
+										<label class="radio-inline"> <input type="radio"
+											name="gender" value="女"> 女
 										</label>
 									</s:else>
 								</div>
@@ -138,9 +146,8 @@
 									data-date-format="yyyy-MM-dd" data-link-field="dtp_input2"
 									data-link-format="yyyy-mm-dd">
 									<input id="dtp" class="form-control" size="16" type="text"
-										name="birth" value="" readonly
-										value="<s:property value='birth'/>"> <span
-										class="input-group-addon"><span
+										name="birth" value="<s:property value='birth'/>" readonly>
+									<span class="input-group-addon"><span
 										class="glyphicon glyphicon-remove"></span></span> <span
 										class="input-group-addon"><span
 										class="glyphicon glyphicon-calendar"></span></span>
@@ -156,7 +163,7 @@
 								<label> <input type="checkbox" /> Check me out
 								</label>
 							</div> -->
-							<s:if test="#session.role.name=='entrepreneur'">
+							<s:if test='#session.role.name=="entrepreneur"'>
 								<!-- <input type="hidden" name="role" value="entrepreneur" /> -->
 								<div class="row">
 									<div class="page-header col-md-5 col-md-offset-2">
@@ -169,17 +176,17 @@
 									<div class="col-md-5">
 										<select class="form-control" name="degree" id="degree"><option
 												value="Elementary"
-												<s:if test="user.entrepreneur.degree=='Elementary'">selected</s:if>>小学</option>
+												<s:if test='user.entrepreneur.degree=="Elementary"'>selected</s:if>>小学</option>
 											<option value="JuniorHigh"
-												<s:if test="user.entrepreneur.degree=='JuniorHigh'">selected</s:if>>初中</option>
+												<s:if test='user.entrepreneur.degree=="JuniorHigh"'>selected</s:if>>初中</option>
 											<option value="SeniorHigh"
-												<s:if test="user.entrepreneur.degree=='SeniorHigh'">selected</s:if>>高中</option>
+												<s:if test='user.entrepreneur.degree=="SeniorHigh"'>selected</s:if>>高中</option>
 											<option value="Bachelor"
-												<s:if test="user.entrepreneur.degree=='Bachelor'">selected</s:if>>本科</option>
+												<s:if test='user.entrepreneur.degree=="Bachelor"'>selected</s:if>>本科</option>
 											<option value="Master"
-												<s:if test="user.entrepreneur.degree=='Master'">selected</s:if>>硕士</option>
+												<s:if test='user.entrepreneur.degree=="Master"'>selected</s:if>>硕士</option>
 											<option value="Doctor"
-												<s:if test="user.entrepreneur.degree=='Doctor'">selected</s:if>>博士</option>
+												<s:if test='user.entrepreneur.degree=="Doctor"'>selected</s:if>>博士</option>
 										</select>
 									</div>
 								</div>
@@ -202,7 +209,7 @@
 								</div>
 							</s:if>
 
-							<s:if test="#session.role.name=='tutor'">
+							<s:if test='#session.role.name=="tutor"'>
 								<!-- <input type="hidden" name="role" value="tutor" /> -->
 								<div class="row">
 									<div class="page-header col-md-5 col-md-offset-2">
@@ -250,7 +257,7 @@
 								</div>
 							</s:if>
 
-							<s:if test="#session.role.name=='institution'">
+							<s:if test='#session.role.name=="institution"'>
 								<input type="hidden" name="role" value="institution" />
 								<div class="row">
 									<div class="page-header col-md-5 col-md-offset-2">

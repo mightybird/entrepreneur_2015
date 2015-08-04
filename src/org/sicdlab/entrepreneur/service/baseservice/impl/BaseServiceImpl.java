@@ -101,16 +101,6 @@ public class BaseServiceImpl implements BaseService {
 
 	}
 
-	@SuppressWarnings("rawtypes")
-	@Override
-	public List getAll(Object object) {
-		Transaction tx = getCurrentSession().beginTransaction();
-		List list = getCurrentSession().createCriteria(object.getClass()).list();
-		tx.commit();
-		return list;
-
-	}
-
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> List<T> getByStringProperty(Class<T> entityClass, String propertyName, String propertyValue) {
@@ -162,6 +152,15 @@ public class BaseServiceImpl implements BaseService {
 				.setFirstResult(firstResult).list();
 		tx.commit();
 		return null;
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+	public <T> List<T> getAll(Class<?> clazz) {
+		Transaction tx = getCurrentSession().beginTransaction();
+		List list = getCurrentSession().createCriteria(clazz).list();
+		tx.commit();
+		return list;
 	}
 
 }

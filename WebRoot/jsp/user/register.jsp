@@ -125,7 +125,7 @@
 									data-date-format="yyyy-MM-dd" data-link-field="dtp_input2"
 									data-link-format="yyyy-mm-dd">
 									<input id="dtp" class="form-control" size="16" type="text"
-										name="birth" value="" readonly> <span
+										name="birth" readonly> <span
 										class="input-group-addon"> <span
 										class="glyphicon glyphicon-remove"></span>
 									</span> <span class="input-group-addon"> <span

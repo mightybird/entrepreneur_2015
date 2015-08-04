@@ -60,10 +60,12 @@
 										<small>个人资料</small>
 									</a>
 									<s:if test="#session.user.id==user.id">
-										<a class="btn btn-warning col-md-4" href="<c:url value='/user/applyEditPersonalInfo'/>">
+										<a class="btn btn-warning col-md-4"
+											href="<c:url value='/user/applyEditPersonalInfo'/>">
 											<small>修改资料</small>
 										</a>
-										<a class="btn btn-danger col-md-4" href="#">
+										<a class="btn btn-danger col-md-4"
+											href="<c:url value='/user/applyChangePassword'/>">
 											<small>更改密码</small>
 										</a>
 									</s:if>

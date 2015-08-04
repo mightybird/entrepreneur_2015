@@ -21,8 +21,7 @@ public interface BaseService {
 	@SuppressWarnings("rawtypes")
 	public List findById(Object object, String id);
 
-	@SuppressWarnings("rawtypes")
-	public List getAll(Object object);
+	public <T> List<T> getAll(Class<?> clazz);
 
 	public <T> List<T> getByStringProperty(Class<T> entityClass, String propertyName, String propertyValue);
 

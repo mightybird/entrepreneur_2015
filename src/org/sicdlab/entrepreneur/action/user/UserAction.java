@@ -53,6 +53,7 @@ public class UserAction extends ActionSupport {
 	private String role;
 	private String name;
 	private String email;
+	private String originalPassword;
 	private String password;
 	private String passwordconfirm;
 	private String contact;
@@ -73,7 +74,7 @@ public class UserAction extends ActionSupport {
 	private String scale;
 	private String service;
 	private String fosterIndustry;
-	private User user;
+	private User nuser;
 	private Role crole;
 	private List<DataDictionary> tutortype;
 	private List<DataDictionary> institutiontype;
@@ -83,7 +84,6 @@ public class UserAction extends ActionSupport {
 	private List<Supply> supplylist;
 	private List<Need> needlist;
 
-	@SuppressWarnings("unchecked")
 	@Action(value = "applyregister", results = { @Result(name = "success", location = "/jsp/user/register.jsp") }, className = "UserAction")
 	public String applyRegister() {
 		System.out.println(getRole());
@@ -91,8 +91,9 @@ public class UserAction extends ActionSupport {
 			setTutortype(userservice.getType("tutor_type"));
 		}
 		if (getRole().equals("institution")) {
-			institutiontype = userservice.getType("institution_type");
-			setIndustrylist(userservice.getAll(Industry.class));
+			setInstitutiontype(userservice.getType("institution_type"));
+			List<Industry> il = userservice.getAll(Industry.class);
+			setIndustrylist(il);
 		}
 		return SUCCESS;
 	}
@@ -102,7 +103,7 @@ public class UserAction extends ActionSupport {
 
 	public String register() throws ServletException, IOException, ParseException {
 
-//		System.out.println(getBirth());
+		// System.out.println(getBirth());
 		User user = new User();
 		user.setName(getName());
 		user.setEmail(getEmail());
@@ -172,7 +173,7 @@ public class UserAction extends ActionSupport {
 		}
 	}
 
-	@Action(value = "logout", results = { @Result(name = "success", location = "/jsp/homepage.jsp") }, className = "UserAction")
+	@Action(value = "logout", results = { @Result(name = "success", type = "chain", location = "applylogin") }, className = "UserAction")
 	public String logout() {
 		ActionContext.getContext().getSession().put("user", null);
 		ActionContext.getContext().getSession().put("role", null);
@@ -192,10 +193,6 @@ public class UserAction extends ActionSupport {
 		}
 		List<User> ul = userservice.getByStringProperty(User.class, "id", userid);
 		User currentuser = ul.iterator().next();
-		if (currentuser.getName() == null || currentuser.getName().isEmpty()) {
-			currentuser.setName(currentuser.getEmail());
-		}
-		setUser(currentuser);
 		// Role role = (Role)
 		// ActionContext.getContext().getSession().get("role");
 		Role currentrole = userservice.getByStringProperty(Role.class, "id", currentuser.getRole().getId()).iterator().next();
@@ -213,6 +210,10 @@ public class UserAction extends ActionSupport {
 		default:
 			return ERROR;
 		}
+		if (currentuser.getName() == null || currentuser.getName().isEmpty()) {
+			currentuser.setName(currentuser.getEmail());
+		}
+		setUser(currentuser);
 		setFriendlist(userservice.findFriends(currentuser));
 		setSupplylist(userservice.findSupplyByUser(currentuser));
 		setNeedlist(userservice.findNeedByUser(currentuser));
@@ -220,7 +221,6 @@ public class UserAction extends ActionSupport {
 
 	}
 
-	@SuppressWarnings("unchecked")
 	@Action(value = "applyEditPersonalInfo", results = { @Result(name = "success", location = "/jsp/user/editpersonalinfo.jsp"),
 			@Result(name = "error", type = "chain", location = "applylogin") }, className = "UserAction")
 	public String applyEditPersonalInfo() {
@@ -239,17 +239,14 @@ public class UserAction extends ActionSupport {
 			sessionuser.setTutor(tutor);
 		}
 		if (rolename.equals("institution")) {
-			institutiontype = userservice.getType("institution_type");
-			setIndustrylist(userservice.getAll(Industry.class));
+			setInstitutiontype(userservice.getType("institution_type"));
+			List<Industry> il = userservice.getAll(Industry.class);
+			setIndustrylist(il);
 			Institution institution = userservice.getByStringProperty(Institution.class, "id", sessionuser.getId()).iterator().next();
 			sessionuser.setInstitution(institution);
 		}
-//		System.out.println(sessionuser.getBirth());
-//		System.out.println(sessionuser.getGender());
-//		System.out.println(sessionuser.getAddress());
-//		System.out.println(sessionuser.getIntroduce());
-//		System.out.println(sessionuser.getEntrepreneur().getExperience());
 		// TODO problems with birth and gender
+
 		setBirth(DateUtil.dateToStr(sessionuser.getBirth()));
 		setUser(sessionuser);
 		return SUCCESS;
@@ -257,9 +254,99 @@ public class UserAction extends ActionSupport {
 
 	@Action(value = "editPersonalInfo", results = { @Result(name = "success", type = "chain", location = "personalhome"),
 			@Result(name = "error", type = "chain", location = "applylogin") }, className = "UserAction")
-	public String editPersonalInfo() {
-		// TODO finish editPersonalInfo
+	public String editPersonalInfo() throws ParseException {
+		User sessionuser = (User) ActionContext.getContext().getSession().get("user");
+		if (sessionuser == null) {
+			return ERROR;
+		}
+		List<User> ul = userservice.getByStringProperty(User.class, "id", sessionuser.getId());
+		setNuser(ul.iterator().next());
+		nuser.setName(getName());
+		nuser.setContact(getContact());
+		nuser.setAddress(getAddress());
+		nuser.setIntroduce(getIntroduce());
+		nuser.setGender(getGender());
+		nuser.setBirth(DateUtil.strToDate(getBirth()));
+		String rolename = ((Role) ActionContext.getContext().getSession().get("role")).getName();
+		switch (rolename) {
+		case "entrepreneur":
+			List<Entrepreneur> el = userservice.getByStringProperty(Entrepreneur.class, "id", nuser.getId());
+			Entrepreneur entrepreneur = el.iterator().next();
+			entrepreneur.setDegree(getDegree());
+			entrepreneur.setMajor(getMajor());
+			entrepreneur.setExperience(getExperience());
+			userservice.update(entrepreneur);
+			userservice.update(nuser);
+			break;
+		case "tutor":
+			List<Tutor> tl = userservice.getByStringProperty(Tutor.class, "id", nuser.getId());
+			Tutor tutor = tl.iterator().next();
+			tutor.setType(getTtype());
+			tutor.setOccupation(getOccupation());
+			tutor.setTutorship(getTutorship());
+			tutor.setExperience(getExperience());
+			userservice.update(tutor);
+			userservice.update(nuser);
+			break;
+		case "institution":
+			List<Institution> il = userservice.getByStringProperty(Institution.class, "id", nuser.getId());
+			Institution institution = il.iterator().next();
+			institution.setType(getInstype());
+			institution.setPrincipal(getPrincipal());
+			institution.setScale(getScale());
+			institution.setService(getService());
+			institution.setFosterIndustry(getFosterIndustry());
+			userservice.update(institution);
+			userservice.update(nuser);
+			break;
+		default:
+			return ERROR;
+		}
+		ActionContext.getContext().getSession().put("user", nuser);
+		ActionContext.getContext().getParameters().put("userid", nuser.getId());
 		return SUCCESS;
+	}
+
+	@Action(value = "applyChangePassword", results = { @Result(name = "success", location = "/jsp/user/changepassword.jsp"),
+			@Result(name = "error", type = "chain", location = "applylogin") }, className = "UserAction")
+	public String applyChangePassword() {
+		User sessionuser = (User) ActionContext.getContext().getSession().get("user");
+		if (sessionuser == null) {
+			return ERROR;
+		}
+		setErrmsg(null);
+		return SUCCESS;
+	}
+
+	@Action(value = "changePassword", results = { @Result(name = "success", type = "chain", location = "logout"),
+			@Result(name = "error", type = "chain", location = "applylogin"), @Result(name = "input", location = "/jsp/user/changepassword.jsp") }, className = "UserAction")
+	public String changePassword() {
+		User sessionuser = (User) ActionContext.getContext().getSession().get("user");
+		if (sessionuser == null) {
+			return ERROR;
+		}
+		String checkLogin = userservice.checkLogin(sessionuser.getEmail(), originalPassword);
+		if (!checkLogin.equals("success")) {
+			setErrmsg(checkLogin.replaceAll("密码", "原密码"));
+			return INPUT;
+		}
+		if (password.equals(originalPassword)) {
+			setErrmsg("新密码与原密码相同！请重试");
+			return INPUT;
+		}
+		sessionuser.setPassword(password);
+		String checkPassword = userservice.checkPassword(sessionuser, passwordconfirm);
+		if (!checkPassword.equals("success")) {
+			setErrmsg(checkPassword.replaceAll("密码", "新密码"));
+			return INPUT;
+		}
+		if (!userservice.update(sessionuser)) {
+			setErrmsg("未知错误！请重试");
+			return INPUT;
+		}
+		setErrmsg("密码修改成功！请重新登录");
+		return SUCCESS;
+
 	}
 
 	public String getRole() {
@@ -503,11 +590,11 @@ public class UserAction extends ActionSupport {
 	}
 
 	public User getUser() {
-		return user;
+		return nuser;
 	}
 
 	public void setUser(User user) {
-		this.user = user;
+		this.nuser = user;
 	}
 
 	public Role getCrole() {
@@ -524,6 +611,22 @@ public class UserAction extends ActionSupport {
 
 	public void setUserid(String userid) {
 		this.userid = userid;
+	}
+
+	public String getOriginalPassword() {
+		return originalPassword;
+	}
+
+	public void setOriginalPassword(String originalPassword) {
+		this.originalPassword = originalPassword;
+	}
+
+	public User getNuser() {
+		return nuser;
+	}
+
+	public void setNuser(User nuser) {
+		this.nuser = nuser;
 	}
 
 }

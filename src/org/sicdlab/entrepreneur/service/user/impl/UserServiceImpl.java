@@ -8,7 +8,6 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 import org.sicdlab.entrepreneur.beans.Entrepreneur;
-import org.sicdlab.entrepreneur.beans.Industry;
 import org.sicdlab.entrepreneur.beans.Institution;
 import org.sicdlab.entrepreneur.beans.Need;
 import org.sicdlab.entrepreneur.beans.Project;
@@ -27,7 +26,7 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 	@SuppressWarnings("rawtypes")
 	@Override
 	public String registerEntrepreneur(User user, Entrepreneur entrepreneur, String passwordconfirm) {
-		String errmsg = checkPassword(user, passwordconfirm);
+		String errmsg = checkRegister(user, passwordconfirm);
 		if (!errmsg.equals("success")) {
 			return errmsg;
 		}
@@ -53,7 +52,7 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 	@SuppressWarnings("rawtypes")
 	@Override
 	public String registerTutor(User user, Tutor tutor, String passwordconfirm) {
-		String errmsg = checkPassword(user, passwordconfirm);
+		String errmsg = checkRegister(user, passwordconfirm);
 		if (!errmsg.equals("success")) {
 			return errmsg;
 		}
@@ -79,7 +78,7 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 	@SuppressWarnings("rawtypes")
 	@Override
 	public String registerInstitution(User user, Institution institution, String passwordconfirm) {
-		String errmsg = checkPassword(user, passwordconfirm);
+		String errmsg = checkRegister(user, passwordconfirm);
 		if (!errmsg.equals("success")) {
 			return errmsg;
 		}
@@ -104,9 +103,10 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public String checkPassword(User user, String passwordconfirm) {
-		if (!user.getPassword().equals(passwordconfirm)) {
-			return "两次密码输入不一致";
+	public String checkRegister(User user, String passwordconfirm) {
+		String checkPassword = checkPassword(user, passwordconfirm);
+		if (!checkPassword.equals("success")) {
+			return checkPassword;
 		}
 		Session session = getCurrentSession();
 		Transaction tx = session.beginTransaction();
@@ -114,6 +114,14 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 		tx.commit();
 		if (!list.isEmpty()) {
 			return "该邮箱已经被注册";
+		}
+		return "success";
+	}
+
+	@Override
+	public String checkPassword(User user, String passwordconfirm) {
+		if (!user.getPassword().equals(passwordconfirm)) {
+			return "两次密码输入不一致";
 		}
 		return "success";
 	}
@@ -195,7 +203,8 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 		List list = session.createCriteria(Supply.class).add(Restrictions.eq("user", user)).list();
 		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 			Supply supply = (Supply) iterator.next();
-			supply.setIndustry((Industry) session.createCriteria(Industry.class).add(Restrictions.eq("id", supply.getIndustry().getId())).list().iterator().next());
+			// 在持久化状态下的双向N端，只要get一下内部关联实体的非被引用属性，就能得到一个完整的内部关联实体。（注意：必须是N端，并且在事务之内）
+			supply.getIndustry().getName();
 		}
 		tx.commit();
 		return list;
@@ -209,7 +218,8 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 		List list = session.createCriteria(Need.class).add(Restrictions.eq("user", user)).list();
 		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 			Need need = (Need) iterator.next();
-			need.setIndustry((Industry) session.createCriteria(Industry.class).add(Restrictions.eq("id", need.getIndustry().getId())).list().iterator().next());
+			// 在持久化状态下的双向N端，只要get一下内部关联实体的非被引用属性，就能得到一个完整的内部关联实体。（注意：必须是N端，并且在事务之内）
+			need.getIndustry().getName();
 		}
 		tx.commit();
 		return list;
