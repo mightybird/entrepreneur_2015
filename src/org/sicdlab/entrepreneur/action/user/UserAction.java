@@ -245,8 +245,6 @@ public class UserAction extends ActionSupport {
 			Institution institution = userservice.getByStringProperty(Institution.class, "id", sessionuser.getId()).iterator().next();
 			sessionuser.setInstitution(institution);
 		}
-		// TODO problems with birth and gender
-
 		setBirth(DateUtil.dateToStr(sessionuser.getBirth()));
 		setUser(sessionuser);
 		return SUCCESS;
@@ -330,7 +328,7 @@ public class UserAction extends ActionSupport {
 			setErrmsg(checkLogin.replaceAll("密码", "原密码"));
 			return INPUT;
 		}
-		if (password.equals(originalPassword)) {
+		if (password.equals(originalPassword) || passwordconfirm.equals(originalPassword)) {
 			setErrmsg("新密码与原密码相同！请重试");
 			return INPUT;
 		}
