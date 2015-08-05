@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
+
+<hibernate-reverse-engineering>
+  <table-filter match-catalog="entrepreneur_2015" match-name="announcement"/>
+  <table-filter match-catalog="entrepreneur_2015" match-name="authority"/>
+  <table-filter match-catalog="entrepreneur_2015" match-name="data_dictionary"/>
+  <table-filter match-catalog="entrepreneur_2015" match-name="entrepreneur"/>
+  <table-filter match-catalog="entrepreneur_2015" match-name="environment_factor"/>
+  <table-filter match-catalog="entrepreneur_2015" match-name="finance_factor"/>
+  <table-filter match-catalog="entrepreneur_2015" match-name="friend"/>
+  <table-filter match-catalog="entrepreneur_2015" match-name="friendly_link"/>
+  <table-filter match-catalog="entrepreneur_2015" match-name="help"/>
+  <table-filter match-catalog="entrepreneur_2015" match-name="industry"/>
+  <table-filter match-catalog="entrepreneur_2015" match-name="institution"/>
+  <table-filter match-catalog="entrepreneur_2015" match-name="knowledge"/>
+  <table-filter match-catalog="entrepreneur_2015" match-name="knowledge_label"/>
+  <table-filter match-catalog="entrepreneur_2015" match-name="label"/>
+  <table-filter match-catalog="entrepreneur_2015" match-name="law"/>
+  <table-filter match-catalog="entrepreneur_2015" match-name="law_label"/>
+  <table-filter match-catalog="entrepreneur_2015" match-name="mail"/>
+  <table-filter match-catalog="entrepreneur_2015" match-name="management_risk"/>
+  <table-filter match-catalog="entrepreneur_2015" match-name="management_team"/>
+  <table-filter match-catalog="entrepreneur_2015" match-name="market_assess_factor"/>
+  <table-filter match-catalog="entrepreneur_2015" match-name="need"/>
+  <table-filter match-catalog="entrepreneur_2015" match-name="need_label"/>
+  <table-filter match-catalog="entrepreneur_2015" match-name="news_info"/>
+  <table-filter match-catalog="entrepreneur_2015" match-name="notice"/>
+  <table-filter match-catalog="entrepreneur_2015" match-name="notice_template"/>
+  <table-filter match-catalog="entrepreneur_2015" match-name="operation_log"/>
+  <table-filter match-catalog="entrepreneur_2015" match-name="policy"/>
+  <table-filter match-catalog="entrepreneur_2015" match-name="policy_label"/>
+  <table-filter match-catalog="entrepreneur_2015" match-name="product_technology_factor"/>
+  <table-filter match-catalog="entrepreneur_2015" match-name="project"/>
+  <table-filter match-catalog="entrepreneur_2015" match-name="project_entrepreneur"/>
+  <table-filter match-catalog="entrepreneur_2015" match-name="project_index"/>
+  <table-filter match-catalog="entrepreneur_2015" match-name="project_institution"/>
+  <table-filter match-catalog="entrepreneur_2015" match-name="project_label"/>
+  <table-filter match-catalog="entrepreneur_2015" match-name="project_tutor"/>
+  <table-filter match-catalog="entrepreneur_2015" match-name="resource"/>
+  <table-filter match-catalog="entrepreneur_2015" match-name="role"/>
+  <table-filter match-catalog="entrepreneur_2015" match-name="role_authority"/>
+  <table-filter match-catalog="entrepreneur_2015" match-name="supply"/>
+  <table-filter match-catalog="entrepreneur_2015" match-name="supply_label"/>
+  <table-filter match-catalog="entrepreneur_2015" match-name="team_core_competence"/>
+  <table-filter match-catalog="entrepreneur_2015" match-name="tutor"/>
+  <table-filter match-catalog="entrepreneur_2015" match-name="user"/>
+  <table-filter match-catalog="entrepreneur_2015" match-name="user_label"/>
+</hibernate-reverse-engineering>

@@ -225,4 +225,13 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 		return list;
 	}
 
+	@Override
+	public void addVisitedCount(String userid) {
+		Session session = getCurrentSession();
+		Transaction tx = session.beginTransaction();
+		User user = (User) session.createCriteria(User.class).add(Restrictions.eq("id", userid)).list().iterator().next();
+		user.setVisitedCount(user.getVisitedCount() + 1);
+		session.update(user);
+		tx.commit();
+	}
 }

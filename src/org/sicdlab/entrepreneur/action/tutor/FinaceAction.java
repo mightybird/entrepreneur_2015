@@ -104,9 +104,12 @@ public class FinaceAction {
 	public String finace(){
 		//获得分页参数以及对各参数的处理
 		setFinaces(tutorServiceImpl.selectFinace());
+		
 		page=new Page(3, currentPage, finaces.size(), finaces);
 		//tutor1s=tutorServiceImpl.select(3,currentPage);
+		
 		setFinace1s(tutorServiceImpl.selectFinace(3, currentPage));
+		
 		pageCount=page.getPageCount();
 		recordCount=page.getRecordCount();
 		pageSize=page.getPageSize();

@@ -2,6 +2,7 @@ package org.sicdlab.entrepreneur.action.user;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -81,6 +82,7 @@ public class UserAction extends ActionSupport {
 	private List<Industry> industrylist;
 	private List<Project> projectlist;
 	private List<User> friendlist;
+	private Boolean notafriend;
 	private List<Supply> supplylist;
 	private List<Need> needlist;
 
@@ -102,40 +104,38 @@ public class UserAction extends ActionSupport {
 			@Result(name = "error", type = "chain", location = "applyregister") }, className = "UserAction")
 
 	public String register() throws ServletException, IOException, ParseException {
-
-		// System.out.println(getBirth());
 		User user = new User();
-		user.setName(getName());
+		user.setName(getName() == null ? "未填写" : getName());
 		user.setEmail(getEmail());
 		user.setPassword(getPassword());
-		user.setContact(getContact());
-		user.setAddress(getAddress());
-		user.setIntroduce(getIntroduce());
-		user.setGender(getGender());
+		user.setContact(getContact() == null ? "未填写" : getContact());
+		user.setAddress(getAddress() == null ? "未填写" : getAddress());
+		user.setIntroduce(getIntroduce() == null ? "未填写" : getIntroduce());
+		user.setGender(getGender() == null ? "未填写" : getGender());
 		user.setBirth(DateUtil.strToDate(getBirth()));
 		if (getRole().equals("entrepreneur")) {
 			Entrepreneur entrepreneur = new Entrepreneur();
 			entrepreneur.setDegree(getDegree());
-			entrepreneur.setMajor(getMajor());
-			entrepreneur.setExperience(getExperience());
+			entrepreneur.setMajor(getMajor() == null ? "未填写" : getMajor());
+			entrepreneur.setExperience(getExperience() == null ? "未填写" : getExperience());
 			setErrmsg(userservice.registerEntrepreneur(user, entrepreneur, getPasswordconfirm()));
 			System.out.println(getErrmsg());
 		}
 		if (getRole().equals("tutor")) {
 			Tutor tutor = new Tutor();
 			tutor.setType(getTtype());
-			tutor.setOccupation(getOccupation());
-			tutor.setTutorship(getTutorship());
-			tutor.setExperience(getExperience());
+			tutor.setOccupation(getOccupation() == null ? "未填写" : getOccupation());
+			tutor.setTutorship(getTutorship() == null ? "未填写" : getTutorship());
+			tutor.setExperience(getExperience() == null ? "未填写" : getExperience());
 			setErrmsg(userservice.registerTutor(user, tutor, getPasswordconfirm()));
 			System.out.println(getErrmsg());
 		}
 		if (getRole().equals("institution")) {
 			Institution institution = new Institution();
 			institution.setType(getInstype());
-			institution.setPrincipal(getPrincipal());
-			institution.setScale(getScale());
-			institution.setService(getService());
+			institution.setPrincipal(getPrincipal() == null ? "未填写" : getPrincipal());
+			institution.setScale(getScale() == null ? "未填写" : getScale());
+			institution.setService(getService() == null ? "未填写" : getService());
 			institution.setFosterIndustry(getFosterIndustry());
 			setErrmsg(userservice.registerInstitution(user, institution, getPasswordconfirm()));
 			System.out.println(getErrmsg());
@@ -143,6 +143,7 @@ public class UserAction extends ActionSupport {
 		if (!getErrmsg().equals("success")) {
 			return ERROR;
 		} else {
+			// TODO deal with default_head_img.png
 			return SUCCESS;
 		}
 	}
@@ -168,7 +169,7 @@ public class UserAction extends ActionSupport {
 			ActionContext.getContext().getSession().put("user", user);
 			List<Role> lrole = userservice.getByStringProperty(Role.class, "id", user.getRole().getId());
 			ActionContext.getContext().getSession().put("role", lrole.iterator().next());
-			ActionContext.getContext().getParameters().put("userid", user.getId());
+			ServletActionContext.getRequest().setAttribute("userid", user.getId());
 			return SUCCESS;
 		}
 	}
@@ -189,12 +190,10 @@ public class UserAction extends ActionSupport {
 		}
 		String userid = ServletActionContext.getRequest().getParameter("userid");
 		if (userid == null || userid.isEmpty()) {
-			userid = (String) ActionContext.getContext().getParameters().get("userid");
+			userid = (String) ServletActionContext.getRequest().getAttribute("userid");
 		}
 		List<User> ul = userservice.getByStringProperty(User.class, "id", userid);
 		User currentuser = ul.iterator().next();
-		// Role role = (Role)
-		// ActionContext.getContext().getSession().get("role");
 		Role currentrole = userservice.getByStringProperty(Role.class, "id", currentuser.getRole().getId()).iterator().next();
 		setCrole(currentrole);
 		switch (currentrole.getName()) {
@@ -213,10 +212,22 @@ public class UserAction extends ActionSupport {
 		if (currentuser.getName() == null || currentuser.getName().isEmpty()) {
 			currentuser.setName(currentuser.getEmail());
 		}
-		setUser(currentuser);
 		setFriendlist(userservice.findFriends(currentuser));
+		if (!sessionuser.getId().equals(currentuser.getId())) {
+			userservice.addVisitedCount(currentuser.getId());
+			notafriend = true;
+			Iterator<User> it = friendlist.iterator();
+			while (it.hasNext()) {
+				User u = (User) it.next();
+				if (u.getId().equals(sessionuser.getId())) {
+					notafriend = false;
+					break;
+				}
+			}
+		}
 		setSupplylist(userservice.findSupplyByUser(currentuser));
 		setNeedlist(userservice.findNeedByUser(currentuser));
+		setUser(currentuser);
 		return SUCCESS;
 
 	}
@@ -259,11 +270,11 @@ public class UserAction extends ActionSupport {
 		}
 		List<User> ul = userservice.getByStringProperty(User.class, "id", sessionuser.getId());
 		setNuser(ul.iterator().next());
-		nuser.setName(getName());
-		nuser.setContact(getContact());
-		nuser.setAddress(getAddress());
-		nuser.setIntroduce(getIntroduce());
-		nuser.setGender(getGender());
+		nuser.setName(getName() == null ? "未填写" : getName());
+		nuser.setContact(getContact() == null ? "未填写" : getContact());
+		nuser.setAddress(getAddress() == null ? "未填写" : getAddress());
+		nuser.setIntroduce(getIntroduce() == null ? "未填写" : getIntroduce());
+		nuser.setGender(getGender() == null ? "未填写" : getGender());
 		nuser.setBirth(DateUtil.strToDate(getBirth()));
 		String rolename = ((Role) ActionContext.getContext().getSession().get("role")).getName();
 		switch (rolename) {
@@ -271,8 +282,8 @@ public class UserAction extends ActionSupport {
 			List<Entrepreneur> el = userservice.getByStringProperty(Entrepreneur.class, "id", nuser.getId());
 			Entrepreneur entrepreneur = el.iterator().next();
 			entrepreneur.setDegree(getDegree());
-			entrepreneur.setMajor(getMajor());
-			entrepreneur.setExperience(getExperience());
+			entrepreneur.setMajor(getMajor() == null ? "未填写" : getMajor());
+			entrepreneur.setExperience(getExperience() == null ? "未填写" : getExperience());
 			userservice.update(entrepreneur);
 			userservice.update(nuser);
 			break;
@@ -280,9 +291,9 @@ public class UserAction extends ActionSupport {
 			List<Tutor> tl = userservice.getByStringProperty(Tutor.class, "id", nuser.getId());
 			Tutor tutor = tl.iterator().next();
 			tutor.setType(getTtype());
-			tutor.setOccupation(getOccupation());
-			tutor.setTutorship(getTutorship());
-			tutor.setExperience(getExperience());
+			tutor.setOccupation(getOccupation() == null ? "未填写" : getOccupation());
+			tutor.setTutorship(getTutorship() == null ? "未填写" : getTutorship());
+			tutor.setExperience(getExperience() == null ? "未填写" : getExperience());
 			userservice.update(tutor);
 			userservice.update(nuser);
 			break;
@@ -302,6 +313,13 @@ public class UserAction extends ActionSupport {
 		}
 		ActionContext.getContext().getSession().put("user", nuser);
 		ActionContext.getContext().getParameters().put("userid", nuser.getId());
+		return SUCCESS;
+	}
+
+	@Action(value = "applyFriend", results = { @Result(name = "success", location = "/jsp/user/personalinfo.jsp"),
+			@Result(name = "error", type = "chain", location = "applylogin") }, className = "UserAction")
+	public String personalInfo() {
+		// TODO applyFriend
 		return SUCCESS;
 	}
 
@@ -625,6 +643,14 @@ public class UserAction extends ActionSupport {
 
 	public void setNuser(User nuser) {
 		this.nuser = nuser;
+	}
+
+	public Boolean getNotafriend() {
+		return notafriend;
+	}
+
+	public void setNotafriend(Boolean notafriend) {
+		this.notafriend = notafriend;
 	}
 
 }

@@ -29,11 +29,13 @@ public class FileUpload {
 	        }  
 	        try {  
 	            newFileName = nowTimeStr + rannum + extName; // 文件重命名后的名字  
-	            String filePath = savePath + newFileName;  
+	            String filePath = savePath +"\\"+ newFileName;  
 	            filePath = filePath.replace("//", "/");  
+	            System.out.println(filePath+"吧图片复制到哪个路径");
 	            //检查上传的是否是图片  
 	            if (UtilCommon.checkIsImage(extName)) 
 	            {  
+	            	System.out.println("图片复制了！");
 	            	FileUtils.copyFile(fileupload, new File(filePath));
 	                return filePath;  
 	            }

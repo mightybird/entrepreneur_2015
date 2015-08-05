@@ -105,6 +105,7 @@ public class TechniqueAction {
 	public String technique(){
 		//获得分页参数以及对各参数的处理
 		setTechniques(tutorServiceImpl.selectTechnique());
+		
 		page=new Page(3, currentPage, techniques.size(), techniques);
 		//tutor1s=tutorServiceImpl.select(3,currentPage);
 		setTechnique1s(tutorServiceImpl.selectTechnique(3, currentPage));

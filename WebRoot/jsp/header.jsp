@@ -36,7 +36,9 @@
 					<li><a href="#">供需</a></li>
 					<li><a href="#">关于我们</a></li>
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
-						data-toggle="dropdown">知识<strong class="caret"></strong></a>
+							data-toggle="dropdown">
+							知识<strong class="caret"></strong>
+						</a>
 						<ul class="dropdown-menu">
 							<li><a href="#">政策知识</a></li>
 							<li><a href="#">创业知识</a></li>
@@ -63,14 +65,16 @@
 					<ul class="nav navbar-nav navbar-right">
 						<li><a href="<c:url value='/user/applylogin'/>">登录</a></li>
 						<li class="dropdown"><a href="#" class="dropdown-toggle"
-							data-toggle="dropdown">注册<strong class="caret"></strong></a>
+								data-toggle="dropdown">
+								注册<strong class="caret"></strong>
+							</a>
 							<ul class="dropdown-menu">
 								<li><a
-									href="<c:url value='/user/applyregister?role=entrepreneur'/>">我是创业者</a></li>
+										href="<c:url value='/user/applyregister?role=entrepreneur'/>">我是创业者</a></li>
 								<li><a
-									href="<c:url value='/user/applyregister?role=tutor'/>">我是创业导师</a></li>
+										href="<c:url value='/user/applyregister?role=tutor'/>">我是创业导师</a></li>
 								<li><a
-									href="<c:url value='/user/applyregister?role=institution'/>">我是创业机构</a></li>
+										href="<c:url value='/user/applyregister?role=institution'/>">我是创业机构</a></li>
 								<!-- <li class="divider">
 								</li>
 								<li>
@@ -81,21 +85,24 @@
 				</s:if>
 				<s:else>
 					<ul class="nav navbar-nav navbar-right">
-						
-						<li class="dropdown"><a href="#" class="dropdown-toggle"
-							data-toggle="dropdown"><s:property value="#session.user.name" /><strong
-								class="caret"></strong></a>
-							<ul class="dropdown-menu">
-								<li><a href="<c:url value='/user/personalhome?userid=${sessionScope.user.id }'/>">个人主页</a></li>
-								<li><a href="<c:url value='#'/>">好友</a></li>
 
+						<li class="dropdown"><a href="#" class="dropdown-toggle"
+								data-toggle="dropdown">
+								<s:property value="#session.user.name" />
+								<strong class="caret"></strong>
+							</a>
+							<ul class="dropdown-menu">
+								<li><a
+										href="<c:url value='/user/personalhome?userid=${sessionScope.user.id }'/>">个人主页</a></li>
 								<li class="divider"></li>
 								<li><a href="<c:url value='/user/logout'/>">退出</a></li>
 							</ul>
-						<li><a href="<c:url value='#'/>">私信<span
-								class="badge pull-right">16</span></a></li>
-						<li><a href="<c:url value='#'/>">消息<span
-								class="badge pull-right">30</span></a></li>
+						<li><a href="<c:url value='#'/>">
+								私信<span class="badge pull-right">16</span>
+							</a></li>
+						<li><a href="<c:url value='#'/>">
+								消息<span class="badge pull-right">30</span>
+							</a></li>
 					</ul>
 				</s:else>
 			</div>

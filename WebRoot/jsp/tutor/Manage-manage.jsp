@@ -52,21 +52,23 @@
 									<s:div style="width: 100px;height:140px;float:left;">
 										<img alt="picture" src="images/4.jpg" style="width:100%;height:100%"  >
 									</s:div>
-									<s:div style="width: 550px;height:180px;float:left;padding-left:30px;padding-top:3px;">
-										<s:property value="#c.id"/><br>
-										<s:property value="#c.type"/><br>
-										<s:property value="#c.experience"/><br>							
-										<s:property value="#c.occupation"/><br>
-										<s:property value="#c.tutorship"/><br>
-										<s:property value="#c.average_score"/><br>
-									</s:div>																	
+									<s:div style="width: 560px;height:180px;float:left;padding-left:30px;padding-top:3px;">
+										<ul style="list-style: none;">
+											<li>导师类型 ：<s:property value="#c.type"/></li>	
+											<li>导师姓名：<s:property value="#c.user.name"/></li>				
+											<li>导师职位：<s:property value="#c.occupation"/></li>
+											<li>导师评分：<s:property value="#c.average_score"/>
+												<a href="#" style="text-decoration: none;padding-left: 325px;" onclick="detail('<s:property value="#c.id"/>')">详情</a>								
+											<li>			
+										</ul>									
+									</s:div>																		
 								</s:div>								
 							</s:iterator>
 							<s:debug></s:debug>
 						</li>
 					</ul>
-					<form action="Manage-manage" id="page" method="post">
-					</form>
+					<form action="Manage-manage" id="page" method="post"></form>
+					<form action="detail" id="detail" method="post"></form>
 				</div>
 				
 				<!-- 推荐区 -->
@@ -82,4 +84,11 @@
 	<jsp:include page="/jsp/page.jsp"></jsp:include>
 </div>
 </body>
+<script type="text/javascript">
+		function detail(tutorId){
+			$(document.forms["detail"]).append("<input type='hidden' name='tutorId' value='"+ tutorId + "'>");
+			document.forms["detail"].submit();		
+		}
+		
+	</script>
 </html>

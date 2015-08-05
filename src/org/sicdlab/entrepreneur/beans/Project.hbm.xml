@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 2015-7-27 16:33:46 by Hibernate Tools 4.3.1 -->
+<!-- Generated 2015-8-5 16:28:47 by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
     <class name="org.sicdlab.entrepreneur.beans.Project" table="project" catalog="entrepreneur_2015" optimistic-lock="version">
         <id name="id" type="string">
@@ -55,6 +55,9 @@
         </property>
         <property name="projectStatus" type="string">
             <column name="project_status" length="50" />
+        </property>
+        <property name="headImage" type="string">
+            <column name="head_image" length="200" />
         </property>
         <set name="projectIndexes" table="project_index" inverse="true" lazy="true" fetch="select">
             <key>

@@ -36,4 +36,6 @@ public interface UserService extends BaseService {
 
 	public String checkPassword(User user, String passwordconfirm);
 
+	public void addVisitedCount(String userid);
+
 }

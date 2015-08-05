@@ -11,6 +11,15 @@
 		<!-- <action name="*-*" class="org.sicdlab.entrepreneur.action.tutor.{1}Action" method="{2}">
 			<result>/jsp/tutor/Test-test.jsp</result>
 		</action>  -->
+		<action name="detail" class="org.sicdlab.entrepreneur.action.tutor.DetailAction" method="detail">
+			<result>/jsp/tutor/detail.jsp</result>
+		</action>
+		<action name="comment" class="org.sicdlab.entrepreneur.action.tutor.DetailAction" method="comment">
+			<result>/jsp/tutor/detail.jsp</result>
+		</action>
+		<action name="apply" class="org.sicdlab.entrepreneur.action.tutor.DetailAction" method="apply">
+			<result>/jsp/tutor/detail.jsp</result>
+		</action>
 		<action name="index" class="org.sicdlab.entrepreneur.action.tutor.PageAction">
 			<result>/jsp/tutor/index.jsp</result>
 		</action>

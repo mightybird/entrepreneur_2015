@@ -26,7 +26,7 @@
 <script type="text/javascript">
 $(function () 
 		{ $("#txtTags").TagsInput
-	({ usedTags: "电信|互联网|分布式|小时代|材料|机械|手游",
+	({ usedTags: "电信|互联网+|分布式|小时代|材料|机械|手游",
 		hotTags: "hotTag1|hotTag2|hotTag3|hotTag4",
 		tagNum: 10, maxWords: 10 }); });  
 </script>
@@ -35,6 +35,7 @@ $(function ()
 
 <title></title>
 </head>
+
 <body>
 	<jsp:include page="/jsp/header.jsp"></jsp:include>
 	
@@ -162,4 +163,6 @@ $(function ()
 			forceParse : 0
 		});
 	</script>	
+	<s:debug></s:debug>
+	
 </body>

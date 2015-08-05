@@ -25,7 +25,7 @@
 						<div class="col-md-6 col-md-offset-1">
 							<a href="#">
 								<img class="img-responsive" alt="Responsive image"
-									src="<c:url value='/images/default_head_img.jpg'/>" />
+									src='<%=request.getContextPath()%>/images/<s:property value="user.headImage" />' />
 							</a>
 						</div>
 						<div class="col-md-5">

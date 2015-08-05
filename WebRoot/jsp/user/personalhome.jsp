@@ -32,43 +32,63 @@
 								<div class="row">
 									<a href="#">
 										<img class="img-responsive" alt="Responsive image"
-											src="<c:url value='/images/default_head_img.jpg'/>" />
+											src='<%=request.getContextPath()%>/images/<s:property value="user.headImage" />' />
 									</a>
 								</div>
 								<div class="row">
 									<dl>
-										<dt>contact</dt>
+										<dt>性别</dt>
+										<dd>
+											<s:property value="user.gender" />
+										</dd>
+										<dt>生日</dt>
+										<dd>
+											<s:property value="user.birth" />
+										</dd>
+										<dt>联系电话</dt>
 										<dd>
 											<s:property value="user.contact" />
 										</dd>
-										<dt>email</dt>
+										<dt>电子邮箱</dt>
 										<dd>
 											<s:property value="user.email" />
 										</dd>
-										<dt>introduce</dt>
+										<dt>个人简介</dt>
 										<dd>
 											<s:property value="user.introduce" />
 										</dd>
-										<dt>address</dt>
-										<address>
+										<dt>地址</dt>
+										<dd>
 											<s:property value="user.address" />
-										</address>
+										</dd>
+										<dt>注册时间</dt>
+										<dd>
+											<s:property value="user.registerTime" />
+										</dd>
+										<dt>被访问次数</dt>
+										<dd>
+											<s:property value="user.visitedCount" />
+										</dd>
 									</dl>
 								</div>
 								<div class="row">
-									<a class="btn btn-info col-md-4 " href="#">
-										<small>个人资料</small>
-									</a>
 									<s:if test="#session.user.id==user.id">
-										<a class="btn btn-warning col-md-4"
-											href="<c:url value='/user/applyEditPersonalInfo'/>">
-											<small>修改资料</small>
-										</a>
-										<a class="btn btn-danger col-md-4"
-											href="<c:url value='/user/applyChangePassword'/>">
-											<small>更改密码</small>
-										</a>
+										<a class="btn btn-warning col-md-5"
+											href="<c:url value='/user/applyEditPersonalInfo'/>">修改资料</a>
+										<a class="btn btn-danger col-md-5 col-md-offset-2"
+											href="<c:url value='/user/applyChangePassword'/>">更改密码</a>
 									</s:if>
+									<s:else>
+										<a class="btn btn-warning col-md-5" href="<c:url value='#'/>">发送私信</a>
+										<s:if test="notafriend">
+											<a class="btn btn-danger col-md-5 col-md-offset-2"
+												href="<c:url value='#'/>"> 加为好友 </a>
+										</s:if>
+										<s:else>
+											<a class="btn btn-danger col-md-5 col-md-offset-2"
+												href="<c:url value='#'/>"> 删除好友 </a>
+										</s:else>
+									</s:else>
 								</div>
 							</div>
 							<div class="jumbotron well">

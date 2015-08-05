@@ -5,10 +5,13 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.sicdlab.entrepreneur.beans.Tutor;
+import org.sicdlab.entrepreneur.beans.User;
 import org.sicdlab.entrepreneur.common.page.Page;
 import org.sicdlab.entrepreneur.service.tutor.impl.TutorServiceImpl;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+
+import com.opensymphony.xwork2.ActionContext;
 /**
  * @version
  * @author lzc
@@ -17,7 +20,6 @@ import org.springframework.stereotype.Controller;
 @Controller("TutorAction")
 @Scope("prototype")
 public class TutorAction {
-	private Tutor tutor;
 	private List<Tutor> tutor1s;
 	@Resource(name="TutorServiceImpl")
 	private TutorServiceImpl tutorServiceImpl;
@@ -30,7 +32,6 @@ public class TutorAction {
 	private int pageCount; 
 	private int beginPageIndex; 
 	private int endPageIndex; 
-	
 	
 	public List<Tutor> getTutor1s() {
 		return tutor1s;
@@ -80,12 +81,6 @@ public class TutorAction {
 	public void setPage(Page page) {
 		this.page = page;
 	}
-	public Tutor getTutor() {
-		return tutor;
-	}
-	public void setTutor(Tutor tutor) {
-		this.tutor = tutor;
-	}
 	public List<Tutor> getTutors() {
 		return tutors;
 	}
@@ -105,12 +100,13 @@ public class TutorAction {
 		
 		setTutors(tutorServiceImpl.selectAll());
 		//tutors=tutorServiceImpl.select();
-		
 		page=new Page(3, currentPage, tutors.size(), tutors);
 		//tutor1s=tutorServiceImpl.select(3,currentPage);
 		//通过Spring初始化
 		
 		setTutor1s(tutorServiceImpl.selectAll(3, currentPage));
+		//ActionContext.getContext().getSession().put("name", tutor.getUser().getName());
+		
 		pageCount=page.getPageCount();
 		recordCount=page.getRecordCount();
 		pageSize=page.getPageSize();

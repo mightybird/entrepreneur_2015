@@ -103,9 +103,14 @@ public class ManageAction {
 	public String manage(){
 		//获得分页参数以及对各参数的处理
 		setManages(tutorServiceImpl.selectManage());
+		
 		page=new Page(3, currentPage, manages.size(), manages);
 		//tutor1s=tutorServiceImpl.select(3,currentPage);
+		
+		
 		setManage1s(tutorServiceImpl.selectManage(3, currentPage));
+		
+		
 		pageCount=page.getPageCount();
 		recordCount=page.getRecordCount();
 		pageSize=page.getPageSize();

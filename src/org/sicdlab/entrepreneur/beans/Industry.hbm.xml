@@ -1,77 +1,69 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-                                   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 2015-7-27 16:33:46 by Hibernate Tools 4.3.1 -->
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2015-8-5 16:28:47 by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
- <class catalog="entrepreneur_2015"
-  name="org.sicdlab.entrepreneur.beans.Industry" table="industry">
-  <id name="id" type="string">
-   <column length="32" name="id"/>
-   <generator class="assigned"/>
-  </id>
-  <property generated="never" lazy="false" name="name" type="string">
-   <column length="50" name="name" not-null="true" unique="true"/>
-  </property>
-  <property generated="never" lazy="false" name="saturation" type="string">
-   <column length="50" name="saturation"/>
-  </property>
-  <property generated="never" lazy="false" name="entryBarrier"
-   not-null="true" type="string">
-   <column length="50" name="entry_barrier"/>
-  </property>
-  <property generated="never" lazy="false" name="maturity" type="string">
-   <column length="50" name="maturity"/>
-  </property>
-  <property generated="never" lazy="false" name="scale" type="string">
-   <column length="50" name="scale"/>
-  </property>
-  <property generated="never" lazy="false" name="future" type="string">
-   <column length="50" name="future"/>
-  </property>
-  <property generated="never" lazy="false" name="description" type="string">
-   <column length="65535" name="description"/>
-  </property>
-  <set fetch="select" inverse="true" lazy="true" name="laws"
-   sort="unsorted" table="law">
-   <key>
-    <column length="32" name="industry_id"/>
-   </key>
-   <one-to-many class="org.sicdlab.entrepreneur.beans.Law"/>
-  </set>
-  <set fetch="select" inverse="true" lazy="true" name="knowledges"
-   sort="unsorted" table="knowledge">
-   <key>
-    <column length="32" name="industry_id"/>
-   </key>
-   <one-to-many class="org.sicdlab.entrepreneur.beans.Knowledge"/>
-  </set>
-  <set fetch="select" inverse="true" lazy="true" name="supplies"
-   sort="unsorted" table="supply">
-   <key>
-    <column length="32" name="industry_id"/>
-   </key>
-   <one-to-many class="org.sicdlab.entrepreneur.beans.Supply"/>
-  </set>
-  <set fetch="select" inverse="true" lazy="true" name="policies"
-   sort="unsorted" table="policy">
-   <key>
-    <column length="32" name="industry_id"/>
-   </key>
-   <one-to-many class="org.sicdlab.entrepreneur.beans.Policy"/>
-  </set>
-  <set fetch="select" inverse="true" lazy="true" name="needs"
-   sort="unsorted" table="need">
-   <key>
-    <column length="32" name="industry_id"/>
-   </key>
-   <one-to-many class="org.sicdlab.entrepreneur.beans.Need"/>
-  </set>
-  <set fetch="select" inverse="true" lazy="true" name="projects"
-   sort="unsorted" table="project">
-   <key>
-    <column length="32" name="industry_id"/>
-   </key>
-   <one-to-many class="org.sicdlab.entrepreneur.beans.Project"/>
-  </set>
- </class>
+    <class name="org.sicdlab.entrepreneur.beans.Industry" table="industry" catalog="entrepreneur_2015" optimistic-lock="version">
+        <id name="id" type="string">
+            <column name="id" length="32" />
+            <generator class="assigned" />
+        </id>
+        <property name="name" type="string">
+            <column name="name" length="50" not-null="true" unique="true" />
+        </property>
+        <property name="saturation" type="string">
+            <column name="saturation" length="50" />
+        </property>
+        <property name="entryBarrier" type="string">
+            <column name="entry_barrier" length="50" />
+        </property>
+        <property name="maturity" type="string">
+            <column name="maturity" length="50" />
+        </property>
+        <property name="scale" type="string">
+            <column name="scale" length="50" />
+        </property>
+        <property name="future" type="string">
+            <column name="future" length="50" />
+        </property>
+        <property name="description" type="string">
+            <column name="description" length="65535" />
+        </property>
+        <set name="laws" table="law" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="industry_id" length="32" />
+            </key>
+            <one-to-many class="org.sicdlab.entrepreneur.beans.Law" />
+        </set>
+        <set name="knowledges" table="knowledge" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="industry_id" length="32" />
+            </key>
+            <one-to-many class="org.sicdlab.entrepreneur.beans.Knowledge" />
+        </set>
+        <set name="supplies" table="supply" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="industry_id" length="32" />
+            </key>
+            <one-to-many class="org.sicdlab.entrepreneur.beans.Supply" />
+        </set>
+        <set name="policies" table="policy" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="industry_id" length="32" />
+            </key>
+            <one-to-many class="org.sicdlab.entrepreneur.beans.Policy" />
+        </set>
+        <set name="needs" table="need" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="industry_id" length="32" />
+            </key>
+            <one-to-many class="org.sicdlab.entrepreneur.beans.Need" />
+        </set>
+        <set name="projects" table="project" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="industry_id" length="32" />
+            </key>
+            <one-to-many class="org.sicdlab.entrepreneur.beans.Project" />
+        </set>
+    </class>
 </hibernate-mapping>

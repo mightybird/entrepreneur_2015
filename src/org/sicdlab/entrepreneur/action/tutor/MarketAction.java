@@ -102,9 +102,14 @@ public class MarketAction {
 	public String market(){
 		//获得分页参数以及对各参数的处理
 		setMarkets(tutorServiceImpl.selectMarket());
+		
 		page=new Page(3, currentPage, markets.size(), markets);
 		//tutor1s=tutorServiceImpl.select(3,currentPage);
+		
+		
 		setMarket1s(tutorServiceImpl.selectMarket(3, currentPage));
+		
+		
 		pageCount=page.getPageCount();
 		recordCount=page.getRecordCount();
 		pageSize=page.getPageSize();
