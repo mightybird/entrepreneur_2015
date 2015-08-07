@@ -13,6 +13,7 @@ import org.sicdlab.entrepreneur.beans.Friend;
 import org.sicdlab.entrepreneur.beans.Institution;
 import org.sicdlab.entrepreneur.beans.Mail;
 import org.sicdlab.entrepreneur.beans.Need;
+import org.sicdlab.entrepreneur.beans.Notice;
 import org.sicdlab.entrepreneur.beans.Project;
 import org.sicdlab.entrepreneur.beans.Role;
 import org.sicdlab.entrepreneur.beans.Supply;
@@ -382,6 +383,46 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 		Transaction tx = session.beginTransaction();
 		List list = session.createCriteria(Mail.class).add(Restrictions.eq("status", "unread")).createAlias("userByReceiverId", "u").add(Restrictions.eq("u.id", user.getId()))
 				.list();
+		tx.commit();
+		return list.size();
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public List<Notice> getNotice(User sessionuser, Integer pageSize, int firstNotice) {
+		Session session = getCurrentSession();
+		Transaction tx = session.beginTransaction();
+		List list = session.createCriteria(Notice.class).createAlias("user", "u").add(Restrictions.eq("u.id", sessionuser.getId())).addOrder(Order.desc("sendTime"))
+				.setMaxResults(pageSize).setFirstResult(firstNotice).list();
+		tx.commit();
+		return list;
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public List<Notice> getNotice(User sessionuser) {
+		Session session = getCurrentSession();
+		Transaction tx = session.beginTransaction();
+		List list = session.createCriteria(Notice.class).createAlias("user", "u").add(Restrictions.eq("u.id", sessionuser.getId())).list();
+		tx.commit();
+		return list;
+	}
+
+	@Override
+	public Notice getNotice(String noticeId) {
+		Session session = getCurrentSession();
+		Transaction tx = session.beginTransaction();
+		Notice notice = (Notice) session.createCriteria(Notice.class).add(Restrictions.eq("id", noticeId)).createCriteria("user").list().iterator().next();
+		tx.commit();
+		return notice;
+	}
+
+	@SuppressWarnings("rawtypes")
+	@Override
+	public int getUnreadNotice(User user) {
+		Session session = getCurrentSession();
+		Transaction tx = session.beginTransaction();
+		List list = session.createCriteria(Notice.class).add(Restrictions.eq("status", "unread")).createAlias("user", "u").add(Restrictions.eq("u.id", user.getId())).list();
 		tx.commit();
 		return list.size();
 	}

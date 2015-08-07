@@ -101,7 +101,7 @@
 													value="#session.unreadmail" /></span>
 										</s:if>
 									</a></li>
-								<li><a href="<c:url value='#'/>">
+								<li><a href="<%=request.getContextPath()%>/user/noticeList?currentpage=1">
 										消息
 										<s:if test="#session.unreadnotice>0">
 											<span class="badge pull-right"><s:property

@@ -18,6 +18,7 @@ import org.sicdlab.entrepreneur.beans.Industry;
 import org.sicdlab.entrepreneur.beans.Institution;
 import org.sicdlab.entrepreneur.beans.Mail;
 import org.sicdlab.entrepreneur.beans.Need;
+import org.sicdlab.entrepreneur.beans.Notice;
 import org.sicdlab.entrepreneur.beans.Page;
 import org.sicdlab.entrepreneur.beans.Project;
 import org.sicdlab.entrepreneur.beans.Role;
@@ -93,6 +94,8 @@ public class UserAction extends ActionSupport {
 	private Page<Mail> receivedMail;
 	private Page<Mail> sentMail;
 	private Mail mail;
+	private Page<Notice> noticePage;
+	private Notice notice;
 
 	@Action(value = "applyregister", results = { @Result(name = "success", location = "/jsp/user/register.jsp") }, className = "UserAction")
 	public String applyRegister() {
@@ -121,7 +124,7 @@ public class UserAction extends ActionSupport {
 		user.setIntroduce(getIntroduce() == null ? "未填写" : getIntroduce());
 		user.setGender(getGender() == null ? "未填写" : getGender());
 		user.setBirth(DateUtil.strToDate(getBirth()));
-		user.setHeadImage("default_head_img.png");
+		user.setHeadImage("head_image_default.png");
 		if (getRole().equals("entrepreneur")) {
 			Entrepreneur entrepreneur = new Entrepreneur();
 			entrepreneur.setDegree(getDegree());
@@ -179,7 +182,8 @@ public class UserAction extends ActionSupport {
 			ActionContext.getContext().getSession().put("role", lrole.iterator().next());
 			int unreadMail = userservice.getUnreadMail(user);
 			ActionContext.getContext().getSession().put("unreadmail", unreadMail);
-			ActionContext.getContext().getSession().put("unreadnotice", 0);
+			int unreadNotice = userservice.getUnreadNotice(user);
+			ActionContext.getContext().getSession().put("unreadnotice", unreadNotice);
 			ServletActionContext.getRequest().setAttribute("userid", user.getId());
 			return SUCCESS;
 		}
@@ -492,6 +496,45 @@ public class UserAction extends ActionSupport {
 			userservice.update(mail);
 			int unreadmail = (int) ActionContext.getContext().getSession().get("unreadmail");
 			ActionContext.getContext().getSession().put("unreadmail", unreadmail - 1);
+		}
+		return SUCCESS;
+	}
+
+	@Action(value = "noticeList", results = { @Result(name = "success", location = "/jsp/user/noticelist.jsp"),
+			@Result(name = "error", type = "chain", location = "applylogin") }, className = "UserAction")
+	public String noticeList() {
+		User sessionuser = (User) ActionContext.getContext().getSession().get("user");
+		if (sessionuser == null) {
+			return ERROR;
+		}
+		Integer currentPage = Integer.parseInt(ServletActionContext.getRequest().getParameter("currentpage"));
+		Integer pageSize = 10;
+		List<Notice> noticep = userservice.getNotice(sessionuser, pageSize, pageSize * (currentPage - 1));
+		Iterator<Notice> nit = noticep.iterator();
+		while (nit.hasNext()) {
+			Notice notice = (Notice) nit.next();
+			int length = notice.getTitle().length();
+			notice.setTitle(length > 30 ? notice.getTitle().substring(0, 26) + "..." : notice.getTitle());
+			notice.setContent(notice.getContent().length() > 60 ? notice.getContent().substring(0, 56) + "..." : notice.getContent());
+		}
+		setNoticePage(new Page<Notice>(pageSize, currentPage, userservice.getNotice(sessionuser).size(), noticep));
+		return SUCCESS;
+	}
+
+	@Action(value = "notice", results = { @Result(name = "success", location = "/jsp/user/notice.jsp"),
+			@Result(name = "error", type = "chain", location = "applylogin") }, className = "UserAction")
+	public String notice() {
+		User sessionuser = (User) ActionContext.getContext().getSession().get("user");
+		if (sessionuser == null) {
+			return ERROR;
+		}
+		String noticeId = ServletActionContext.getRequest().getParameter("noticeid");
+		setNotice(userservice.getNotice(noticeId));
+		if (notice.getUser().getId().equals(sessionuser.getId()) && notice.getStatus().equals("unread")) {
+			notice.setStatus("read");
+			userservice.update(notice);
+			int unreadnotice = (int) ActionContext.getContext().getSession().get("unreadnotice");
+			ActionContext.getContext().getSession().put("unreadnotice", unreadnotice - 1);
 		}
 		return SUCCESS;
 	}
@@ -830,6 +873,22 @@ public class UserAction extends ActionSupport {
 
 	public Mail getMail() {
 		return mail;
+	}
+
+	public Page<Notice> getNoticePage() {
+		return noticePage;
+	}
+
+	public void setNoticePage(Page<Notice> noticePage) {
+		this.noticePage = noticePage;
+	}
+
+	public Notice getNotice() {
+		return notice;
+	}
+
+	public void setNotice(Notice notice) {
+		this.notice = notice;
 	}
 
 }

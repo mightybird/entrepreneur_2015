@@ -65,7 +65,8 @@
 														href='<%=request.getContextPath()%>/user/personalhome?userid=<s:property value="#rmail.userBySenderId.id" />'>
 														<s:property value="#rmail.userBySenderId.name" />
 													</a></td>
-												<td><a href='<%=request.getContextPath()%>/user/mail?mailid=<s:property value="#rmail.id" />'>
+												<td><a
+														href='<%=request.getContextPath()%>/user/mail?mailid=<s:property value="#rmail.id" />'>
 														<s:property value="#rmail.title" />
 													</a></td>
 												<td><s:property value="#rmail.content" /></td>
@@ -78,7 +79,8 @@
 														href='<%=request.getContextPath()%>/user/personalhome?userid=<s:property value="#rmail.userBySenderId.id" />'>
 														<s:property value="#rmail.userBySenderId.name" />
 													</a></td>
-												<td><a href="">
+												<td><a
+														href='<%=request.getContextPath()%>/user/mail?mailid=<s:property value="#rmail.id" />'>
 														<s:property value="#rmail.title" />
 													</a></td>
 												<td><s:property value="#rmail.content" /></td>
@@ -158,7 +160,8 @@
 													href='<%=request.getContextPath()%>/user/personalhome?userid=<s:property value="#smail.userByReceiverId.id" />'>
 													<s:property value="#smail.userByReceiverId.name" />
 												</a></td>
-											<td><a href='<%=request.getContextPath()%>/user/mail?mailid=<s:property value="#smail.id" />'>
+											<td><a
+													href='<%=request.getContextPath()%>/user/mail?mailid=<s:property value="#smail.id" />'>
 													<s:property value="#smail.title" />
 												</a></td>
 											<td><s:property value="#smail.content" /></td>

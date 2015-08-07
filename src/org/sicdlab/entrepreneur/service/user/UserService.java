@@ -6,6 +6,7 @@ import org.sicdlab.entrepreneur.beans.Entrepreneur;
 import org.sicdlab.entrepreneur.beans.Institution;
 import org.sicdlab.entrepreneur.beans.Mail;
 import org.sicdlab.entrepreneur.beans.Need;
+import org.sicdlab.entrepreneur.beans.Notice;
 import org.sicdlab.entrepreneur.beans.Project;
 import org.sicdlab.entrepreneur.beans.Supply;
 import org.sicdlab.entrepreneur.beans.Tutor;
@@ -60,5 +61,13 @@ public interface UserService extends BaseService {
 	public Mail getMail(String mailId);
 
 	public int getUnreadMail(User user);
+
+	public List<Notice> getNotice(User sessionuser, Integer pageSize, int firstNotice);
+
+	public List<Notice> getNotice(User sessionuser);
+
+	public Notice getNotice(String noticeId);
+
+	public int getUnreadNotice(User user);
 
 }

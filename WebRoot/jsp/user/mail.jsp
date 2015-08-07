@@ -11,7 +11,7 @@
 <script src="<c:url value='/js/jquery.min.js'/>"></script>
 <script src="<c:url value='/js/bootstrap.min.js'/>"></script>
 <script src="<c:url value='/js/scripts.js'/>"></script>
-<title></title>
+<title><s:property value="mail.title" /></title>
 </head>
 <body>
 	<jsp:include page="/jsp/header.jsp"></jsp:include>
@@ -20,7 +20,8 @@
 			<div class="col-md-3"></div>
 			<div class="col-md-6">
 				<div class="row">
-					<br /> <br />
+					<br />
+					<br />
 					<dl class="dl-horizontal">
 						<dt>标题：</dt>
 						<dd>
@@ -53,8 +54,7 @@
 								<dt>正文：</dt>
 								<dd>
 									<p class="lead">
-										<s:property
-											value="mail.content" />
+										<s:property value="mail.content" />
 									</p>
 								</dd>
 							</div>
@@ -64,7 +64,8 @@
 				<br>
 				<br>
 				<br>
-				<br> <br>
+				<br>
+				<br>
 				<div class="row">
 					<a id="modal-88389" href="#modal-container-88389" role="button"
 						class="btn btn-success col-md-6" data-toggle="modal">
@@ -100,8 +101,7 @@
 										<div class="modal-body">
 											<div class="form-group">
 												<label for="title" class="col-md-2 control-label">
-													标题 </label>
-												<input type="text" class="form-control" id="title"
+													标题 </label> <input type="text" class="form-control" id="title"
 													name="title" required />
 											</div>
 											<div class="form-group">
@@ -127,8 +127,7 @@
 										<div class="modal-body">
 											<div class="form-group">
 												<label for="title" class="col-md-2 control-label">
-													标题 </label>
-												<input type="text" class="form-control" id="title"
+													标题 </label> <input type="text" class="form-control" id="title"
 													name="title" required />
 											</div>
 											<div class="form-group">
