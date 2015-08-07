@@ -16,7 +16,7 @@
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-12">
-			<nav class="navbar navbar-default" role="navigation">
+			<nav class="navbar navbar-inverse" role="navigation">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle" data-toggle="collapse"
 					data-target="#bs-example-navbar-collapse-1">
@@ -30,9 +30,10 @@
 				id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
 					<li class="active"><a href="/">首页</a></li>
-					<li><a href="#">项目</a></li>
+					<li><a href="/entrepreneur_2015/projectlist/ShowProjectList">项目</a></li>
 					<li><a href="<%=request.getContextPath()%>/Tutor-list">导师</a></li>
-					<li><a href="#">机构</a></li>
+					<li><a
+							href="<%=request.getContextPath()%>/institute/institute-list">机构</a></li>
 					<li><a href="#">供需</a></li>
 					<li><a href="#">关于我们</a></li>
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
@@ -75,34 +76,41 @@
 										href="<c:url value='/user/applyregister?role=tutor'/>">我是创业导师</a></li>
 								<li><a
 										href="<c:url value='/user/applyregister?role=institution'/>">我是创业机构</a></li>
-								<!-- <li class="divider">
-								</li>
-								<li>
-									<a href="#">Separated link</a>
-								</li> -->
 							</ul></li>
 					</ul>
 				</s:if>
 				<s:else>
 					<ul class="nav navbar-nav navbar-right">
-
 						<li class="dropdown"><a href="#" class="dropdown-toggle"
 								data-toggle="dropdown">
 								<s:property value="#session.user.name" />
+								<s:if test="(#session.unreadmail+#session.unreadnotice)>0">
+									<span class="badge pull-right"><s:property
+											value="#session.unreadmail+#session.unreadnotice" /></span>
+								</s:if>
 								<strong class="caret"></strong>
 							</a>
 							<ul class="dropdown-menu">
 								<li><a
 										href="<c:url value='/user/personalhome?userid=${sessionScope.user.id }'/>">个人主页</a></li>
+								<li><a
+										href="<%=request.getContextPath()%>/user/mailList?rcurrentpage=1&scurrentpage=1">
+										私信
+										<s:if test="#session.unreadmail>0">
+											<span class="badge pull-right"><s:property
+													value="#session.unreadmail" /></span>
+										</s:if>
+									</a></li>
+								<li><a href="<c:url value='#'/>">
+										消息
+										<s:if test="#session.unreadnotice>0">
+											<span class="badge pull-right"><s:property
+													value="#session.unreadnotice" /></span>
+										</s:if>
+									</a></li>
 								<li class="divider"></li>
 								<li><a href="<c:url value='/user/logout'/>">退出</a></li>
 							</ul>
-						<li><a href="<c:url value='#'/>">
-								私信<span class="badge pull-right">16</span>
-							</a></li>
-						<li><a href="<c:url value='#'/>">
-								消息<span class="badge pull-right">30</span>
-							</a></li>
 					</ul>
 				</s:else>
 			</div>

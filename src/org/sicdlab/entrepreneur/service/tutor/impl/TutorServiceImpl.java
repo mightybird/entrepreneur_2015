@@ -1,11 +1,11 @@
 package org.sicdlab.entrepreneur.service.tutor.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.sicdlab.entrepreneur.beans.DataDictionary;
 import org.sicdlab.entrepreneur.beans.Project;
@@ -24,6 +24,17 @@ public class TutorServiceImpl extends BaseServiceImpl{
 		session.beginTransaction();
 //		Query q= session.createCriteria(Tutor.class).createCriteria(User.class).;
 		List<Tutor> tutors=session.createCriteria(Tutor.class).createCriteria("user").add(Restrictions.eq("role.id", "2")).list();
+		session.getTransaction().commit();
+		return tutors;
+	}
+	@SuppressWarnings("unchecked")
+	public List<Tutor> selectRec() {
+		Session session = getCurrentSession();
+		session.beginTransaction();
+//		Query q= session.createCriteria(Tutor.class).createCriteria(User.class).;
+		Criteria q=(Criteria) session.createCriteria(Tutor.class).addOrder(Order.desc("averageScore")).createCriteria("user").add(Restrictions.eq("role.id", "2"));
+		q.setMaxResults(3);
+		List<Tutor> tutors=q.list();
 		session.getTransaction().commit();
 		return tutors;
 	}
@@ -144,6 +155,7 @@ public class TutorServiceImpl extends BaseServiceImpl{
 		session.getTransaction().commit();
 		return tutors;
 	}
+	@SuppressWarnings("unchecked")
 	public List<Tutor> select(String parameterType){
 		Session session = getCurrentSession();
 		session.beginTransaction();
@@ -153,6 +165,7 @@ public class TutorServiceImpl extends BaseServiceImpl{
 		session.getTransaction().commit();
 		return tutors;
 	}
+	@SuppressWarnings("unchecked")
 	public List<Tutor> select(int pageSize,int currentPage,String parameterType){
 		Session session = getCurrentSession();
 		session.beginTransaction();
@@ -164,6 +177,7 @@ public class TutorServiceImpl extends BaseServiceImpl{
 		session.getTransaction().commit();
 		return tutors;
 	}
+	@SuppressWarnings("unchecked")
 	public List<DataDictionary> selectDictionary(){
 		Session session = getCurrentSession();
 		session.beginTransaction();
@@ -194,6 +208,7 @@ public class TutorServiceImpl extends BaseServiceImpl{
 		session.getTransaction().commit();
 		return projects;
 	}*/
+	@SuppressWarnings("unchecked")
 	public List<ProjectEntrepreneur> selectProject(String entrepreneurId){
 		Session session = getCurrentSession();
 		session.beginTransaction();
@@ -214,7 +229,6 @@ public class TutorServiceImpl extends BaseServiceImpl{
 		
 		
 		proT.setId(UUIDGenerator.randomUUID());
-		//p.setId("1");
 		System.out.println(t.getId()+"***"+p.getId()+"****"+proT.getId());
 		proT.setTutor(t);
 		proT.setProject(p);
@@ -222,13 +236,19 @@ public class TutorServiceImpl extends BaseServiceImpl{
 		//防止重复
 		Query q=session.createQuery("from ProjectTutor");
 		List<ProjectTutor> search=(List<ProjectTutor>)q.list();
-		for(ProjectTutor prot:search){
-			if(prot.getProject().getId().equals(p.getId())){
-				break;
-			}else{
-				session.save(proT);
-			}
-		}		
+		
+		//判断数据库中要存的数据是否已经存在
+		if(search.size()==0){
+			session.save(proT);
+		}else{
+			for(ProjectTutor prot:search){
+				if(prot.getProject().getId().equals(p.getId())){
+					break;
+				}else{
+					session.save(proT);
+				}
+			}	
+		}			
 		session.getTransaction().commit();
 		
 	}

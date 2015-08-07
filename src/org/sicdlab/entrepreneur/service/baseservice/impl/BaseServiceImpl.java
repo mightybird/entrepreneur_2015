@@ -135,23 +135,23 @@ public class BaseServiceImpl implements BaseService {
 
 	}
 
-	@SuppressWarnings({ "unused", "unchecked" })
+	@SuppressWarnings({ "unchecked" })
 	@Override
 	public <T> List<T> getByEntity(Class<T> selectedClass, String entityPropertyName, Object entity) {
 		Transaction tx = getCurrentSession().beginTransaction();
 		List<T> list = getCurrentSession().createCriteria(selectedClass).add(Restrictions.eq(entityPropertyName, entity)).list();
 		tx.commit();
-		return null;
+		return list;
 	}
 
-	@SuppressWarnings({ "unused", "unchecked" })
+	@SuppressWarnings({ "unchecked" })
 	@Override
 	public <T> List<T> getByEntity(Class<T> selectedClass, String entityPropertyName, Object entity, Order order, int maxResult, int firstResult) {
 		Transaction tx = getCurrentSession().beginTransaction();
 		List<T> list = getCurrentSession().createCriteria(selectedClass).add(Restrictions.eq(entityPropertyName, entity)).addOrder(order).setMaxResults(maxResult)
 				.setFirstResult(firstResult).list();
 		tx.commit();
-		return null;
+		return list;
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })

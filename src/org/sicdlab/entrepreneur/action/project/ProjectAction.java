@@ -67,11 +67,6 @@ public class ProjectAction extends ActionSupport {
     
     private File upload;            //文件
     private String uploadFileName;    //和jsp的name属性对应
-    
-    
- 
-    
-    
     @Resource(name="ProjectServiceImpl")
     private ProjectService projectservice;
     @Resource(name="BaseServiceImpl")
@@ -206,7 +201,7 @@ public class ProjectAction extends ActionSupport {
 	}
 
 	@Action(value = "UploadAccessary", className = "ProjectAction")
-	public  String UploadAccessary(){
+	public  String UploadAccessary() throws IOException{
 		HttpServletRequest request= ServletActionContext.getRequest();
 		String filename=getUploadFileName();
 		try {
@@ -215,6 +210,11 @@ public class ProjectAction extends ActionSupport {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		PrintWriter out = null;
+		HttpServletResponse response = ServletActionContext.getResponse();
+	  	response.setCharacterEncoding("gbk"); 
+	  	out = response.getWriter();
+	  	out.print("文件上传成功！！！");
 		return NONE;	
 	}
 	@Action(value="createProjectSubmit",
@@ -222,8 +222,9 @@ public class ProjectAction extends ActionSupport {
 	,className="ProjectAction")
 	public String createProjectSubmit() throws ParseException{	
 		HttpServletRequest request=ServletActionContext.getRequest();
-		ActionContext.getContext().getSession().put("userid", "1");
-		String myUserId=ActionContext.getContext().getSession().get("userid").toString();
+		//ActionContext.getContext().getSession().put("userid", "1");
+		User myUser=(User)ActionContext.getContext().getSession().get("user");
+		String myUserId=myUser.getId();
 		Project project=new Project();
 		projectid=UUIDGenerator.randomUUID();
 		project.setId(projectid);;
@@ -243,6 +244,14 @@ public class ProjectAction extends ActionSupport {
 		project.setFundLackUpper(fundLackUpper);
 		project.setFundAmountLower(projectFundAmountLower);
 		project.setFundAmountUpper(projectFundAmountUpper);
+		
+		project.setHeadImage("project_default.jpg");
+		org.sicdlab.entrepreneur.beans.Resource resource=new org.sicdlab.entrepreneur.beans.Resource();
+		resource.setId(UUIDGenerator.randomUUID());
+		resource.setOwnerId(projectid);
+		resource.setPath("project_default.jpg");
+		resource.setStatus("active");
+		projectservice.saveOrUpdate(resource);
 		projectservice.save(project);
 
 		ProjectEntrepreneur pe=new ProjectEntrepreneur();            //创业者项目表
@@ -280,6 +289,7 @@ public class ProjectAction extends ActionSupport {
 			pl.setLabel(label);
 			projectservice.save(pl);
 		}					
+		ActionContext.getContext().getSession().put("project_image", project.getHeadImage());
 		request.setAttribute("project", project);
 		request.setAttribute("projectid", projectid);
 		
@@ -292,20 +302,21 @@ public class ProjectAction extends ActionSupport {
 	},className="ProjectAction")
 	public String showProjectInfoPage(){
 		HttpServletRequest request=ServletActionContext.getRequest();
-		String userid=ActionContext.getContext().getSession().get("userid").toString();
-		System.out.println(userid+"userid");
+		User myUser=(User)ActionContext.getContext().getSession().get("user");
+		String myUserId=myUser.getId();
+		System.out.println(myUserId+"userid");
 		String projectid=request.getParameter("projectid");
-		System.out.println(projectid+"1111111111111");
+		System.out.println(projectid+"项目ID");
 		String applyMark=null;
 		//Project project=(Project) request.getAttribute("project");
 		Project project=projectservice.getProjectById(projectid);
 		String RelationshipWithTheProject=null;
-		if(userid==null){
+		if(myUserId==null){
 			RelationshipWithTheProject="tourist";
 			System.out.println("111111111");
 		}
 		
-		User user=projectservice.getUserById(userid);
+		User user=projectservice.getUserById(myUserId);
 		System.out.println("角色"+user.getRole().getId());
 		if(user.getRole().getId().equals("2")){
 			RelationshipWithTheProject="tutor";
@@ -313,7 +324,7 @@ public class ProjectAction extends ActionSupport {
 		}
 		if(user.getRole().getId().equals("3")){
 			RelationshipWithTheProject="institution";
-			Institution ist=projectservice.getInstitutionById(userid);
+			Institution ist=projectservice.getInstitutionById(myUserId);
 			ProjectInstitution pi=projectservice.getPIByProjectAndInstitution(project, ist);
 			project.setVisitorNumber(project.getVisitorNumber()+1);
 			if(pi!=null){
@@ -341,14 +352,16 @@ public class ProjectAction extends ActionSupport {
 			System.out.println("4444444444444");			
 		}
 		org.sicdlab.entrepreneur.beans.Resource ProjectAccessary =projectservice.getResourceByOwnid( projectid);
-		List<String> labels=projectservice.getLabelsByProjectId(projectid);  
+		List<String> labels=null;
+		if(projectservice.selectProjectLabelByProject(project).size()>0){
+			labels=projectservice.getLabelsByProjectId(projectid);  	
+		}
 		request.setAttribute("labels", labels);
 		request.setAttribute("project", project);
 		request.setAttribute("projectid", projectid);
 		request.setAttribute("relationWithTheProject", RelationshipWithTheProject);
 		request.setAttribute("applyAuthority", applyMark);
 		request.setAttribute("projectaccessary", ProjectAccessary);
-		request.setAttribute("newFileName", "project_default.jpg");
 		System.out.println("和项目关系"+RelationshipWithTheProject);
 		if(RelationshipWithTheProject.equals("creator")){
 			return  "SUCCESS_CREATOR";
@@ -364,12 +377,15 @@ public class ProjectAction extends ActionSupport {
 	public String modifyProjectImage() throws Exception{
 		
 		HttpServletRequest request = ServletActionContext.getRequest();
-		
+		//String project_image=ActionContext.getContext().getSession().get("project_image").toString();
 	  	//String pathType=request.getParameter("pathType");
 	  	String projectId=request.getParameter("projectId");
+	  	
+	  	
 	  	System.out.println(projectId);
 	  	PrintWriter out = null; 
 	  	org.sicdlab.entrepreneur.beans.Resource resource=new org.sicdlab.entrepreneur.beans.Resource();
+	  	Project project=new Project();
 	  	HttpServletResponse response = ServletActionContext.getResponse();
 	  	response.setCharacterEncoding("gbk"); 
 	  	out = response.getWriter();  	  	
@@ -392,23 +408,28 @@ public class ProjectAction extends ActionSupport {
 	  	}
 	  	else
 	  	{
-	  		
-	  		
-	  		resource.setId(UUIDGenerator.randomUUID());
-	  		resource.setOwnerId(projectId);
-	  		resource.setResourceType("项目图片");
-	  		resource.setPath(result);
-	  		projectservice.save(resource);
+	  		Project p=projectservice.getProjectById(projectId);
+	  		p.setHeadImage(newFileName);
+	  		projectservice.update(p);
+	  		request.setAttribute("myproject", p);
+//	  		resource.setOwnerId(projectId);
+//	  		resource.setResourceType("项目图片");
+//	  		resource.setPath(newFileName);
+//	  		projectservice.saveOrUpdate(resource);
 	  		//projectservice.SaveProjectImagePath(projectId, "项目图片",result);
 			result="<font color='red'>" + "项目图标修改成功!</font>#" + result + "#" + uploadFileName;
 	  	}
+	  	out.print(result);
+	  	Project project11=projectservice.getProjectById(projectId);
+	  	System.out.println("现在的图片名"+project11.getHeadImage());
+	  	ActionContext.getContext().getSession().put("imageRootPath", savePath);
+	  	ActionContext.getContext().getSession().put("project_image", project11.getHeadImage());
 	  	request.setAttribute("resource", resource);
 	  	request.setAttribute("imageUrl", result);
 	  	request.setAttribute("newFileName", newFileName);
-		out.print(result);  
-		return null;
+		return NONE;
 	}
-
+	
 	@Action(value="showImage",className="ProjectAction")
 	 public String showImage() throws Exception {  
 	        // 根据图片地址构造file对象  
@@ -427,4 +448,11 @@ public class ProjectAction extends ActionSupport {
 	        out.close();  
 	        return null;      
 	    }
+	
+	@Action(value="modifyProjectDoc",className="ProjectAction")
+	public String modifyProjectDoc() throws Exception{
+		
+		
+		return NONE;
+	}
 }

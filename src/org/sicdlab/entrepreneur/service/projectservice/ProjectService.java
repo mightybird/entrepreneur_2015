@@ -9,7 +9,9 @@ import org.sicdlab.entrepreneur.beans.Institution;
 import org.sicdlab.entrepreneur.beans.Label;
 import org.sicdlab.entrepreneur.beans.Project;
 import org.sicdlab.entrepreneur.beans.ProjectInstitution;
+import org.sicdlab.entrepreneur.beans.ProjectLabel;
 import org.sicdlab.entrepreneur.beans.Resource;
+import org.sicdlab.entrepreneur.beans.Role;
 import org.sicdlab.entrepreneur.beans.User;
 import org.sicdlab.entrepreneur.service.baseservice.BaseService;
 
@@ -26,4 +28,11 @@ public interface ProjectService  extends BaseService{
 	Resource getResourceByOwnid(String ownid);
 	Label FindLabelByName(String name);
 	List<String> getLabelsByProjectId(String id);
+	Resource FindPathByResourceOwnerid(String ownerId);
+	List<Project> selectAll();
+	List<Project> selectAll(int pageSize,int currentPage);
+	List<Label> selectAllLabels(Project project);
+	Role seletcRoleByUser(User u);
+	List<ProjectLabel> selectProjectLabelByProject(Project project);
 }
+

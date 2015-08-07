@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
@@ -16,6 +17,8 @@ import org.sicdlab.entrepreneur.beans.Project;
 import org.sicdlab.entrepreneur.beans.ProjectInstitution;
 import org.sicdlab.entrepreneur.beans.ProjectLabel;
 import org.sicdlab.entrepreneur.beans.Resource;
+import org.sicdlab.entrepreneur.beans.Role;
+import org.sicdlab.entrepreneur.beans.Tutor;
 import org.sicdlab.entrepreneur.beans.User;
 import org.sicdlab.entrepreneur.service.baseservice.impl.BaseServiceImpl;
 import org.sicdlab.entrepreneur.service.projectservice.ProjectService;
@@ -28,23 +31,22 @@ public class ProjectServiceImpl extends BaseServiceImpl implements ProjectServic
 
 	@Override
 	public List<DataDictionary> getFundScope() {
-		
+
 		Session session = getCurrentSession();
 		Transaction ts = session.beginTransaction();
-		List<DataDictionary> results=session.createCriteria(DataDictionary.class).
-				add(Restrictions.eq("ddkey", "fund_scope")).list();
+		List<DataDictionary> results = session.createCriteria(DataDictionary.class)
+				.add(Restrictions.eq("ddkey", "fund_scope")).list();
 		ts.commit();
-		
-		
-		return  results;
+
+		return results;
 	}
 
 	@Override
 	public List<DataDictionary> getFundType() {
 		Session session = getCurrentSession();
 		Transaction ts = session.beginTransaction();
-		List<DataDictionary> results=getCurrentSession().createCriteria(DataDictionary.class).
-				add(Restrictions.eq("ddkey", "fund_type")).list();
+		List<DataDictionary> results = getCurrentSession().createCriteria(DataDictionary.class)
+				.add(Restrictions.eq("ddkey", "fund_type")).list();
 		ts.commit();
 		return results;
 	}
@@ -53,22 +55,22 @@ public class ProjectServiceImpl extends BaseServiceImpl implements ProjectServic
 	public List<DataDictionary> getFundLack() {
 		Session session = getCurrentSession();
 		Transaction ts = session.beginTransaction();
-		List<DataDictionary> results=getCurrentSession().createCriteria(DataDictionary.class).
-				add(Restrictions.eq("ddkey", "fund_lack")).list();
+		List<DataDictionary> results = getCurrentSession().createCriteria(DataDictionary.class)
+				.add(Restrictions.eq("ddkey", "fund_lack")).list();
 		ts.commit();
 		return results;
 	}
 
 	@Override
-	public boolean SaveProjectImagePath(String ownerid, String resourceType,String path) {
+	public boolean SaveProjectImagePath(String ownerid, String resourceType, String path) {
 		// TODO Auto-generated method stub
 		Session session = getCurrentSession();
 		Transaction ts = session.beginTransaction();
-		Resource resource= new Resource();
+		Resource resource = new Resource();
 		resource.setOwnerId(ownerid);
 		resource.setResourceType(resourceType);
 		resource.setPath(path);
-		boolean result=saveOrUpdate(resource);
+		boolean result = saveOrUpdate(resource);
 		ts.commit();
 		return result;
 	}
@@ -78,8 +80,8 @@ public class ProjectServiceImpl extends BaseServiceImpl implements ProjectServic
 		// TODO Auto-generated method stub
 		Session session = getCurrentSession();
 		Transaction ts = session.beginTransaction();
-		Entrepreneur result= (Entrepreneur) getCurrentSession().createCriteria(Entrepreneur.class).
-				add(Restrictions.eq("id", UserId)).uniqueResult();
+		Entrepreneur result = (Entrepreneur) getCurrentSession().createCriteria(Entrepreneur.class)
+				.add(Restrictions.eq("id", UserId)).uniqueResult();
 		ts.commit();
 		return result;
 	}
@@ -89,11 +91,11 @@ public class ProjectServiceImpl extends BaseServiceImpl implements ProjectServic
 		// TODO Auto-generated method stub
 		Session session = getCurrentSession();
 		Transaction ts = session.beginTransaction();
-		User result= (User) getCurrentSession().createCriteria(User.class).
-				add(Restrictions.eq("id", userid)).uniqueResult();
+		User result = (User) getCurrentSession().createCriteria(User.class).add(Restrictions.eq("id", userid))
+				.uniqueResult();
 		ts.commit();
 		return result;
-		
+
 	}
 
 	@Override
@@ -101,8 +103,8 @@ public class ProjectServiceImpl extends BaseServiceImpl implements ProjectServic
 		// TODO Auto-generated method stub
 		Session session = getCurrentSession();
 		Transaction ts = session.beginTransaction();
-		Institution result= (Institution) getCurrentSession().createCriteria(Institution.class).
-				add(Restrictions.eq("id", userid)).uniqueResult();
+		Institution result = (Institution) getCurrentSession().createCriteria(Institution.class)
+				.add(Restrictions.eq("id", userid)).uniqueResult();
 		ts.commit();
 		return result;
 	}
@@ -111,12 +113,9 @@ public class ProjectServiceImpl extends BaseServiceImpl implements ProjectServic
 	public ProjectInstitution getPIByProjectAndInstitution(Project p, Institution i) {
 		// TODO Auto-generated method stub
 		Session session = getCurrentSession();
-		Transaction ts = session.beginTransaction();	
-		ProjectInstitution result=(ProjectInstitution)getCurrentSession()
-				.createCriteria(ProjectInstitution.class)
-				.add(Restrictions.eq("TInstitution", i))
-				.add(Restrictions.eq("TProject", p))
-				.uniqueResult();
+		Transaction ts = session.beginTransaction();
+		ProjectInstitution result = (ProjectInstitution) getCurrentSession().createCriteria(ProjectInstitution.class)
+				.add(Restrictions.eq("TInstitution", i)).add(Restrictions.eq("TProject", p)).uniqueResult();
 		ts.commit();
 		return result;
 	}
@@ -125,9 +124,9 @@ public class ProjectServiceImpl extends BaseServiceImpl implements ProjectServic
 	public Project getProjectById(String projectid) {
 		// TODO Auto-generated method stub
 		Session session = getCurrentSession();
-		Transaction ts = session.beginTransaction();	
-		Project result=(Project) getCurrentSession().createCriteria(Project.class).
-				add(Restrictions.eq("id", projectid)).uniqueResult();
+		Transaction ts = session.beginTransaction();
+		Project result = (Project) getCurrentSession().createCriteria(Project.class)
+				.add(Restrictions.eq("id", projectid)).uniqueResult();
 		ts.commit();
 		return result;
 	}
@@ -137,8 +136,8 @@ public class ProjectServiceImpl extends BaseServiceImpl implements ProjectServic
 		// TODO Auto-generated method stub
 		Session session = getCurrentSession();
 		Transaction ts = session.beginTransaction();
-		Resource result=(Resource) getCurrentSession().createCriteria(Resource.class).
-				add(Restrictions.eq("ownerId",ownid )).uniqueResult();
+		Resource result = (Resource) getCurrentSession().createCriteria(Resource.class)
+				.add(Restrictions.eq("ownerId", ownid)).uniqueResult();
 		ts.commit();
 		return result;
 	}
@@ -148,8 +147,8 @@ public class ProjectServiceImpl extends BaseServiceImpl implements ProjectServic
 		// TODO Auto-generated method stub
 		Session session = getCurrentSession();
 		Transaction ts = session.beginTransaction();
-		Label result=(Label) getCurrentSession().createCriteria(Label.class).
-				add(Restrictions.eq("name", name)).uniqueResult();
+		Label result = (Label) getCurrentSession().createCriteria(Label.class).add(Restrictions.eq("name", name))
+				.uniqueResult();
 		ts.commit();
 		return result;
 	}
@@ -159,22 +158,89 @@ public class ProjectServiceImpl extends BaseServiceImpl implements ProjectServic
 		// TODO Auto-generated method stub
 		Session session = getCurrentSession();
 		Transaction ts = session.beginTransaction();
-		Project project=(Project) getCurrentSession().createCriteria(Project.class).
-				add(Restrictions.eq("id", id)).uniqueResult();
-		Set<ProjectLabel> projectlabel=project.getProjectLabels();
-		int i=0;
-		List<String> results= new ArrayList<>();
+		Project project = (Project) getCurrentSession().createCriteria(Project.class).add(Restrictions.eq("id", id))
+				.uniqueResult();
+				
+		Set<ProjectLabel> projectlabel = project.getProjectLabels();
+		int i = 0;
+		List<String> results = new ArrayList<>();
 		for (Iterator iterator = projectlabel.iterator(); iterator.hasNext();) {
 			ProjectLabel projectLabel2 = (ProjectLabel) iterator.next();
 			Label label = projectLabel2.getLabel();
 			results.add(label.getName());
 			System.out.println(results.get(i++));
 		}
-		
+
 		ts.commit();
 		return results;
 	}
 
-	
-	
+	@Override
+	public Resource FindPathByResourceOwnerid(String ownerId) {
+		// TODO Auto-generated method stub
+		Session session = getCurrentSession();
+		Transaction ts = session.beginTransaction();
+		Resource result = (Resource) getCurrentSession().createCriteria(Resource.class)
+				.add(Restrictions.eq("ownerId", ownerId)).uniqueResult();
+		ts.commit();
+		return result;
+
+	}
+
+	@Override
+	public List<Project> selectAll() {
+		// TODO Auto-generated method stub
+		Session session = getCurrentSession();
+		Transaction ts = session.beginTransaction();
+		List<Project> result = session.createCriteria(Project.class).list();
+		ts.commit();
+		return result;
+	}
+
+	@Override
+	public List<Project> selectAll(int pageSize, int currentPage) {
+		// TODO Auto-generated method stub
+		Session session = getCurrentSession();
+		Transaction ts = session.beginTransaction();
+		Criteria q = session.createCriteria(Project.class);
+		q.setMaxResults(pageSize);
+		q.setFirstResult((currentPage - 1) * pageSize);
+		List<Project> result = q.list();
+		ts.commit();
+		return result;
+	}
+
+	@Override
+	public List<Label> selectAllLabels(Project project) {
+		// TODO Auto-generated method stub
+		Session session = getCurrentSession();
+		Transaction ts = session.beginTransaction();
+		List<Label> labels = session.createCriteria(Label.class).createCriteria("projectLabels").createAlias("project", "p")
+				.add(Restrictions.eq("p.id", project.getId())).list();
+		ts.commit();
+		
+		return labels;
+	}
+
+	@Override
+	public Role seletcRoleByUser(User u) {
+		// TODO Auto-generated method stub
+		Session session = getCurrentSession();
+		Transaction ts = session.beginTransaction();
+		Role role=(Role) session.createCriteria(Role.class).
+				createAlias("user", "u").add(Restrictions.eq("u.id", u.getId())).uniqueResult();
+		ts.commit();
+		return role;
+	}
+
+	@Override
+	public List<ProjectLabel> selectProjectLabelByProject(Project project) {
+		// TODO Auto-generated method stub
+		Session session = getCurrentSession();
+		Transaction ts = session.beginTransaction();
+		List<ProjectLabel> result=session.createCriteria(ProjectLabel.class).
+				createAlias("project", "p").add(Restrictions.eq("p.id", project.getId())).list();
+		return result;
+	}
+
 }

@@ -16,7 +16,9 @@ import org.sicdlab.entrepreneur.beans.DataDictionary;
 import org.sicdlab.entrepreneur.beans.Entrepreneur;
 import org.sicdlab.entrepreneur.beans.Industry;
 import org.sicdlab.entrepreneur.beans.Institution;
+import org.sicdlab.entrepreneur.beans.Mail;
 import org.sicdlab.entrepreneur.beans.Need;
+import org.sicdlab.entrepreneur.beans.Page;
 import org.sicdlab.entrepreneur.beans.Project;
 import org.sicdlab.entrepreneur.beans.Role;
 import org.sicdlab.entrepreneur.beans.Supply;
@@ -82,9 +84,15 @@ public class UserAction extends ActionSupport {
 	private List<Industry> industrylist;
 	private List<Project> projectlist;
 	private List<User> friendlist;
-	private Boolean notafriend;
+	private List<User> applyingFriendlist;
+	private String friendstatus;
 	private List<Supply> supplylist;
 	private List<Need> needlist;
+	private String title;
+	private String content;
+	private Page<Mail> receivedMail;
+	private Page<Mail> sentMail;
+	private Mail mail;
 
 	@Action(value = "applyregister", results = { @Result(name = "success", location = "/jsp/user/register.jsp") }, className = "UserAction")
 	public String applyRegister() {
@@ -113,6 +121,7 @@ public class UserAction extends ActionSupport {
 		user.setIntroduce(getIntroduce() == null ? "未填写" : getIntroduce());
 		user.setGender(getGender() == null ? "未填写" : getGender());
 		user.setBirth(DateUtil.strToDate(getBirth()));
+		user.setHeadImage("default_head_img.png");
 		if (getRole().equals("entrepreneur")) {
 			Entrepreneur entrepreneur = new Entrepreneur();
 			entrepreneur.setDegree(getDegree());
@@ -143,7 +152,6 @@ public class UserAction extends ActionSupport {
 		if (!getErrmsg().equals("success")) {
 			return ERROR;
 		} else {
-			// TODO deal with default_head_img.png
 			return SUCCESS;
 		}
 	}
@@ -169,6 +177,9 @@ public class UserAction extends ActionSupport {
 			ActionContext.getContext().getSession().put("user", user);
 			List<Role> lrole = userservice.getByStringProperty(Role.class, "id", user.getRole().getId());
 			ActionContext.getContext().getSession().put("role", lrole.iterator().next());
+			int unreadMail = userservice.getUnreadMail(user);
+			ActionContext.getContext().getSession().put("unreadmail", unreadMail);
+			ActionContext.getContext().getSession().put("unreadnotice", 0);
 			ServletActionContext.getRequest().setAttribute("userid", user.getId());
 			return SUCCESS;
 		}
@@ -213,15 +224,37 @@ public class UserAction extends ActionSupport {
 			currentuser.setName(currentuser.getEmail());
 		}
 		setFriendlist(userservice.findFriends(currentuser));
+		setApplyingFriendlist(userservice.findApplyingFriends(currentuser));
 		if (!sessionuser.getId().equals(currentuser.getId())) {
 			userservice.addVisitedCount(currentuser.getId());
-			notafriend = true;
-			Iterator<User> it = friendlist.iterator();
-			while (it.hasNext()) {
-				User u = (User) it.next();
+			friendstatus = "stranger";
+			Iterator<User> fit = friendlist.iterator();
+			while (fit.hasNext()) {
+				User u = (User) fit.next();
 				if (u.getId().equals(sessionuser.getId())) {
-					notafriend = false;
+					friendstatus = "friend";
 					break;
+				}
+			}
+			if (friendstatus.equals("stranger")) {
+				Iterator<User> ait = applyingFriendlist.iterator();
+				while (ait.hasNext()) {
+					User u = (User) ait.next();
+					if (u.getId().equals(sessionuser.getId())) {
+						friendstatus = "applyee";
+						break;
+					}
+				}
+			}
+			if (friendstatus.equals("stranger")) {
+				List<User> applyingFriendsOfSessionUser = userservice.findApplyingFriends(sessionuser);
+				Iterator<User> asuit = applyingFriendsOfSessionUser.iterator();
+				while (asuit.hasNext()) {
+					User u = (User) asuit.next();
+					if (u.getId().equals(currentuser.getId())) {
+						friendstatus = "applyer";
+						break;
+					}
 				}
 			}
 		}
@@ -316,11 +349,48 @@ public class UserAction extends ActionSupport {
 		return SUCCESS;
 	}
 
-	@Action(value = "applyFriend", results = { @Result(name = "success", location = "/jsp/user/personalinfo.jsp"),
+	@Action(value = "applyFriend", results = { @Result(name = "success", type = "chain", location = "personalhome"),
 			@Result(name = "error", type = "chain", location = "applylogin") }, className = "UserAction")
-	public String personalInfo() {
-		// TODO applyFriend
+	public String applyFriend() {
+		User sessionuser = (User) ActionContext.getContext().getSession().get("user");
+		if (sessionuser == null) {
+			return ERROR;
+		}
+		String followerId = sessionuser.getId();
+		String followeeId = ServletActionContext.getRequest().getParameter("id");
+		System.out.println(userservice.applyFriend(followerId, followeeId).equals("success"));
+		ServletActionContext.getRequest().setAttribute("userid", followeeId);
 		return SUCCESS;
+	}
+
+	@Action(value = "acceptFriend", results = { @Result(name = "success", type = "chain", location = "personalhome"),
+			@Result(name = "error", type = "chain", location = "applylogin") }, className = "UserAction")
+	public String acceptFriend() {
+		User sessionuser = (User) ActionContext.getContext().getSession().get("user");
+		if (sessionuser == null) {
+			return ERROR;
+		}
+		String followeeId = sessionuser.getId();
+		String followerId = ServletActionContext.getRequest().getParameter("id");
+		System.out.println(userservice.acceptFriend(followerId, followeeId));
+		ServletActionContext.getRequest().setAttribute("userid", followerId);
+		return SUCCESS;
+
+	}
+
+	@Action(value = "deleteFriend", results = { @Result(name = "success", type = "chain", location = "personalhome"),
+			@Result(name = "error", type = "chain", location = "applylogin") }, className = "UserAction")
+	public String deleteFriend() {
+		User sessionuser = (User) ActionContext.getContext().getSession().get("user");
+		if (sessionuser == null) {
+			return ERROR;
+		}
+		String followerId = sessionuser.getId();
+		String followeeId = ServletActionContext.getRequest().getParameter("id");
+		System.out.println(userservice.deleteFriend(followerId, followeeId));
+		ServletActionContext.getRequest().setAttribute("userid", followerId);
+		return SUCCESS;
+
 	}
 
 	@Action(value = "applyChangePassword", results = { @Result(name = "success", location = "/jsp/user/changepassword.jsp"),
@@ -362,7 +432,68 @@ public class UserAction extends ActionSupport {
 		}
 		setErrmsg("密码修改成功！请重新登录");
 		return SUCCESS;
+	}
 
+	@Action(value = "sendMail", results = { @Result(name = "success", type = "chain", location = "personalhome"),
+			@Result(name = "error", type = "chain", location = "applylogin") }, className = "UserAction")
+	public String sendMail() {
+		User sessionuser = (User) ActionContext.getContext().getSession().get("user");
+		if (sessionuser == null) {
+			return ERROR;
+		}
+		String senderId = sessionuser.getId();
+		String receiverId = ServletActionContext.getRequest().getParameter("id");
+		System.out.println(userservice.sendMail(senderId, receiverId, title, content));
+		ServletActionContext.getRequest().setAttribute("userid", receiverId);
+		return SUCCESS;
+	}
+
+	@Action(value = "mailList", results = { @Result(name = "success", location = "/jsp/user/maillist.jsp"),
+			@Result(name = "error", type = "chain", location = "applylogin") }, className = "UserAction")
+	public String mailList() throws IOException {
+		User sessionuser = (User) ActionContext.getContext().getSession().get("user");
+		if (sessionuser == null) {
+			return ERROR;
+		}
+		Integer rcurrentPage = Integer.parseInt(ServletActionContext.getRequest().getParameter("rcurrentpage"));
+		Integer scurrentPage = Integer.parseInt(ServletActionContext.getRequest().getParameter("scurrentpage"));
+		Integer pageSize = 10;
+		List<Mail> rmail = userservice.getReceivedMail(sessionuser, pageSize, pageSize * (rcurrentPage - 1));
+		Iterator<Mail> rit = rmail.iterator();
+		while (rit.hasNext()) {
+			Mail mail = (Mail) rit.next();
+			int length = mail.getTitle().length();
+			mail.setTitle(length > 20 ? mail.getTitle().substring(0, 16) + "..." : mail.getTitle());
+			mail.setContent(mail.getContent().length() > 50 ? mail.getContent().substring(0, 46) + "..." : mail.getContent());
+		}
+		setReceivedMail(new Page<Mail>(pageSize, rcurrentPage, userservice.getReceivedMail(sessionuser).size(), rmail));
+		List<Mail> smail = userservice.getSentMail(sessionuser, pageSize, pageSize * (scurrentPage - 1));
+		Iterator<Mail> sit = smail.iterator();
+		while (sit.hasNext()) {
+			Mail mail = (Mail) sit.next();
+			mail.setTitle(mail.getTitle().length() > 20 ? mail.getTitle().substring(0, 16) + "..." : mail.getTitle());
+			mail.setContent(mail.getContent().length() > 50 ? mail.getContent().substring(0, 46) + "..." : mail.getContent());
+		}
+		setSentMail(new Page<Mail>(pageSize, scurrentPage, userservice.getSentMail(sessionuser).size(), smail));
+		return SUCCESS;
+	}
+
+	@Action(value = "mail", results = { @Result(name = "success", location = "/jsp/user/mail.jsp"),
+			@Result(name = "error", type = "chain", location = "applylogin") }, className = "UserAction")
+	public String mail() {
+		User sessionuser = (User) ActionContext.getContext().getSession().get("user");
+		if (sessionuser == null) {
+			return ERROR;
+		}
+		String mailId = ServletActionContext.getRequest().getParameter("mailid");
+		setMail(userservice.getMail(mailId));
+		if (mail.getUserByReceiverId().getId().equals(sessionuser.getId()) && mail.getStatus().equals("unread")) {
+			mail.setStatus("read");
+			userservice.update(mail);
+			int unreadmail = (int) ActionContext.getContext().getSession().get("unreadmail");
+			ActionContext.getContext().getSession().put("unreadmail", unreadmail - 1);
+		}
+		return SUCCESS;
 	}
 
 	public String getRole() {
@@ -645,12 +776,60 @@ public class UserAction extends ActionSupport {
 		this.nuser = nuser;
 	}
 
-	public Boolean getNotafriend() {
-		return notafriend;
+	public String getFriendstatus() {
+		return friendstatus;
 	}
 
-	public void setNotafriend(Boolean notafriend) {
-		this.notafriend = notafriend;
+	public void setFriendstatus(String friendstatus) {
+		this.friendstatus = friendstatus;
+	}
+
+	public List<User> getApplyingFriendlist() {
+		return applyingFriendlist;
+	}
+
+	public void setApplyingFriendlist(List<User> applyingFriendlist) {
+		this.applyingFriendlist = applyingFriendlist;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public Page<Mail> getReceivedMail() {
+		return receivedMail;
+	}
+
+	public void setReceivedMail(Page<Mail> receivedMail) {
+		this.receivedMail = receivedMail;
+	}
+
+	public Page<Mail> getSentMail() {
+		return sentMail;
+	}
+
+	public void setSentMail(Page<Mail> sentMail) {
+		this.sentMail = sentMail;
+	}
+
+	public void setMail(Mail mail) {
+		this.mail = mail;
+	}
+
+	public Mail getMail() {
+		return mail;
 	}
 
 }

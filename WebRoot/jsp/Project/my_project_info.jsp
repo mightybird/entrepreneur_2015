@@ -90,7 +90,7 @@
 					<h1>项目信息</h1>
 					<div style="float: left; margin-top: 10px">
 						<img width="150px" height="150px"
-							src="<%=request.getContextPath()%>/images/<s:property value="#request.newFileName" />" />
+							src="<%=request.getContextPath()%>/images/<s:property value="#session.project_image" />" />
 					</div>
 					<div style="height: 150px">
 						<div>
@@ -217,10 +217,10 @@
 							<div id="title">暂无资料~</div>
 						</s:else>
 						<div>
-							<form action="${newurl}upload" method="post"
+							<form action="UploadAccessary" method="post"
 								enctype="multipart/form-data">
-								选择文件：<input type="file" name="upload" required /> <input
-									type="submit" value="上传" />
+								选择文件：<input type="file" name="upload" required /> 
+								       <input type="submit" value="上传" />
 							</form>
 
 						</div>

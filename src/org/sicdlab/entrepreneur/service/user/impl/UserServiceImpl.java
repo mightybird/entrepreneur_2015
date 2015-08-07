@@ -6,9 +6,12 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.sicdlab.entrepreneur.beans.Entrepreneur;
+import org.sicdlab.entrepreneur.beans.Friend;
 import org.sicdlab.entrepreneur.beans.Institution;
+import org.sicdlab.entrepreneur.beans.Mail;
 import org.sicdlab.entrepreneur.beans.Need;
 import org.sicdlab.entrepreneur.beans.Project;
 import org.sicdlab.entrepreneur.beans.Role;
@@ -126,11 +129,11 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 		return "success";
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public String checkLogin(String email, String password) {
 		Session session = getCurrentSession();
 		Transaction tx = session.beginTransaction();
-		@SuppressWarnings("rawtypes")
 		List list = session.createCriteria(User.class).add(Restrictions.eq("email", email)).list();
 		tx.commit();
 		if (list.isEmpty()) {
@@ -187,12 +190,24 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 	public List<User> findFriends(User user) {
 		Session session = getCurrentSession();
 		Transaction tx = session.beginTransaction();
-		// TODO filter by status
-		List<User> ferl = session.createCriteria(User.class).createAlias("friendsForFollowerId", "fer").add(Restrictions.eq("fer.userByFolloweeId", user)).list();
-		List<User> feel = session.createCriteria(User.class).createAlias("friendsForFolloweeId", "fee").add(Restrictions.eq("fee.userByFollowerId", user)).list();
+		List<User> ferl = session.createCriteria(User.class).createAlias("friendsForFollowerId", "fer").add(Restrictions.eq("fer.userByFolloweeId", user))
+				.add(Restrictions.eq("fer.status", "ack")).list();
+		List<User> feel = session.createCriteria(User.class).createAlias("friendsForFolloweeId", "fee").add(Restrictions.eq("fee.userByFollowerId", user))
+				.add(Restrictions.eq("fee.status", "ack")).list();
 		tx.commit();
 		ferl.addAll(feel);
 		return ferl;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<User> findApplyingFriends(User user) {
+		Session session = getCurrentSession();
+		Transaction tx = session.beginTransaction();
+		List<User> aferl = session.createCriteria(User.class).createAlias("friendsForFollowerId", "fer").add(Restrictions.eq("fer.userByFolloweeId", user))
+				.add(Restrictions.eq("fer.status", "apl")).list();
+		tx.commit();
+		return aferl;
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -234,4 +249,141 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 		session.update(user);
 		tx.commit();
 	}
+
+	@SuppressWarnings("rawtypes")
+	@Override
+	public String applyFriend(String followerId, String followeeId) {
+		User follower = getByStringProperty(User.class, "id", followerId).iterator().next();
+		User followee = getByStringProperty(User.class, "id", followeeId).iterator().next();
+		Session session = getCurrentSession();
+		Transaction tx = session.beginTransaction();
+		List list = session.createCriteria(Friend.class).add(Restrictions.eq("userByFollowerId", follower)).add(Restrictions.eq("userByFolloweeId", followee)).list();
+		tx.commit();
+		if (!list.isEmpty()) {
+			return "alreadyFriendOrApplying";
+		}
+		if (!save(new Friend(UUIDGenerator.randomUUID(), follower, followee, "apl"))) {
+			return "dberror";
+		}
+		return "success";
+	}
+
+	@SuppressWarnings("rawtypes")
+	@Override
+	public String acceptFriend(String followerId, String followeeId) {
+		User follower = getByStringProperty(User.class, "id", followerId).iterator().next();
+		User followee = getByStringProperty(User.class, "id", followeeId).iterator().next();
+		Session session = getCurrentSession();
+		Transaction tx = session.beginTransaction();
+		List list = session.createCriteria(Friend.class).add(Restrictions.eq("userByFollowerId", follower)).add(Restrictions.eq("userByFolloweeId", followee))
+				.add(Restrictions.eq("status", "apl")).list();
+		tx.commit();
+		if (list.isEmpty()) {
+			return "noApplication";
+		}
+		Friend friend = (Friend) list.iterator().next();
+		friend.setStatus("ack");
+		if (!update(friend)) {
+			return "dberror";
+		}
+		return "success";
+	}
+
+	@SuppressWarnings("rawtypes")
+	@Override
+	public String deleteFriend(String followerId, String followeeId) {
+		User follower = getByStringProperty(User.class, "id", followerId).iterator().next();
+		User followee = getByStringProperty(User.class, "id", followeeId).iterator().next();
+		Session session = getCurrentSession();
+		Transaction tx = session.beginTransaction();
+		List list = session.createCriteria(Friend.class).add(Restrictions.eq("userByFollowerId", follower)).add(Restrictions.eq("userByFolloweeId", followee))
+				.add(Restrictions.eq("status", "ack")).list();
+		if (list.isEmpty()) {
+			list = session.createCriteria(Friend.class).add(Restrictions.eq("userByFolloweeId", follower)).add(Restrictions.eq("userByFollowerId", followee))
+					.add(Restrictions.eq("status", "ack")).list();
+		}
+		tx.commit();
+		Friend friend = (Friend) list.iterator().next();
+
+		if (!delete(friend)) {
+			return "dberror";
+		}
+		return "success";
+	}
+
+	@Override
+	public String sendMail(String senderId, String receiverId, String title, String content) {
+		User sender = getByStringProperty(User.class, "id", senderId).iterator().next();
+		User receiver = getByStringProperty(User.class, "id", receiverId).iterator().next();
+		Mail mail = new Mail(UUIDGenerator.randomUUID(), sender, receiver, title, content, new Date(System.currentTimeMillis()), "unread");
+		if (!save(mail)) {
+			return "dberror";
+		}
+		return "success";
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public List<Mail> getSentMail(User sessionuser) {
+		Session session = getCurrentSession();
+		Transaction tx = session.beginTransaction();
+		List list = session.createCriteria(Mail.class).createAlias("userBySenderId", "s").add(Restrictions.eq("s.id", sessionuser.getId())).list();
+		tx.commit();
+		return list;
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public List<Mail> getSentMail(User sessionuser, Integer pageSize, int firstMail) {
+		Session session = getCurrentSession();
+		Transaction tx = session.beginTransaction();
+		List list = session.createCriteria(Mail.class).createAlias("userByReceiverId", "r").createAlias("userBySenderId", "s")
+				.add(Restrictions.eq("s.id", sessionuser.getId())).addOrder(Order.desc("sendTime")).setMaxResults(pageSize).setFirstResult(firstMail).list();
+		tx.commit();
+		return list;
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public List<Mail> getReceivedMail(User sessionuser) {
+		Session session = getCurrentSession();
+		Transaction tx = session.beginTransaction();
+		List list = session.createCriteria(Mail.class).createAlias("userByReceiverId", "r").add(Restrictions.eq("r.id", sessionuser.getId())).list();
+		tx.commit();
+		return list;
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public List<Mail> getReceivedMail(User sessionuser, Integer pageSize, int firstMail) {
+		Session session = getCurrentSession();
+		Transaction tx = session.beginTransaction();
+		List list = session.createCriteria(Mail.class).createAlias("userBySenderId", "s").createAlias("userByReceiverId", "r")
+				.add(Restrictions.eq("r.id", sessionuser.getId())).addOrder(Order.desc("sendTime")).setMaxResults(pageSize).setFirstResult(firstMail).list();
+		tx.commit();
+		return list;
+	}
+
+	@Override
+	public Mail getMail(String mailId) {
+		Session session = getCurrentSession();
+		Transaction tx = session.beginTransaction();
+		Mail mail = (Mail) session.createCriteria(Mail.class).add(Restrictions.eq("id", mailId)).list().iterator().next();
+		mail.getUserByReceiverId().getName();
+		mail.getUserBySenderId().getName();
+		tx.commit();
+		return mail;
+	}
+
+	@SuppressWarnings("rawtypes")
+	@Override
+	public int getUnreadMail(User user) {
+		Session session = getCurrentSession();
+		Transaction tx = session.beginTransaction();
+		List list = session.createCriteria(Mail.class).add(Restrictions.eq("status", "unread")).createAlias("userByReceiverId", "u").add(Restrictions.eq("u.id", user.getId()))
+				.list();
+		tx.commit();
+		return list.size();
+	}
+
 }

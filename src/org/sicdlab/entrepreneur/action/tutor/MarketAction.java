@@ -19,6 +19,7 @@ import org.springframework.stereotype.Controller;
 public class MarketAction {
 	private Tutor tutor;
 	private List<Tutor> market1s;
+	private List<Tutor> market2s;
 	@Resource(name="TutorServiceImpl")
 	private TutorServiceImpl tutorServiceImpl;
 	private List<Tutor> markets;
@@ -31,6 +32,14 @@ public class MarketAction {
 	private int beginPageIndex; 
 	private int endPageIndex; 
 	
+	
+	
+	public List<Tutor> getMarket2s() {
+		return market2s;
+	}
+	public void setMarket2s(List<Tutor> market2s) {
+		this.market2s = market2s;
+	}
 	public List<Tutor> getMarket1s() {
 		return market1s;
 	}
@@ -101,6 +110,7 @@ public class MarketAction {
 	//实现分页财务导师信息
 	public String market(){
 		//获得分页参数以及对各参数的处理
+		setMarket2s(tutorServiceImpl.selectRec());
 		setMarkets(tutorServiceImpl.selectMarket());
 		
 		page=new Page(3, currentPage, markets.size(), markets);

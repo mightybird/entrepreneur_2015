@@ -91,7 +91,7 @@ public class DetailAction {
 	public String detail(){
 		
 		//System.out.println(tutorId+"4444444");
-		ActionContext.getContext().getSession().put("tutor", tutorId);
+		ActionContext.getContext().getSession().put("tutorId", tutorId);
 		User user=(User) ActionContext.getContext().getSession().get("user");	
 		if(user==null){
 			System.out.println("hello!!!!");
@@ -113,14 +113,11 @@ public class DetailAction {
 		System.out.println(tutorId+"**********");
 		System.out.println(userId+"kkkk");
 		System.out.println(projectId+"hhhhh");
-		if(tutorId==null&&userId==null&&projectId==null){
+		if(tutorId==null||userId==null||projectId==null){
 			System.out.println("数据为非法数据");
 		}else{
 			tutorServiceImpl.saveProjectEntrepreneur(userId, tutorId, projectId);
 		}
-//		User user = (User) ActionContext.getContext().getSession().get("user");
-//		user.getRole().getId();
-		
 		return "success";
 	}
 }

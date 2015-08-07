@@ -19,6 +19,7 @@ import org.springframework.stereotype.Controller;
 public class ManageAction {
 	private Tutor tutor;
 	private List<Tutor> manage1s;
+	private List<Tutor> manage2s;
 	@Resource(name="TutorServiceImpl")
 	private TutorServiceImpl tutorServiceImpl;
 	private List<Tutor> manages;
@@ -32,6 +33,12 @@ public class ManageAction {
 	private int endPageIndex; 
 	
 	
+	public List<Tutor> getManage2s() {
+		return manage2s;
+	}
+	public void setManage2s(List<Tutor> manage2s) {
+		this.manage2s = manage2s;
+	}
 	public List<Tutor> getManage1s() {
 		return manage1s;
 	}
@@ -102,6 +109,7 @@ public class ManageAction {
 	//实现分页经营管理导师信息
 	public String manage(){
 		//获得分页参数以及对各参数的处理
+		setManage2s(tutorServiceImpl.selectRec());
 		setManages(tutorServiceImpl.selectManage());
 		
 		page=new Page(3, currentPage, manages.size(), manages);

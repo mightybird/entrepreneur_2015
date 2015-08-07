@@ -35,20 +35,27 @@
 	<%-- <jsp:include page="/jsp/header.jsp"></jsp:include> --%>
 	<br>
 	<br>
-	<div class="row">
-		<div class="col-md-12">
-			<div class="blog-footer">
-				<p>Copyright © 2015 知识服务一组 All Rights Reversed.&nbsp;&nbsp;&nbsp;<a href="#">关于我们</a></p>
-				<p>
-					友情链接：<a href="#">链接</a> <a href="#">链接</a> <a href="#">链接</a> <a
-						href="#">链接</a>
-				</p>
-				<p>
-					<a href="#">Back to top</a>
-				</p>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="blog-footer">
+					<p>
+						Copyright © 2015 知识服务一组 All Rights Reversed.&nbsp;&nbsp;&nbsp;
+						<a href="#">关于我们</a>
+					</p>
+					<p>
+						友情链接：
+						<a href="#">链接</a>
+						<a href="#">链接</a>
+						<a href="#">链接</a>
+						<a href="#">链接</a>
+					</p>
+					<p>
+						<a href="#">Back to top</a>
+					</p>
+				</div>
 			</div>
 		</div>
 	</div>
-
-
 </body>
+</html>

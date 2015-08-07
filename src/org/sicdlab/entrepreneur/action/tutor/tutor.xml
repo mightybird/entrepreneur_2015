@@ -18,10 +18,7 @@
 			<result>/jsp/tutor/detail.jsp</result>
 		</action>
 		<action name="apply" class="org.sicdlab.entrepreneur.action.tutor.DetailAction" method="apply">
-			<result>/jsp/tutor/detail.jsp</result>
-		</action>
-		<action name="index" class="org.sicdlab.entrepreneur.action.tutor.PageAction">
-			<result>/jsp/tutor/index.jsp</result>
+			<result>/jsp/tutor/tutorHomePage.jsp</result>
 		</action>
 	</package>
 </struts> 

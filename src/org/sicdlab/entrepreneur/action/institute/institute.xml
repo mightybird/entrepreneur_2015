@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+    "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	<package name="institute" namespace="/institute" extends="struts-default">
+		<action name="institute-*" class="org.sicdlab.entrepreneur.action.institute.InstituteAction" method="{1}">
+			<result>/jsp/institute/institute-{1}.jsp</result>
+		</action>
+		<action name="instituteDetail" class="org.sicdlab.entrepreneur.action.institute.InsDetailAction" method="list">
+			<result>/jsp/institute/detail.jsp</result>
+		</action>
+		<action name="instituteApply" class="org.sicdlab.entrepreneur.action.institute.InsDetailAction" method="apply">
+			<!-- <result name="success" type="redirectAction">institute-list</result> -->
+			<result>/jsp/institute/instituteHomePage.jsp</result>
+		</action>
+	</package>
+</struts> 

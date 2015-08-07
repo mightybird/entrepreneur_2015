@@ -19,6 +19,7 @@ import org.springframework.stereotype.Controller;
 public class TechniqueAction {
 	private Tutor tutor;
 	private List<Tutor> technique1s;
+	private List<Tutor> technique2s;
 	@Resource(name="TutorServiceImpl")
 	private TutorServiceImpl tutorServiceImpl;
 	private List<Tutor> techniques;
@@ -33,7 +34,13 @@ public class TechniqueAction {
 	
 	
 
-
+	
+	public List<Tutor> getTechnique2s() {
+		return technique2s;
+	}
+	public void setTechnique2s(List<Tutor> technique2s) {
+		this.technique2s = technique2s;
+	}
 	public List<Tutor> getTechnique1s() {
 		return technique1s;
 	}
@@ -104,6 +111,7 @@ public class TechniqueAction {
 	//实现分页财务导师信息
 	public String technique(){
 		//获得分页参数以及对各参数的处理
+		setTechnique2s(tutorServiceImpl.selectRec());
 		setTechniques(tutorServiceImpl.selectTechnique());
 		
 		page=new Page(3, currentPage, techniques.size(), techniques);

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.sicdlab.entrepreneur.beans.Entrepreneur;
 import org.sicdlab.entrepreneur.beans.Institution;
+import org.sicdlab.entrepreneur.beans.Mail;
 import org.sicdlab.entrepreneur.beans.Need;
 import org.sicdlab.entrepreneur.beans.Project;
 import org.sicdlab.entrepreneur.beans.Supply;
@@ -37,5 +38,27 @@ public interface UserService extends BaseService {
 	public String checkPassword(User user, String passwordconfirm);
 
 	public void addVisitedCount(String userid);
+
+	public List<User> findApplyingFriends(User user);
+
+	public String applyFriend(String followerId, String followeeId);
+
+	public String acceptFriend(String followerId, String followeeId);
+
+	public String deleteFriend(String followerId, String followeeId);
+
+	public String sendMail(String senderId, String receiverId, String title, String content);
+
+	public List<Mail> getSentMail(User sessionuser);
+
+	public List<Mail> getSentMail(User sessionuser, Integer pageSize, int firstMail);
+
+	public List<Mail> getReceivedMail(User sessionuser);
+
+	public List<Mail> getReceivedMail(User sessionuser, Integer pageSize, int firstMail);
+
+	public Mail getMail(String mailId);
+
+	public int getUnreadMail(User user);
 
 }

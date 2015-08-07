@@ -21,6 +21,7 @@ import com.opensymphony.xwork2.ActionContext;
 @Scope("prototype")
 public class TutorAction {
 	private List<Tutor> tutor1s;
+	private List<Tutor> tutor2s;
 	@Resource(name="TutorServiceImpl")
 	private TutorServiceImpl tutorServiceImpl;
 	private List<Tutor> tutors;
@@ -33,6 +34,14 @@ public class TutorAction {
 	private int beginPageIndex; 
 	private int endPageIndex; 
 	
+	
+	
+	public List<Tutor> getTutor2s() {
+		return tutor2s;
+	}
+	public void setTutor2s(List<Tutor> tutor2s) {
+		this.tutor2s = tutor2s;
+	}
 	public List<Tutor> getTutor1s() {
 		return tutor1s;
 	}
@@ -97,7 +106,7 @@ public class TutorAction {
 	//实现分页并显示所有的导师信息
 	public String list(){
 		//获得分页参数以及对各参数的处理
-		
+		setTutor2s(tutorServiceImpl.selectRec());
 		setTutors(tutorServiceImpl.selectAll());
 		//tutors=tutorServiceImpl.select();
 		page=new Page(3, currentPage, tutors.size(), tutors);

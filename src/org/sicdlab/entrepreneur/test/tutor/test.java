@@ -23,7 +23,6 @@ import org.sicdlab.entrepreneur.beans.ProjectTutor;
 import org.sicdlab.entrepreneur.beans.Tutor;
 import org.sicdlab.entrepreneur.beans.User;
 import org.sicdlab.entrepreneur.service.baseservice.impl.BaseServiceImpl;
-import org.sicdlab.entrepreneur.service.tutor.impl.TutorHelp;
 import org.sicdlab.entrepreneur.service.tutor.impl.TutorServiceImpl;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;

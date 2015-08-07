@@ -44,11 +44,11 @@
 			<div class="row" >
 				<div class="col-md-4">
 				</div>
-				<div class="col-md-5" style="width: 800px;height:580px;margin-left: -265px;float:left;">
+				<div class="col-md-5" style="width: 800px;height:580px;margin-left: -265px;margin-top:-20px;float:left;">
 					<ul class="list-unstyled" >						
 						<li style="padding-top: 20px;width: 800px;height:580px;font-family: '微软雅黑';font-size: 20px">
 							<s:iterator value="technique1s" var="c">
-								<s:div style="border: 1px solid #d0d0d0;width: 700px;height:180px;float:left;">
+								<s:div style="border: 1px solid #d0d0d0;width: 700px;height:180px;float:left;margin-top:10px;">
 									<s:div style="width: 100px;height:140px;float:left;">
 										<img alt="picture" src="images/4.jpg" style="width:100%;height:100%"  >
 									</s:div>
@@ -57,14 +57,12 @@
 											<li>导师类型 ：<s:property value="#c.type"/></li>	
 											<li>导师姓名：<s:property value="#c.user.name"/></li>				
 											<li>导师职位：<s:property value="#c.occupation"/></li>
-											<li>导师评分：<s:property value="#c.average_score"/>
-												<a href="#" style="text-decoration: none;padding-left: 325px;" onclick="detail('<s:property value="#c.id"/>')">详情</a>								
-											<li>			
+											<li>导师评分：<s:property value="#c.averageScore"/></li>
+											<li><a href="#" style="text-decoration: none;padding-left: 430px;" onclick="detail('<s:property value="#c.id"/>')">详情</a><li>																
 										</ul>									
-									</s:div>																		
-								</s:div>								
+									</s:div>																
+								</s:div>							
 							</s:iterator>
-							<s:debug></s:debug>
 						</li>
 					</ul>
 					<form action="Technique-technique" id="page" method="post"></form>
@@ -73,7 +71,27 @@
 				
 				<!-- 推荐区 -->
 				<div class="col-md-3" style="width: 320px;height: 580px;border:1px solid #d0d0d0;">
+					<div style="width: 290px;height: 40px;border: 1px solid #d0d0d0;margin-top:20px;">
+						<p style="font-family: '微软雅黑';font-size: 30px;text-align: center;">优秀导师推荐栏</p>
+					</div>
+					<s:iterator value="technique2s" var="c">
+						<div style="width: 320px;height: 140px;margin-top:20px;margin-left: -16px;'">
+							<div style="width: 80px;height: 120px;float:left;border: 1px solid #d0d0d0;">
+								<img alt="picture" src="images/4.jpg" style="width:100%;height:100%">
+							</div>
+							<div style="width: 228px;height:140px;margin-left: 10px;float:left;">
+								<ul style="list-style: none;padding-left: 2px;padding-top: 5px;font-family: '微软雅黑';font-size: 17px;">
+									<li>导师类型 ：<s:property value="#c.type"/></li>	
+									<li>导师姓名：<s:property value="#c.user.name"/></li>				
+									<li>导师职位：<s:property value="#c.occupation"/></li>
+									<li>导师评分：<s:property value="#c.averageScore"/>
+									<li><a href="#" style="text-decoration: none;padding-left: 165px" onclick="detail('<s:property value="#c.id"/>')">详情</a></li>
+								</ul>
+							</div>
+						</div>
+					</s:iterator>
 				</div>
+				<!-- 推荐区结束 -->
 			</div>
 		</div>
 		<div class="col-md-1">
@@ -82,13 +100,15 @@
 </div>
 <div>
 	<jsp:include page="/jsp/page.jsp"></jsp:include>
+	
 </div>
-</body>
-<script type="text/javascript">
-		function detail(tutorId){
-			$(document.forms["detail"]).append("<input type='hidden' name='tutorId' value='"+ tutorId + "'>");
-			document.forms["detail"].submit();		
-		}
-		
+	<script type="text/javascript">
+			function detail(tutorId){
+				$(document.forms["detail"]).append("<input type='hidden' name='tutorId' value='"+ tutorId + "'>");
+				document.forms["detail"].submit();		
+			}
 	</script>
+	<jsp:include page="/jsp/footer.jsp"></jsp:include>
+</body>
+
 </html>

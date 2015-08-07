@@ -19,6 +19,7 @@ import org.springframework.stereotype.Controller;
 public class FinaceAction {
 	private Tutor tutor;
 	private List<Tutor> finace1s;
+	private List<Tutor> finace2s;
 	@Resource(name="TutorServiceImpl")
 	private TutorServiceImpl tutorServiceImpl;
 	private List<Tutor> finaces;
@@ -32,7 +33,13 @@ public class FinaceAction {
 	private int endPageIndex; 
 	
 	
-
+	
+	public List<Tutor> getFinace2s() {
+		return finace2s;
+	}
+	public void setFinace2s(List<Tutor> finace2s) {
+		this.finace2s = finace2s;
+	}
 	public List<Tutor> getFinace1s() {
 		return finace1s;
 	}
@@ -103,6 +110,7 @@ public class FinaceAction {
 	//实现分页财务导师信息
 	public String finace(){
 		//获得分页参数以及对各参数的处理
+		setFinace2s(tutorServiceImpl.selectRec());
 		setFinaces(tutorServiceImpl.selectFinace());
 		
 		page=new Page(3, currentPage, finaces.size(), finaces);

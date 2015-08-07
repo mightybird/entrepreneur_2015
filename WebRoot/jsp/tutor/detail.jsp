@@ -23,22 +23,20 @@
 
 					<div class="row">
 						<div class="col-md-6 col-md-offset-1">
-							<a href="#">
+							<a href="<%=request.getContextPath()%>/user/personalhome?userid=${tutorId}">
 								<img class="img-responsive" alt="Responsive image"
-									src="<c:url value='/images/default_head_img.jpg'/>" />
+									src="<c:url value='/images/head_image_default.png'/>" />
 							</a>
 						</div>
 						<div class="col-md-5">
-							<div class="text-right">
-								<a href="#" class="btn btn-success" onclick="func('${user.role.id}','${user.id}','${tutor}')">申请评估</a>
-							</div>
-							<div style="margin:-30px 10px 20px 120px;width: 94px;height: 32px;border: 2px solid #ccc;overflow: hidden;border-radius:4px;">
-								<select style="width: 110px;height: 32px;border: 1px solid #ccc;overflow: hidden;border-radius:4px;font-family:'微软雅黑'；font-size:15px;" id="projectId" >
+							<div class="text-right" style="width: 360px;height: 135px;">
+								<select class="selectpicker" data-style="btn-info" style="width: 110px;height: 32px;border: 1px solid #ccc;border-radius:4px;font-family:'微软雅黑'；font-size:15px;" id="projectId" >
 									<s:iterator value="projects" var="c" >
 										<option value="<s:property value="#c.project.id"/>"><s:property value="#c.project.name"/></option>
 									</s:iterator>
-								</select>
-								<s:debug></s:debug>
+								</select>&nbsp&nbsp&nbsp
+								<a href="#" class="btn btn-success" onclick="func('${user.role.id}','${user.id}','${tutorId}')">申请评估</a>&nbsp&nbsp&nbsp
+								<a href="<%=request.getContextPath()%>/user/personalhome?userid=${tutorId}" class="btn btn-info" >导师个人主页</a>
 							</div>
 						</div>
 					</div>
@@ -53,7 +51,7 @@
 								<li>出生日期：<s:property value="#c.birth"/></li>								
 								<li>简介：<s:property value="#c.introduce"/></li>
 								<li>邮箱：<s:property value="#c.email"/>	</li>							
-								<li>地址：<s:property value="#c.email"/></li>			
+								<li>地址：<s:property value="#c.address"/></li>			
 							</ul>	
 							</s:iterator>
 						</dl>
@@ -75,15 +73,14 @@
 			if(roleId==1){
 				var projectId=$("#projectId").val();
 				if(projectId==null){
-					alert("申请失败")
+					alert("申请失败");
 				}else{
 					alert("申请成功");
 					$(document.forms["apply"]).append("<input type='hidden' name='userId' value='"+ userId + "'>,<input type='hidden' name='tutorId' value='"+ tutorId + "'>,<input type='hidden' name='projectId' value='"+ projectId + "'>");
 					document.forms["apply"].submit();
 				}
-				
 			}else{
-				alert("申请失败")
+				alert("申请失败");
 			}
 		}
 	</script>
